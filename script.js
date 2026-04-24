@@ -677,6 +677,13 @@
       .replace(/"/g, '&quot;');
   }
 
+  function renderMarkdown(str) {
+    return escapeHtml(str)
+      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\*(.+?)\*/g, '<em>$1</em>')
+      .replace(/\n/g, '<br>');
+  }
+
   function aiAvatar() {
     return `<div class="ai-chat-msg__avatar" aria-hidden="true">
       <svg width="30" height="30" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -710,10 +717,39 @@
     const el   = document.createElement('div');
     el.className = `ai-chat-msg ai-chat-msg--${isAI ? 'ai' : 'user'}`;
     el.innerHTML = isAI
-      ? `${aiAvatar()}<div class="ai-chat-msg__bubble">${escapeHtml(text)}</div>`
+      ? `${aiAvatar()}<div class="ai-chat-msg__bubble">${renderMarkdown(text)}</div>`
       : `<div class="ai-chat-msg__bubble">${escapeHtml(text)}</div>`;
     chatMessages.appendChild(el);
     scrollBottom();
+  }
+
+  function streamMessage(text, onDone) {
+    const el = document.createElement('div');
+    el.className = 'ai-chat-msg ai-chat-msg--ai';
+    el.innerHTML = `${aiAvatar()}<div class="ai-chat-msg__bubble"><span class="nova-cursor"></span></div>`;
+    chatMessages.appendChild(el);
+    scrollBottom();
+
+    const bubble = el.querySelector('.ai-chat-msg__bubble');
+    const total  = text.length;
+    const speed  = Math.max(10, Math.min(22, 1400 / total));
+    let i = 0;
+
+    function tick() {
+      i++;
+      bubble.innerHTML = escapeHtml(text.slice(0, i)) + (i < total ? '<span class="nova-cursor">▍</span>' : '');
+      scrollBottom();
+      if (i < total) {
+        setTimeout(tick, speed);
+      } else {
+        setTimeout(() => {
+          bubble.innerHTML = renderMarkdown(text);
+          scrollBottom();
+          if (onDone) onDone();
+        }, 80);
+      }
+    }
+    setTimeout(tick, speed);
   }
 
   function showTyping() {
@@ -763,15 +799,19 @@
       hideTyping();
 
       if (!res.ok || data.error) {
-        addMessage('ai', "I'm having a little trouble right now. Please use the contact form below to reach Anupama directly — she'll get back to you quickly.");
+        streamMessage("I'm having a little trouble right now. Please use the contact form below to reach Anupama directly — she'll get back to you quickly.");
         return;
       }
 
-      addMessage('ai', data.reply);
       history.push({ role: 'assistant', content: data.reply });
+      streamMessage(data.reply, () => {
+        setLoading(false);
+        chatInput.focus();
+      });
+      return;
     } catch {
       hideTyping();
-      addMessage('ai', "Looks like I'm offline at the moment. Feel free to scroll down and use the contact form — Anupama will be in touch.");
+      streamMessage("Looks like I'm offline at the moment. Feel free to scroll down and use the contact form — Anupama will be in touch.");
     } finally {
       setLoading(false);
       chatInput.focus();

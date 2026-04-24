@@ -8,12 +8,12 @@ window.SITE_DATA = {
 
   // ── Hero headline phrases (cycle with scramble effect) ────
   heroPhrases: [
-    { line1: 'AI-Powered Software',    line2: 'Built for Business'     },
-    { line1: 'Intelligent Automation', line2: 'That Drives Results'    },
-    { line1: 'Cloud-Native Systems',   line2: 'Built to Scale'         },
-    { line1: 'Full-Stack Solutions',   line2: 'Engineered to Perform'  },
-    { line1: 'Machine Learning',       line2: 'Made Practical'         },
-    { line1: 'Software That Thinks',   line2: 'So Your Business Grows' },
+    { line1: 'AI & ML Integration',    line2: 'Custom Intelligence'       },
+    { line1: 'Full-Stack Web Apps',    line2: 'React · Node.js · Next.js' },
+    { line1: 'Cloud & DevOps',         line2: 'AWS · Azure · GCP'         },
+    { line1: 'Mobile Development',     line2: 'Flutter · iOS · Android'   },
+    { line1: 'Enterprise Solutions',   line2: 'ERP · Salesforce · Legacy' },
+    { line1: 'Tech Consulting',        line2: 'Strategy & Architecture'   },
   ],
 
   // ── Stats bar ─────────────────────────────────────────────
