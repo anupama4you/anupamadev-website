@@ -121,17 +121,7 @@
 
       <div class="project-card project-card--featured reveal">
           <div class="project-card__image project-card__image--captions">
-            <div class="project-card__captions-visual" aria-hidden="true">
-              <div class="captions-chip captions-chip--ig">Instagram</div>
-              <div class="captions-chip captions-chip--tt">TikTok</div>
-              <div class="captions-chip captions-chip--yt">YouTube</div>
-              <div class="captions-chip captions-chip--fb">Facebook</div>
-              <div class="captions-score">
-                <span class="captions-score__label">Engagement Score</span>
-                <span class="captions-score__value">94<small>/100</small></span>
-              </div>
-              <div class="captions-tag">#viral #trending #ai</div>
-            </div>
+            <img src="assets/projects/captions4you/captions4you.png" alt="captions4you screenshot" class="project-card__img" loading="lazy">
             <div class="project-card__overlay">
               <div class="project-card__tags">
                 <span>GPT-4</span><span>React</span><span>TypeScript</span><span>Node.js</span><span>Supabase</span>
@@ -153,8 +143,7 @@
               </a>
             </div>
           </div>
-        </div>
-      </div><!-- /project-card--featured captions4you -->
+        </div><!-- /project-card--featured captions4you -->
 
       <div class="project-card project-card--featured project-card--featured-reverse reveal">
         <div class="project-card__content">
@@ -179,21 +168,7 @@
           </div>
         </div>
         <div class="project-card__image project-card__image--wakemeup">
-          <div class="wakemeup-visual" aria-hidden="true">
-            <div class="wakemeup-map">
-              <div class="wakemeup-pin">
-                <div class="wakemeup-pin__dot"></div>
-                <div class="wakemeup-pin__ring wakemeup-pin__ring--1"></div>
-                <div class="wakemeup-pin__ring wakemeup-pin__ring--2"></div>
-                <div class="wakemeup-pin__ring wakemeup-pin__ring--3"></div>
-              </div>
-              <div class="wakemeup-radius"></div>
-            </div>
-            <div class="wakemeup-card">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-              Arriving in 2 stops
-            </div>
-          </div>
+          <img src="assets/projects/wakemeup/wakemeup.png" alt="WakeMeUp app screenshot" class="project-card__img" loading="lazy">
           <div class="project-card__overlay">
             <div class="project-card__tags">
               <span>Flutter</span><span>Dart</span><span>Google Maps</span><span>GPS</span>
@@ -468,25 +443,66 @@
 
   <!-- ── AI Consultant Chat Widget ─────────────────────── -->
   <div id="ai-chat">
-    <button id="ai-chat-toggle" aria-label="Chat with AI Consultant" title="Chat with AI Consultant">
+    <div class="ai-chat-trigger">
+      <div class="ai-chat-bubble" id="ai-chat-bubble" aria-live="polite"></div>
+      <button id="ai-chat-toggle" aria-label="Chat with Nova" title="Chat with Nova">
       <svg class="ai-chat-toggle__icon ai-chat-toggle__icon--chat" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+        <rect x="3" y="8" width="18" height="12" rx="2"/>
+        <circle cx="9" cy="14" r="1.5" fill="currentColor" stroke="none"/>
+        <circle cx="15" cy="14" r="1.5" fill="currentColor" stroke="none"/>
+        <path d="M9 17.5q3 1.5 6 0"/>
+        <path d="M12 8V4"/>
+        <circle cx="12" cy="3" r="1.2" fill="currentColor" stroke="none"/>
+        <path d="M3 12H2a1 1 0 1 0 0 3h1M21 12h1a1 1 0 1 1 0 3h-1"/>
       </svg>
       <svg class="ai-chat-toggle__icon ai-chat-toggle__icon--close" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
         <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
       </svg>
       <span class="ai-chat-toggle__badge" aria-hidden="true"></span>
     </button>
+    </div><!-- /ai-chat-trigger -->
 
-    <div class="ai-chat-panel" id="ai-chat-panel" role="dialog" aria-label="AI Consultant Chat" aria-hidden="true">
+    <div class="ai-chat-panel" id="ai-chat-panel" role="dialog" aria-label="Chat with Nova" aria-hidden="true">
       <div class="ai-chat-header">
         <div class="ai-chat-header__avatar" aria-hidden="true">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M9.663 17h4.673M12 3v1m6.364 1.636-.707.707M21 12h-1M4 12H3m3.343-5.657-.707-.707m2.828 9.9a5 5 0 1 1 7.072 0l-.548.547A3.374 3.374 0 0 0 14 18.469V19a2 2 0 1 1-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+          <svg width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="nova-bg" x1="0" y1="0" x2="42" y2="42" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#6366f1"/>
+                <stop offset="100%" stop-color="#a855f7"/>
+              </linearGradient>
+              <radialGradient id="nova-glow" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#fff" stop-opacity="0.15"/>
+                <stop offset="100%" stop-color="#fff" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <!-- Face -->
+            <rect x="7" y="10" width="28" height="25" rx="8" fill="url(#nova-bg)"/>
+            <rect x="7" y="10" width="28" height="25" rx="8" fill="url(#nova-glow)"/>
+            <!-- Ears -->
+            <rect x="4"  y="17" width="4" height="7" rx="2" fill="url(#nova-bg)"/>
+            <rect x="34" y="17" width="4" height="7" rx="2" fill="url(#nova-bg)"/>
+            <!-- Antenna -->
+            <line x1="21" y1="10" x2="21" y2="5" stroke="#c084fc" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="21" cy="4" r="2.2" fill="#e879f9"/>
+            <circle cx="21" cy="4" r="1"   fill="#fff" opacity="0.6"/>
+            <!-- Eyes -->
+            <circle cx="15.5" cy="21" r="4.5" fill="#fff" opacity="0.95"/>
+            <circle cx="26.5" cy="21" r="4.5" fill="#fff" opacity="0.95"/>
+            <circle cx="16"   cy="21" r="2.8" fill="#4f46e5"/>
+            <circle cx="27"   cy="21" r="2.8" fill="#4f46e5"/>
+            <circle cx="17"   cy="20" r="1"   fill="#fff"/>
+            <circle cx="28"   cy="20" r="1"   fill="#fff"/>
+            <!-- Smile -->
+            <path d="M15.5 28.5 Q21 32 26.5 28.5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" fill="none" opacity="0.9"/>
+            <!-- Sparkles -->
+            <circle cx="10" cy="13" r="1"   fill="#22d3ee" opacity="0.8"/>
+            <circle cx="32" cy="13" r="1"   fill="#f0abfc" opacity="0.8"/>
+            <circle cx="32" cy="31" r="0.8" fill="#22d3ee" opacity="0.6"/>
           </svg>
         </div>
         <div class="ai-chat-header__info">
-          <p class="ai-chat-header__name">AI Consultant</p>
+          <p class="ai-chat-header__name">Nova</p>
           <p class="ai-chat-header__status">
             <span class="ai-chat-header__dot" aria-hidden="true"></span>
             Ask me anything about your project

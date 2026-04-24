@@ -607,7 +607,7 @@
 (function () {
   'use strict';
 
-  const GREETING = "Hi! I'm Anupama's AI business consultant. I'm here to help figure out if we're a great fit for your project — what brings you here today?";
+  const GREETING = "Hi! I'm Nova, Anupama's AI consultant. I'm here to help figure out if we're a great fit for your project — what brings you here today?";
   const API      = '/.netlify/functions/chat';
 
   const chatRoot     = document.getElementById('ai-chat');
@@ -617,16 +617,49 @@
   const chatForm     = document.getElementById('ai-chat-form');
   const chatInput    = document.getElementById('ai-chat-input');
   const chatSend     = document.querySelector('.ai-chat-send');
+  const chatBubble   = document.getElementById('ai-chat-bubble');
 
   let isOpen    = false;
   let isLoading = false;
   let greeted   = false;
   const history = [];
 
+  // ── Speech bubble cycle ───────────────────────────────────
+  const BUBBLE_HINTS = [
+    'Hi, I\'m Nova! How can I help? 👋',
+    'Ask Nova about AI solutions ✨',
+    "Let's talk about your idea 💡",
+    'Free 30-min consultation available',
+    'Building something new? Ask Nova 🚀',
+    'Got a tech challenge? I can help!',
+  ];
+  let bubbleIdx = 0;
+  let bubbleHideTimer, bubbleShowTimer;
+
+  function showBubble() {
+    if (isOpen || !chatBubble) return;
+    chatBubble.textContent = BUBBLE_HINTS[bubbleIdx % BUBBLE_HINTS.length];
+    bubbleIdx++;
+    chatBubble.classList.add('is-visible');
+    bubbleHideTimer = setTimeout(() => {
+      chatBubble.classList.remove('is-visible');
+      bubbleShowTimer = setTimeout(showBubble, 9000);
+    }, 4500);
+  }
+  setTimeout(showBubble, 3500);
+
   function toggleChat() {
     isOpen = !isOpen;
     chatRoot.classList.toggle('is-open', isOpen);
     chatPanel.setAttribute('aria-hidden', String(!isOpen));
+
+    if (isOpen) {
+      clearTimeout(bubbleHideTimer);
+      clearTimeout(bubbleShowTimer);
+      chatBubble.classList.remove('is-visible');
+    } else {
+      bubbleShowTimer = setTimeout(showBubble, 6000);
+    }
 
     if (isOpen && !greeted) {
       greeted = true;
@@ -646,8 +679,28 @@
 
   function aiAvatar() {
     return `<div class="ai-chat-msg__avatar" aria-hidden="true">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M9.663 17h4.673M12 3v1m6.364 1.636-.707.707M21 12h-1M4 12H3m3.343-5.657-.707-.707m2.828 9.9a5 5 0 1 1 7.072 0l-.548.547A3.374 3.374 0 0 0 14 18.469V19a2 2 0 1 1-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+      <svg width="30" height="30" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="nova-msg-bg" x1="0" y1="0" x2="42" y2="42" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#6366f1"/>
+            <stop offset="100%" stop-color="#a855f7"/>
+          </linearGradient>
+        </defs>
+        <rect x="7" y="10" width="28" height="25" rx="8" fill="url(#nova-msg-bg)"/>
+        <rect x="4"  y="17" width="4" height="7" rx="2" fill="url(#nova-msg-bg)"/>
+        <rect x="34" y="17" width="4" height="7" rx="2" fill="url(#nova-msg-bg)"/>
+        <line x1="21" y1="10" x2="21" y2="5" stroke="#c084fc" stroke-width="1.5" stroke-linecap="round"/>
+        <circle cx="21" cy="4" r="2.2" fill="#e879f9"/>
+        <circle cx="21" cy="4" r="1"   fill="#fff" opacity="0.6"/>
+        <circle cx="15.5" cy="21" r="4.5" fill="#fff" opacity="0.95"/>
+        <circle cx="26.5" cy="21" r="4.5" fill="#fff" opacity="0.95"/>
+        <circle cx="16"   cy="21" r="2.8" fill="#4f46e5"/>
+        <circle cx="27"   cy="21" r="2.8" fill="#4f46e5"/>
+        <circle cx="17"   cy="20" r="1"   fill="#fff"/>
+        <circle cx="28"   cy="20" r="1"   fill="#fff"/>
+        <path d="M15.5 28.5 Q21 32 26.5 28.5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" fill="none" opacity="0.9"/>
+        <circle cx="10" cy="13" r="1"   fill="#22d3ee" opacity="0.8"/>
+        <circle cx="32" cy="13" r="1"   fill="#f0abfc" opacity="0.8"/>
       </svg>
     </div>`;
   }
