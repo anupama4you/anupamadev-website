@@ -599,3 +599,144 @@
 
 
 })();
+
+/* ============================================================
+   AI CONSULTANT CHAT WIDGET
+   ============================================================ */
+
+(function () {
+  'use strict';
+
+  const GREETING = "Hi! I'm Anupama's AI business consultant. I'm here to help figure out if we're a great fit for your project — what brings you here today?";
+  const API      = '/.netlify/functions/chat';
+
+  const chatRoot     = document.getElementById('ai-chat');
+  const chatToggle   = document.getElementById('ai-chat-toggle');
+  const chatPanel    = document.getElementById('ai-chat-panel');
+  const chatMessages = document.getElementById('ai-chat-messages');
+  const chatForm     = document.getElementById('ai-chat-form');
+  const chatInput    = document.getElementById('ai-chat-input');
+  const chatSend     = document.querySelector('.ai-chat-send');
+
+  let isOpen    = false;
+  let isLoading = false;
+  let greeted   = false;
+  const history = [];
+
+  function toggleChat() {
+    isOpen = !isOpen;
+    chatRoot.classList.toggle('is-open', isOpen);
+    chatPanel.setAttribute('aria-hidden', String(!isOpen));
+
+    if (isOpen && !greeted) {
+      greeted = true;
+      addMessage('ai', GREETING);
+    }
+
+    if (isOpen) setTimeout(() => chatInput.focus(), 320);
+  }
+
+  function escapeHtml(str) {
+    return str
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  function aiAvatar() {
+    return `<div class="ai-chat-msg__avatar" aria-hidden="true">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9.663 17h4.673M12 3v1m6.364 1.636-.707.707M21 12h-1M4 12H3m3.343-5.657-.707-.707m2.828 9.9a5 5 0 1 1 7.072 0l-.548.547A3.374 3.374 0 0 0 14 18.469V19a2 2 0 1 1-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+      </svg>
+    </div>`;
+  }
+
+  function addMessage(role, text) {
+    const isAI = role === 'ai';
+    const el   = document.createElement('div');
+    el.className = `ai-chat-msg ai-chat-msg--${isAI ? 'ai' : 'user'}`;
+    el.innerHTML = isAI
+      ? `${aiAvatar()}<div class="ai-chat-msg__bubble">${escapeHtml(text)}</div>`
+      : `<div class="ai-chat-msg__bubble">${escapeHtml(text)}</div>`;
+    chatMessages.appendChild(el);
+    scrollBottom();
+  }
+
+  function showTyping() {
+    const el     = document.createElement('div');
+    el.id        = 'ai-typing-row';
+    el.className = 'ai-chat-msg ai-chat-msg--ai';
+    el.innerHTML = `${aiAvatar()}
+      <div class="ai-chat-typing">
+        <span class="ai-chat-typing__dot"></span>
+        <span class="ai-chat-typing__dot"></span>
+        <span class="ai-chat-typing__dot"></span>
+      </div>`;
+    chatMessages.appendChild(el);
+    scrollBottom();
+  }
+
+  function hideTyping() {
+    const el = document.getElementById('ai-typing-row');
+    if (el) el.remove();
+  }
+
+  function scrollBottom() {
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
+
+  function setLoading(loading) {
+    isLoading          = loading;
+    chatSend.disabled  = loading;
+    chatInput.disabled = loading;
+  }
+
+  async function sendMessage(text) {
+    if (isLoading || !text.trim()) return;
+
+    setLoading(true);
+    addMessage('user', text);
+    history.push({ role: 'user', content: text });
+    showTyping();
+
+    try {
+      const res  = await fetch(API, {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ messages: history }),
+      });
+      const data = await res.json();
+      hideTyping();
+
+      if (!res.ok || data.error) {
+        addMessage('ai', "I'm having a little trouble right now. Please use the contact form below to reach Anupama directly — she'll get back to you quickly.");
+        return;
+      }
+
+      addMessage('ai', data.reply);
+      history.push({ role: 'assistant', content: data.reply });
+    } catch {
+      hideTyping();
+      addMessage('ai', "Looks like I'm offline at the moment. Feel free to scroll down and use the contact form — Anupama will be in touch.");
+    } finally {
+      setLoading(false);
+      chatInput.focus();
+    }
+  }
+
+  chatToggle.addEventListener('click', toggleChat);
+
+  chatForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const text = chatInput.value.trim();
+    if (!text) return;
+    chatInput.value = '';
+    sendMessage(text);
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && isOpen) toggleChat();
+  });
+
+})();

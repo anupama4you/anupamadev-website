@@ -258,7 +258,7 @@
       <div class="about__right reveal">
         <div class="about__card">
           <div class="about__avatar-wrap">
-            <div class="about__avatar">AD</div>
+            <img src="assets/anupama_dp.png" alt="Anupama Dilshan" class="about__avatar">
           </div>
           <div class="about__timeline">
             <div class="about__timeline-item">
@@ -465,6 +465,54 @@
       </div>
     </div>
   </footer>
+
+  <!-- ── AI Consultant Chat Widget ─────────────────────── -->
+  <div id="ai-chat">
+    <button id="ai-chat-toggle" aria-label="Chat with AI Consultant" title="Chat with AI Consultant">
+      <svg class="ai-chat-toggle__icon ai-chat-toggle__icon--chat" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+      </svg>
+      <svg class="ai-chat-toggle__icon ai-chat-toggle__icon--close" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
+        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+      <span class="ai-chat-toggle__badge" aria-hidden="true"></span>
+    </button>
+
+    <div class="ai-chat-panel" id="ai-chat-panel" role="dialog" aria-label="AI Consultant Chat" aria-hidden="true">
+      <div class="ai-chat-header">
+        <div class="ai-chat-header__avatar" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9.663 17h4.673M12 3v1m6.364 1.636-.707.707M21 12h-1M4 12H3m3.343-5.657-.707-.707m2.828 9.9a5 5 0 1 1 7.072 0l-.548.547A3.374 3.374 0 0 0 14 18.469V19a2 2 0 1 1-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+          </svg>
+        </div>
+        <div class="ai-chat-header__info">
+          <p class="ai-chat-header__name">AI Consultant</p>
+          <p class="ai-chat-header__status">
+            <span class="ai-chat-header__dot" aria-hidden="true"></span>
+            Ask me anything about your project
+          </p>
+        </div>
+      </div>
+
+      <div class="ai-chat-messages" id="ai-chat-messages" aria-live="polite" aria-label="Chat messages"></div>
+
+      <form class="ai-chat-form" id="ai-chat-form" autocomplete="off">
+        <input
+          class="ai-chat-input"
+          id="ai-chat-input"
+          type="text"
+          placeholder="Describe your project or idea..."
+          maxlength="500"
+          aria-label="Type your message"
+        >
+        <button class="ai-chat-send" type="submit" aria-label="Send message">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+          </svg>
+        </button>
+      </form>
+    </div>
+  </div>
 
   <script src="data.js"></script>
   <script src="script.js"></script>
