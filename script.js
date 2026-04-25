@@ -410,7 +410,6 @@
     if (!form || !submitBtn || !status) return;
 
     const btnLabel   = submitBtn.querySelector('.cf-btn-label');
-    const endpoint   = window.SITE_DATA ? window.SITE_DATA.formEndpoint : '';
     const fallbackTo = 'anupama.dilshan@icloud.com';
 
     form.addEventListener('submit', async e => {
@@ -433,28 +432,16 @@
         return;
       }
 
-      // No Formspree endpoint — fall back to mailto
-      if (!endpoint) {
-        const data = new FormData(form);
-        const body = [...data.entries()]
-          .filter(([, v]) => v)
-          .map(([k, v]) => `${k.charAt(0).toUpperCase() + k.slice(1)}: ${v}`)
-          .join('\n');
-        window.location.href = `mailto:${fallbackTo}?subject=${encodeURIComponent('Project Inquiry')}&body=${encodeURIComponent(body)}`;
-        return;
-      }
-
-      // Submit via Formspree
       submitBtn.disabled = true;
       btnLabel.textContent = 'Sending…';
       status.className = 'contact-form__status';
       status.textContent = '';
 
       try {
-        const res = await fetch(endpoint, {
+        const res = await fetch('/', {
           method: 'POST',
-          body: new FormData(form),
-          headers: { 'Accept': 'application/json' },
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams(new FormData(form)).toString(),
         });
         if (res.ok) {
           status.textContent = "✓ Received! I'll review your requirements and send a quote within 1 business day.";
