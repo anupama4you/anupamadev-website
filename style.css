@@ -1922,6 +1922,183 @@ body,
   .footer__copy { flex-direction: column; gap: 0.4rem; text-align: center; }
 }
 
+/* ============================================================
+   NAV — Nova AI link + badge
+   ============================================================ */
+
+.nav__nova-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--primary-light) !important;
+  font-weight: 600;
+}
+
+.nav__nova-badge {
+  display: inline-block;
+  padding: 2px 7px;
+  border-radius: 100px;
+  background: linear-gradient(135deg, var(--primary), var(--purple));
+  color: #fff;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1.6;
+}
+
+/* ============================================================
+   NOVA PROMO BANNER (main site)
+   ============================================================ */
+
+.nova-promo {
+  padding: 80px 24px;
+  background: linear-gradient(135deg,
+    rgba(99, 102, 241, 0.08) 0%,
+    rgba(124, 58, 237, 0.06) 50%,
+    rgba(34, 211, 238, 0.05) 100%);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.nova-promo__container {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+}
+
+.nova-promo__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 13px;
+  border-radius: 100px;
+  background: rgba(99, 102, 241, 0.1);
+  border: 1px solid rgba(99, 102, 241, 0.22);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--primary-light);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 1.2rem;
+}
+
+.nova-promo__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--primary-light);
+  flex-shrink: 0;
+}
+
+.nova-promo__dot--green {
+  background: var(--green);
+  animation: badgePulse 2.4s ease-in-out infinite;
+}
+
+.nova-promo__headline {
+  font-size: clamp(1.7rem, 3.5vw, 2.6rem);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+  color: var(--text);
+  margin-bottom: 1rem;
+}
+
+.nova-promo__sub {
+  font-size: 1rem;
+  color: var(--text-muted);
+  line-height: 1.7;
+  max-width: 480px;
+  margin-bottom: 2rem;
+}
+
+.nova-promo__actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* ── Promo card visual ───────────────────────────────────── */
+
+.nova-promo__visual {
+  display: flex;
+  justify-content: center;
+}
+
+.nova-promo__card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  width: 100%;
+  max-width: 340px;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.3), 0 0 40px rgba(99, 102, 241, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.nova-promo__card-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.nova-promo__card-row:last-child { border-bottom: none; }
+
+.nova-promo__card-row svg { color: var(--green); flex-shrink: 0; }
+
+.nova-promo__card-row--header {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--green);
+  letter-spacing: 0.04em;
+  padding-bottom: 10px;
+}
+
+.nova-promo__card-stat {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 4px;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.nova-promo__card-stat strong { color: var(--text); }
+
+.nova-promo__card-badge {
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--primary-light);
+  background: rgba(99, 102, 241, 0.12);
+  border: 1px solid rgba(99, 102, 241, 0.22);
+  padding: 3px 9px;
+  border-radius: 100px;
+}
+
+[data-theme="light"] .nova-promo__card {
+  background: #ffffff;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+}
+
+@media (max-width: 768px) {
+  .nova-promo__container {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .nova-promo__visual { display: none; }
+}
+
 @media (max-width: 480px) {
   .hero { padding: 80px 1rem 60px; }
   .hero__headline { font-size: clamp(1.75rem, 8.5vw, 2.5rem); }
@@ -1954,7 +2131,7 @@ body,
   right: 28px;
   z-index: 9999;
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   align-items: flex-end;
   gap: 16px;
 }
@@ -2173,11 +2350,19 @@ body,
   scroll-behavior: smooth;
 }
 
-.ai-chat-messages::-webkit-scrollbar { width: 4px; }
-.ai-chat-messages::-webkit-scrollbar-track { background: transparent; }
-.ai-chat-messages::-webkit-scrollbar-thumb {
-  background: var(--border-hover);
+.ai-chat-messages::-webkit-scrollbar { width: 5px; }
+.ai-chat-messages::-webkit-scrollbar-track {
+  background: var(--border);
   border-radius: 4px;
+  margin: 6px 0;
+}
+.ai-chat-messages::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 4px;
+  opacity: 0.7;
+}
+.ai-chat-messages::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-light);
 }
 
 .ai-chat-msg {
