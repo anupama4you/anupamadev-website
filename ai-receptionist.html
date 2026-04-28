@@ -217,9 +217,9 @@
             </div>
           </div>
         </div>
-        <button class="ar-demo__play" id="play-demo" aria-label="Play demo call">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-          Watch Scripted Demo
+        <button class="ar-demo__play" id="play-demo" aria-label="Start live demo call">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+          Start Live Demo
         </button>
       </div>
     </div>
@@ -316,6 +316,7 @@
         </div>
 
         <div class="ar-try-live__form-body">
+
           <label class="ar-try-live__label" for="live-biz">What industry are you in?</label>
           <select id="live-biz" class="ar-try-live__select" aria-label="Your industry">
             <option value="" disabled selected>Select your business type...</option>
@@ -860,6 +861,7 @@
     </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/@vapi-ai/web@latest/dist/vapi.iife.js"></script>
   <script src="ai-receptionist.js"></script>
   <script src="chat-widget.js"></script>
 

@@ -60,229 +60,160 @@
   );
   document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
 
-  // ── Demo call — voice + text ──────────────────────────────
+  // ── VAPI live demo ────────────────────────────────────────
 
-  const DEMO_SCRIPT = [
-    { role: 'nova',     text: "Good afternoon! Thanks for calling Bella Hair Salon. I'm Nova, your AI receptionist. How can I help you today?" },
-    { role: 'customer', text: "Hi, I'd like to book a haircut for this Saturday." },
-    { role: 'nova',     text: "Of course! We have a few openings this Saturday. Are you after a morning or afternoon appointment?" },
-    { role: 'customer', text: "Morning would be great." },
-    { role: 'nova',     text: "Perfect. We have 9:30 AM and 11:00 AM available. Which suits you better?" },
-    { role: 'customer', text: "I'll go with 9:30 please." },
-    { role: 'nova',     text: "Great choice! Could I get your name and mobile number for a confirmation SMS?" },
-    { role: 'customer', text: "Sure — Sarah, 0412 345 678." },
-    { role: 'nova',     text: "Thanks Sarah! You're all booked in for this Saturday at 9:30 AM. Confirmation text on its way. Is there anything else I can help with?" },
-    { role: 'customer', text: "No, that's all. Thanks!" },
-    { role: 'nova',     text: "You're welcome! We'll see you Saturday. Have a lovely day!" },
-    { role: 'sms' },
-  ];
-
-  const playBtn   = document.getElementById('play-demo');
-  const callLog   = document.getElementById('call-log');
-  const smsToast  = document.getElementById('sms-toast');
+  const playBtn    = document.getElementById('play-demo');
+  const callLog    = document.getElementById('call-log');
   const callStatus = document.getElementById('call-status-text');
-  const callDot   = document.getElementById('call-dot');
-  const callTimer = document.getElementById('call-timer');
-  const soundWave = document.getElementById('sound-wave');
-  const muteBtn   = document.getElementById('call-mute');
+  const callDot    = document.getElementById('call-dot');
+  const callTimer  = document.getElementById('call-timer');
+  const soundWave  = document.getElementById('sound-wave');
+  const muteBtn    = document.getElementById('call-mute');
 
   let timerInterval = null;
   let timerSeconds  = 0;
-  let playing       = false;
-  let aborted       = false;
+  let callActive    = false;
   let muted         = false;
-
-  // ── Voice setup ───────────────────────────────────────────
-
-  let voiceNova     = null;
-  let voiceCustomer = null;
-  const synth = window.speechSynthesis;
-
-  function pickVoices(voices) {
-    const en = voices.filter(v => v.lang.startsWith('en'));
-
-    // Nova: prefer AU or GB female-sounding voice
-    voiceNova =
-      en.find(v => v.lang === 'en-AU') ||
-      en.find(v => /karen|lee|catherine|female|zira|hazel|kate|susan/i.test(v.name)) ||
-      en.find(v => v.lang === 'en-GB') ||
-      en[0] || null;
-
-    // Customer: different voice, prefer US male-sounding
-    voiceCustomer =
-      en.find(v => v !== voiceNova && /david|alex|tom|daniel|james|male/i.test(v.name)) ||
-      en.find(v => v !== voiceNova && v.lang === 'en-US') ||
-      en.find(v => v !== voiceNova) ||
-      voiceNova;
-  }
-
-  function initVoices() {
-    return new Promise(resolve => {
-      const v = synth.getVoices();
-      if (v.length) { pickVoices(v); resolve(); }
-      else {
-        synth.addEventListener('voiceschanged', () => {
-          pickVoices(synth.getVoices()); resolve();
-        }, { once: true });
-      }
-    });
-  }
-
-  // ── Helpers ───────────────────────────────────────────────
-
-  const wait = ms => new Promise(r => setTimeout(r, ms));
 
   function formatTime(s) {
     return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
   }
 
-  function setSoundWave(role) {
+  function setSoundWave(active) {
     soundWave.className = 'ar-sound-wave';
-    if (role) soundWave.classList.add('speaking', role);
+    if (active) soundWave.classList.add('speaking');
   }
 
-  function addTyping(role) {
-    const el = document.createElement('div');
-    el.id = 'demo-typing';
-    el.className = `ar-log-msg ar-log-msg--${role}`;
-    el.innerHTML = `
-      <div class="ar-log-msg__wrap">
-        <span class="ar-log-msg__label">${role === 'nova' ? 'Nova' : 'Customer'}</span>
-        <div class="ar-log-typing">
-          <span class="ar-log-typing__dot"></span>
-          <span class="ar-log-typing__dot"></span>
-          <span class="ar-log-typing__dot"></span>
-        </div>
-      </div>`;
-    callLog.appendChild(el);
-    callLog.scrollTop = callLog.scrollHeight;
-  }
-
-  function removeTyping() {
-    const el = document.getElementById('demo-typing');
-    if (el) el.remove();
-  }
-
-  function addMessage(role, text) {
-    removeTyping();
+  function addBubble(role, text) {
     const el = document.createElement('div');
     el.className = `ar-log-msg ar-log-msg--${role}`;
     el.innerHTML = `
       <div class="ar-log-msg__wrap">
-        <span class="ar-log-msg__label">${role === 'nova' ? 'Nova' : 'Customer'}</span>
+        <span class="ar-log-msg__label">${role === 'nova' ? 'Nova' : 'You'}</span>
         <div class="ar-log-msg__bubble">${text}</div>
       </div>`;
     callLog.appendChild(el);
     callLog.scrollTop = callLog.scrollHeight;
+    return el;
   }
 
-  function speak(text, role) {
-    return new Promise(resolve => {
-      if (!synth || muted) { resolve(); return; }
-      synth.cancel();
-
-      const utt = new SpeechSynthesisUtterance(text);
-      utt.voice  = role === 'nova' ? voiceNova : voiceCustomer;
-      utt.rate   = role === 'nova' ? 1.05 : 0.95;
-      utt.pitch  = role === 'nova' ? 1.15 : 0.9;
-      utt.volume = 1;
-
-      utt.onstart = () => setSoundWave(role);
-      utt.onend   = () => { setSoundWave(null); resolve(); };
-      utt.onerror = () => { setSoundWave(null); resolve(); };
-
-      synth.speak(utt);
-    });
+  function updateBubble(el, text) {
+    const bubble = el.querySelector('.ar-log-msg__bubble');
+    if (bubble) bubble.textContent = text;
+    callLog.scrollTop = callLog.scrollHeight;
   }
 
   function resetDemo() {
-    aborted = true;
-    if (synth) synth.cancel();
     clearInterval(timerInterval);
     timerInterval = null;
     timerSeconds  = 0;
     callLog.innerHTML = '';
-    smsToast.setAttribute('aria-hidden', 'true');
-    callStatus.textContent = 'Ready to play';
+    callStatus.textContent = 'Ready';
     callDot.className = 'ar-call-ui__status-dot';
     callTimer.textContent = '0:00';
-    setSoundWave(null);
-    playing = false;
+    setSoundWave(false);
+    callActive = false;
+    muted = false;
+    muteBtn.classList.remove('muted');
   }
 
-  async function runDemo() {
-    aborted  = false;
-    playing  = true;
+  if (playBtn && window.Vapi) {
+    const vapi = new window.Vapi('6df6b010-1a5b-4edf-aa60-fc54563a337b');
+    let currentBubble = null;
+    let currentRole   = null;
 
-    playBtn.disabled = true;
-    playBtn.innerHTML = `
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
-      Playing...`;
+    vapi.on('call-start', () => {
+      callActive = true;
+      callStatus.textContent = 'Connected — say hello!';
+      callDot.classList.add('connected');
+      timerInterval = setInterval(() => {
+        timerSeconds++;
+        callTimer.textContent = formatTime(timerSeconds);
+      }, 1000);
+      playBtn.innerHTML = `
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M10.68 13.31a16 16 0 0 0 3.41 2.6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7 2 2 0 0 1 1.72 2v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 1.61 3.39a2 2 0 0 1 1.22-2A12.84 12.84 0 0 0 5.64 1a2 2 0 0 1 2.11.45L9.02 2.72a16 16 0 0 0 2.6 3.41"/><line x1="23" y1="1" x2="1" y2="23"/></svg>
+        End Demo`;
+      playBtn.disabled = false;
+    });
 
-    callStatus.textContent = 'Connecting...';
-    await wait(600);
-    if (aborted) return;
+    vapi.on('speech-start', () => {
+      setSoundWave(true);
+      callStatus.textContent = 'Nova is speaking...';
+    });
 
-    callStatus.textContent = 'Connected';
-    callDot.classList.add('connected');
-    timerInterval = setInterval(() => {
-      timerSeconds++;
-      callTimer.textContent = formatTime(timerSeconds);
-    }, 1000);
+    vapi.on('speech-end', () => {
+      setSoundWave(false);
+      callStatus.textContent = 'Nova is listening...';
+    });
 
-    for (const step of DEMO_SCRIPT) {
-      if (aborted) break;
+    vapi.on('message', (msg) => {
+      if (msg.type !== 'transcript') return;
+      const role = msg.role === 'assistant' ? 'nova' : 'customer';
+      const text = (msg.transcript || '').trim();
+      if (!text) return;
 
-      if (step.role === 'sms') {
-        await wait(700);
-        smsToast.setAttribute('aria-hidden', 'false');
-        callLog.scrollTop = callLog.scrollHeight;
-        await wait(1200);
-        break;
+      if (!currentBubble || currentRole !== role) {
+        currentBubble = addBubble(role, text);
+        currentRole   = role;
+      } else {
+        updateBubble(currentBubble, text);
       }
 
-      // Show typing, speak in parallel
-      addTyping(step.role);
-      const typingMs = step.role === 'nova' ? 850 : 600;
-      await wait(typingMs);
-      if (aborted) break;
+      if (msg.transcriptType === 'final') {
+        currentBubble = null;
+        currentRole   = null;
+      }
+    });
 
-      // Reveal message + speak simultaneously
-      addMessage(step.role, step.text);
-      await speak(step.text, step.role);
-      if (aborted) break;
-
-      // Pause between turns
-      await wait(step.role === 'nova' ? 300 : 500);
-    }
-
-    if (!aborted) {
+    vapi.on('call-end', () => {
       clearInterval(timerInterval);
       callStatus.textContent = 'Call ended';
       callDot.classList.remove('connected');
-      setSoundWave(null);
+      setSoundWave(false);
+      callActive    = false;
+      currentBubble = null;
+      currentRole   = null;
       playBtn.innerHTML = `
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.65 6.35A7.958 7.958 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
-        Watch Demo Again`;
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+        Try Demo Again`;
       playBtn.disabled = false;
-    }
-    playing = false;
+    });
+
+    vapi.on('error', () => {
+      clearInterval(timerInterval);
+      callStatus.textContent = 'Something went wrong — try again';
+      callDot.classList.remove('connected');
+      setSoundWave(false);
+      callActive    = false;
+      currentBubble = null;
+      currentRole   = null;
+      playBtn.innerHTML = `
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+        Start Live Demo`;
+      playBtn.disabled = false;
+    });
+
+    muteBtn.addEventListener('click', () => {
+      muted = !muted;
+      vapi.setMuted(muted);
+      muteBtn.classList.toggle('muted', muted);
+      muteBtn.setAttribute('aria-label', muted ? 'Unmute audio' : 'Mute audio');
+    });
+
+    playBtn.addEventListener('click', () => {
+      if (callActive) {
+        vapi.stop();
+      } else {
+        resetDemo();
+        playBtn.disabled = true;
+        playBtn.innerHTML = `
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          Connecting...`;
+        callStatus.textContent = 'Connecting...';
+        vapi.start('1cb11ab1-02bf-4824-9d49-a29e9429aef3');
+      }
+    });
   }
-
-  // Mute toggle
-  muteBtn.addEventListener('click', () => {
-    muted = !muted;
-    muteBtn.classList.toggle('muted', muted);
-    muteBtn.setAttribute('aria-label', muted ? 'Unmute audio' : 'Mute audio');
-    if (muted && synth) { synth.cancel(); setSoundWave(null); }
-  });
-
-  playBtn.addEventListener('click', async () => {
-    if (playing) return;
-    resetDemo();
-    await initVoices();
-    runDemo();
-  });
 
   // ── Live Call — phone-based real demo ────────────────────
 
