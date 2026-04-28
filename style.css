@@ -2156,6 +2156,12 @@ body,
   flex-direction: column-reverse;
   align-items: flex-end;
   gap: 16px;
+  /* Container must not intercept taps — only the toggle button and open panel should */
+  pointer-events: none;
+}
+#ai-chat-toggle,
+.ai-chat-trigger {
+  pointer-events: auto;
 }
 
 /* ── Toggle button ───────────────────────────────────────── */
