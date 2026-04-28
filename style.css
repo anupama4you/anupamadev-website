@@ -1555,6 +1555,30 @@ body,
   transition: color var(--dur) var(--ease);
 }
 .footer__links a:hover { color: var(--text); }
+
+.footer__col h4 {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text);
+  margin-bottom: 0.85rem;
+}
+.footer__col ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.footer__col ul a {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color var(--dur) var(--ease);
+}
+.footer__col ul a:hover { color: var(--text); }
 .footer__copy {
   display: flex;
   justify-content: space-between;
@@ -1876,9 +1900,26 @@ body,
   .hero__trusted { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   .nav__links     { display: none; }
   .nav__hamburger { display: flex; }
+
+  /* Reduce heavy vertical padding on tablet */
+  .services { padding: 5rem 1.5rem; }
+  .work     { padding: 5rem 1.5rem; }
+  .about    { padding: 5rem 1.5rem; }
+  .contact  { padding: 6rem 1.5rem 4rem; }
+  .tech     { padding: 4rem 1.5rem; }
+  .stats    { padding: 2.5rem 1.5rem; }
+
+  /* Nova promo CTA stacks */
+  .nova-promo { padding: 60px 20px; }
+  .nova-promo__actions { flex-direction: column; align-items: stretch; }
+  .nova-promo__actions .btn { width: 100%; justify-content: center; }
+}
+
+@media (max-width: 640px) {
+  /* nav already hidden from 768px */
 
   /* Hero */
   .hero { padding: 90px 1.25rem 70px; min-height: auto; }
@@ -1942,6 +1983,14 @@ body,
   .footer__top { flex-direction: column; gap: 1.5rem; }
   .footer__links { flex-wrap: wrap; gap: 0.75rem 1.25rem; }
   .footer__copy { flex-direction: column; gap: 0.4rem; text-align: center; }
+
+  /* Prevent iOS Safari zoom-on-focus (needs ≥16px) */
+  .contact-form__field input,
+  .contact-form__field select,
+  .contact-form__field textarea { font-size: 16px; }
+
+  /* Hero trusted logos — wrap neatly */
+  .hero__trusted-logos { flex-wrap: wrap; row-gap: 4px; }
 }
 
 /* ============================================================

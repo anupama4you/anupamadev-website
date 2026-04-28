@@ -1,5 +1,5 @@
 /* ============================================================
-   VAPI Tool Handler — Bella Hair Studio demo (fake data)
+   VAPI Tool Handler — Luxe Hair Studio on Rundle Street demo (fake data)
    ============================================================ */
 
 const SLOTS = {
@@ -48,7 +48,7 @@ function checkAvailability({ date, service }) {
   const day = normaliseDay(date);
 
   if (!day) {
-    return 'Sorry, Bella Hair Studio is closed on Sundays. Would another day work for you?';
+    return 'Sorry, Luxe Hair Studio on Rundle Street is closed on Sundays. Would another day work for you?';
   }
 
   const slots = pickSlots(day);

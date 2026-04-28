@@ -1,7 +1,7 @@
 const BIZ_CONFIGS = {
   hair: {
-    name: 'Bella Hair Studio',
-    greeting: "Good afternoon! Thanks for calling Bella Hair Studio. I'm Nova, your AI receptionist. How can I help you today?",
+    name: 'Luxe Hair Studio on Rundle Street',
+    greeting: "Good afternoon! Thanks for calling Luxe Hair Studio on Rundle Street. I'm Nova, your AI receptionist. How can I help you today?",
     services: 'haircuts from $45, colour and highlights from $95, blowouts $45, deep conditioning treatments',
     hours: 'Tuesday to Saturday, 9 AM to 6 PM — closed Sunday and Monday',
     booking: 'appointment slots available Tuesday through Saturday, mornings and afternoons',

@@ -70,10 +70,35 @@
   const soundWave  = document.getElementById('sound-wave');
   const muteBtn    = document.getElementById('call-mute');
 
+  const DEMO_LIMIT_SECS = 90;
+  const DEMO_DAILY_CAP  = 3;
+  const DEMO_STORE_KEY  = 'nova-demo';
+
+  function getDemoUsage() {
+    try {
+      const raw = localStorage.getItem(DEMO_STORE_KEY);
+      const data = raw ? JSON.parse(raw) : {};
+      const today = new Date().toDateString();
+      if (data.date !== today) return { date: today, count: 0 };
+      return data;
+    } catch { return { date: new Date().toDateString(), count: 0 }; }
+  }
+
+  function incrementDemoUsage() {
+    const usage = getDemoUsage();
+    usage.count++;
+    try { localStorage.setItem(DEMO_STORE_KEY, JSON.stringify(usage)); } catch {}
+  }
+
+  function isDemoCapped() {
+    return getDemoUsage().count >= DEMO_DAILY_CAP;
+  }
+
   let timerInterval = null;
   let timerSeconds  = 0;
   let callActive    = false;
   let muted         = false;
+  let limitTimeout  = null;
 
   function formatTime(s) {
     return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
@@ -117,101 +142,115 @@
     muteBtn.classList.remove('muted');
   }
 
-  if (playBtn && window.Vapi) {
-    const vapi = new window.Vapi('6df6b010-1a5b-4edf-aa60-fc54563a337b');
+  if (playBtn && window.Vapi && window.Vapi.default) {
+    let vapi          = null;
+    let assistantId   = null;
     let currentBubble = null;
     let currentRole   = null;
 
-    vapi.on('call-start', () => {
-      callActive = true;
-      callStatus.textContent = 'Connected — say hello!';
-      callDot.classList.add('connected');
-      timerInterval = setInterval(() => {
-        timerSeconds++;
-        callTimer.textContent = formatTime(timerSeconds);
-      }, 1000);
-      playBtn.innerHTML = `
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M10.68 13.31a16 16 0 0 0 3.41 2.6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7 2 2 0 0 1 1.72 2v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 1.61 3.39a2 2 0 0 1 1.22-2A12.84 12.84 0 0 0 5.64 1a2 2 0 0 1 2.11.45L9.02 2.72a16 16 0 0 0 2.6 3.41"/><line x1="23" y1="1" x2="1" y2="23"/></svg>
-        End Demo`;
-      playBtn.disabled = false;
-    });
-
-    vapi.on('speech-start', () => {
-      setSoundWave(true);
-      callStatus.textContent = 'Nova is speaking...';
-    });
-
-    vapi.on('speech-end', () => {
-      setSoundWave(false);
-      callStatus.textContent = 'Nova is listening...';
-    });
-
-    vapi.on('message', (msg) => {
-      if (msg.type !== 'transcript') return;
-      const role = msg.role === 'assistant' ? 'nova' : 'customer';
-      const text = (msg.transcript || '').trim();
-      if (!text) return;
-
-      if (!currentBubble || currentRole !== role) {
-        currentBubble = addBubble(role, text);
-        currentRole   = role;
-      } else {
-        updateBubble(currentBubble, text);
-      }
-
-      if (msg.transcriptType === 'final') {
-        currentBubble = null;
-        currentRole   = null;
-      }
-    });
-
-    vapi.on('call-end', () => {
+    function endCall(msg) {
       clearInterval(timerInterval);
-      callStatus.textContent = 'Call ended';
+      clearTimeout(limitTimeout);
+      callStatus.textContent = msg;
       callDot.classList.remove('connected');
       setSoundWave(false);
       callActive    = false;
       currentBubble = null;
       currentRole   = null;
-      playBtn.innerHTML = `
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
-        Try Demo Again`;
-      playBtn.disabled = false;
-    });
+    }
 
-    vapi.on('error', () => {
-      clearInterval(timerInterval);
-      callStatus.textContent = 'Something went wrong — try again';
-      callDot.classList.remove('connected');
-      setSoundWave(false);
-      callActive    = false;
-      currentBubble = null;
-      currentRole   = null;
-      playBtn.innerHTML = `
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
-        Start Live Demo`;
-      playBtn.disabled = false;
-    });
+    async function initVapi() {
+      if (vapi) return true;
+      try {
+        const res  = await fetch('/.netlify/functions/vapi-config');
+        const data = await res.json();
+        if (!data.publicKey || !data.assistantId) throw new Error('Missing config');
+        vapi        = new window.Vapi.default(data.publicKey);
+        assistantId = data.assistantId;
+
+        vapi.on('call-start', () => {
+          callActive = true;
+          incrementDemoUsage();
+          callStatus.textContent = 'Connected — say hello!';
+          callDot.classList.add('connected');
+          timerInterval = setInterval(() => {
+            timerSeconds++;
+            const remaining = DEMO_LIMIT_SECS - timerSeconds;
+            callTimer.textContent = remaining > 10
+              ? formatTime(timerSeconds)
+              : `0:${String(remaining).padStart(2, '0')} ⏱`;
+          }, 1000);
+          limitTimeout = setTimeout(() => {
+            vapi.say("Thanks so much for trying the Nova demo! That's our demo time up for today, but feel free to book a free consultation with Anupama to see the full experience. Have a great day!", true);
+          }, DEMO_LIMIT_SECS * 1000);
+          playBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M10.68 13.31a16 16 0 0 0 3.41 2.6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7 2 2 0 0 1 1.72 2v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 1.61 3.39a2 2 0 0 1 1.22-2A12.84 12.84 0 0 0 5.64 1a2 2 0 0 1 2.11.45L9.02 2.72a16 16 0 0 0 2.6 3.41"/><line x1="23" y1="1" x2="1" y2="23"/></svg> End Demo`;
+          playBtn.disabled = false;
+        });
+
+        vapi.on('speech-start', () => { setSoundWave(true);  callStatus.textContent = 'Nova is speaking...'; });
+        vapi.on('speech-end',   () => { setSoundWave(false); callStatus.textContent = 'Nova is listening...'; });
+
+        vapi.on('message', (msg) => {
+          if (msg.type !== 'transcript') return;
+          const role = msg.role === 'assistant' ? 'nova' : 'customer';
+          const text = (msg.transcript || '').trim();
+          if (!text) return;
+          if (!currentBubble || currentRole !== role) {
+            currentBubble = addBubble(role, text);
+            currentRole   = role;
+          } else {
+            updateBubble(currentBubble, text);
+          }
+          if (msg.transcriptType === 'final') { currentBubble = null; currentRole = null; }
+        });
+
+        vapi.on('call-end', () => {
+          endCall('Call ended');
+          playBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg> Try Demo Again`;
+          playBtn.disabled = false;
+        });
+
+        vapi.on('error', () => {
+          endCall('Something went wrong — try again');
+          playBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg> Start Live Demo`;
+          playBtn.disabled = false;
+        });
+
+        return true;
+      } catch {
+        callStatus.textContent = 'Could not load demo — try again';
+        playBtn.disabled = false;
+        playBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg> Start Live Demo`;
+        return false;
+      }
+    }
 
     muteBtn.addEventListener('click', () => {
+      if (!vapi) return;
       muted = !muted;
       vapi.setMuted(muted);
       muteBtn.classList.toggle('muted', muted);
       muteBtn.setAttribute('aria-label', muted ? 'Unmute audio' : 'Mute audio');
     });
 
-    playBtn.addEventListener('click', () => {
-      if (callActive) {
-        vapi.stop();
-      } else {
-        resetDemo();
-        playBtn.disabled = true;
-        playBtn.innerHTML = `
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-          Connecting...`;
-        callStatus.textContent = 'Connecting...';
-        vapi.start('1cb11ab1-02bf-4824-9d49-a29e9429aef3');
+    if (isDemoCapped()) {
+      playBtn.disabled = true;
+      playBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> Demo limit reached for today`;
+      callStatus.textContent = 'Come back tomorrow to try again!';
+    }
+
+    playBtn.addEventListener('click', async () => {
+      if (callActive) { vapi.stop(); return; }
+      if (isDemoCapped()) {
+        callStatus.textContent = 'Daily demo limit reached — come back tomorrow!';
+        return;
       }
+      resetDemo();
+      playBtn.disabled = true;
+      playBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> Connecting...`;
+      callStatus.textContent = 'Connecting...';
+      const ready = await initVapi();
+      if (ready) vapi.start(assistantId);
     });
   }
 

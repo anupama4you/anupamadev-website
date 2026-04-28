@@ -8,43 +8,43 @@ exports.handler = async (event) => {
   if (event.httpMethod === 'OPTIONS') return { statusCode: 200, headers, body: '' };
   if (event.httpMethod !== 'POST') return { statusCode: 405, headers, body: JSON.stringify({ error: 'Method not allowed' }) };
 
-  const accountSid = process.env.TWILIO_ACCOUNT_SID;
-  const authToken  = process.env.TWILIO_AUTH_TOKEN;
-  const fromNumber = process.env.TWILIO_PHONE_NUMBER;
-  const baseUrl    = process.env.URL;
+  const privateKey    = process.env.VAPI_PRIVATE_KEY;
+  const phoneNumberId = process.env.VAPI_PHONE_NUMBER;
+  const assistantId   = process.env.VAPI_ASSISTANT_ID;
 
-  if (!accountSid || !authToken || !fromNumber) {
+  if (!privateKey || !phoneNumberId || !assistantId) {
     return {
       statusCode: 503,
       headers,
-      body: JSON.stringify({ error: 'Live call demo is being set up — use the contact form below to book a real demo with Anupama.' }),
+      body: JSON.stringify({ error: 'Live call demo is being set up — use the contact form to book a real demo.' }),
     };
   }
 
+  let body;
+  try { body = JSON.parse(event.body); }
+  catch { return { statusCode: 400, headers, body: JSON.stringify({ error: 'Invalid request.' }) }; }
+
+  const { phone } = body;
+  if (!phone) return { statusCode: 400, headers, body: JSON.stringify({ error: 'Phone number is required.' }) };
+
   try {
-    const { phone, businessType } = JSON.parse(event.body);
-
-    if (!phone || !businessType) {
-      return { statusCode: 400, headers, body: JSON.stringify({ error: 'Phone number and industry are required.' }) };
-    }
-
-    const voiceUrl = `${baseUrl}/.netlify/functions/call-voice?biz=${encodeURIComponent(businessType)}`;
-    const credentials = Buffer.from(`${accountSid}:${authToken}`).toString('base64');
-
-    const res = await fetch(`https://api.twilio.com/2010-04-01/Accounts/${accountSid}/Calls.json`, {
+    const res = await fetch('https://api.vapi.ai/call/phone', {
       method: 'POST',
       headers: {
-        Authorization:  `Basic ${credentials}`,
-        'Content-Type': 'application/x-www-form-urlencoded',
+        'Authorization': `Bearer ${privateKey}`,
+        'Content-Type':  'application/json',
       },
-      body: new URLSearchParams({ To: phone, From: fromNumber, Url: voiceUrl, Method: 'POST' }),
+      body: JSON.stringify({
+        assistantId,
+        phoneNumberId,
+        customer: { number: phone },
+      }),
     });
 
     const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'VAPI error');
 
-    if (!res.ok) throw new Error(data.message || 'Twilio error');
-
-    return { statusCode: 200, headers, body: JSON.stringify({ status: 'calling', callSid: data.sid }) };
+    return { statusCode: 200, headers, body: JSON.stringify({ status: 'calling', callId: data.id }) };
   } catch (err) {
     return { statusCode: 500, headers, body: JSON.stringify({ error: err.message }) };
   }

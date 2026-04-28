@@ -495,10 +495,14 @@
   gap: 10px;
   overflow-y: auto;
   min-height: 280px;
+  max-height: 320px;
+  scroll-behavior: smooth;
 }
 
-.ar-call-log::-webkit-scrollbar { width: 4px; }
-.ar-call-log::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+.ar-call-log::-webkit-scrollbar { width: 6px; }
+.ar-call-log::-webkit-scrollbar-track { background: transparent; }
+.ar-call-log::-webkit-scrollbar-thumb { background: var(--border); border-radius: 6px; }
+.ar-call-log::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
 
 .ar-log-msg {
   display: flex;
@@ -1568,6 +1572,19 @@
   box-shadow: 0 0 0 3px var(--primary-glow);
 }
 
+.ar-cta__textarea {
+  resize: vertical;
+  min-height: 90px;
+  line-height: 1.6;
+  grid-column: 1 / -1;
+  align-self: start;
+}
+
+.ar-cta__input[type="url"] {
+  grid-column: 1 / -1;
+  align-self: start;
+}
+
 .ar-cta__select {
   cursor: pointer;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2.5'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
@@ -1710,4 +1727,263 @@
   .ar-hero__actions .btn { width: 100%; justify-content: center; }
   .ar-steps__grid { gap: 32px; }
   .ar-step { padding: 0; }
+}
+
+/* ============================================================
+   UI ENHANCEMENTS
+   ============================================================ */
+
+/* ── Hero: richer orbs + subtle grid + floating dashboard ── */
+
+.ar-hero::before {
+  background:
+    radial-gradient(ellipse 75% 65% at 15% 50%, rgba(99,102,241,0.22) 0%, transparent 65%),
+    radial-gradient(ellipse 55% 45% at 85% 20%, rgba(34,211,238,0.15) 0%, transparent 65%),
+    radial-gradient(ellipse 48% 55% at 72% 85%, rgba(168,85,247,0.14) 0%, transparent 65%);
+}
+
+.ar-hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(99,102,241,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(99,102,241,0.04) 1px, transparent 1px);
+  background-size: 80px 80px;
+  pointer-events: none;
+}
+
+@keyframes dashFloat {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-10px); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ar-hero__visual .ar-dashboard {
+    animation: dashFloat 5s ease-in-out infinite;
+  }
+}
+
+/* ── Steps: gradient circle numbers + grid background ──────── */
+
+.ar-steps {
+  position: relative;
+  overflow: hidden;
+}
+
+.ar-steps::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(99,102,241,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(99,102,241,0.04) 1px, transparent 1px);
+  background-size: 64px 64px;
+  pointer-events: none;
+}
+
+.ar-step__num {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--purple) 100%);
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 900;
+  letter-spacing: 0;
+  padding: 0;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.4rem;
+  box-shadow: 0 0 0 8px rgba(99,102,241,0.1), 0 4px 24px rgba(99,102,241,0.35);
+}
+
+/* ── Feature cards: unique icon color per card ─────────────── */
+
+.ar-feature-card:nth-child(1) .ar-feature-card__icon {
+  background: rgba(99,102,241,0.12); border-color: rgba(99,102,241,0.28); color: var(--primary-light);
+}
+.ar-feature-card:nth-child(2) .ar-feature-card__icon {
+  background: rgba(34,211,238,0.1); border-color: rgba(34,211,238,0.28); color: var(--cyan);
+}
+.ar-feature-card:nth-child(3) .ar-feature-card__icon {
+  background: rgba(74,222,128,0.1); border-color: rgba(74,222,128,0.28); color: var(--green);
+}
+.ar-feature-card:nth-child(4) .ar-feature-card__icon {
+  background: rgba(168,85,247,0.1); border-color: rgba(168,85,247,0.28); color: var(--purple);
+}
+.ar-feature-card:nth-child(5) .ar-feature-card__icon {
+  background: rgba(251,191,36,0.1); border-color: rgba(251,191,36,0.28); color: #fbbf24;
+}
+.ar-feature-card:nth-child(6) .ar-feature-card__icon {
+  background: rgba(239,68,68,0.08); border-color: rgba(239,68,68,0.22); color: #f87171;
+}
+
+/* ── Benefit icons: varied accent colors ───────────────────── */
+
+.ar-benefit:nth-child(1) .ar-benefit__icon {
+  background: rgba(74,222,128,0.1); border-color: rgba(74,222,128,0.28); color: var(--green);
+}
+.ar-benefit:nth-child(2) .ar-benefit__icon {
+  background: rgba(34,211,238,0.1); border-color: rgba(34,211,238,0.28); color: var(--cyan);
+}
+.ar-benefit:nth-child(3) .ar-benefit__icon {
+  background: rgba(168,85,247,0.1); border-color: rgba(168,85,247,0.28); color: var(--purple);
+}
+.ar-benefit:nth-child(4) .ar-benefit__icon {
+  background: rgba(251,191,36,0.1); border-color: rgba(251,191,36,0.28); color: #fbbf24;
+}
+
+/* ── Pricing: animated glow on popular plan ────────────────── */
+
+@keyframes planGlow {
+  0%, 100% { box-shadow: 0 0 40px rgba(99,102,241,0.22), 0 0 0 1px rgba(99,102,241,0.55); }
+  50%       { box-shadow: 0 0 72px rgba(99,102,241,0.42), 0 0 0 1px rgba(168,85,247,0.65); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ar-plan--popular {
+    animation: planGlow 2.8s ease-in-out infinite;
+  }
+}
+
+/* ── Testimonials: large decorative quote mark ─────────────── */
+
+.ar-testimonial {
+  position: relative;
+  overflow: hidden;
+}
+
+.ar-testimonial::before {
+  content: '\201C';
+  position: absolute;
+  top: 8px;
+  right: 18px;
+  font-size: 7rem;
+  line-height: 1;
+  color: var(--primary);
+  opacity: 0.07;
+  font-family: Georgia, 'Times New Roman', serif;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ── Try Live card: deeper glow ────────────────────────────── */
+
+.ar-try-live__card {
+  box-shadow:
+    var(--shadow),
+    0 0 80px rgba(99,102,241,0.18),
+    0 0 0 1px rgba(99,102,241,0.1);
+}
+
+/* ── Problem highlight: red accent on stat ─────────────────── */
+
+.ar-problem__highlight {
+  border-radius: var(--radius-lg);
+  padding: 28px 40px;
+}
+
+.ar-problem__highlight strong {
+  color: #f87171;
+}
+
+/* ── Light mode adjustments ────────────────────────────────── */
+
+[data-theme="light"] .ar-hero::after,
+[data-theme="light"] .ar-steps::before {
+  opacity: 0.5;
+}
+
+[data-theme="light"] .ar-testimonial::before {
+  opacity: 0.04;
+}
+
+[data-theme="light"] .ar-step__num {
+  box-shadow: 0 0 0 8px rgba(99,102,241,0.08), 0 4px 20px rgba(99,102,241,0.25);
+}
+
+/* ============================================================
+   ADDITIONAL MOBILE IMPROVEMENTS
+   ============================================================ */
+
+/* ── Tablet: reduce section padding, fix layout gaps ─────── */
+@media (max-width: 768px) {
+  .ar-demo         { padding: 70px 20px; }
+  .ar-problem      { padding: 70px 20px; }
+  .ar-steps        { padding: 70px 20px; }
+  .ar-benefits     { padding: 70px 20px; }
+  .ar-features     { padding: 70px 20px; }
+  .ar-pricing      { padding: 70px 20px; }
+  .ar-testimonials { padding: 70px 20px; }
+  .ar-cta          { padding: 70px 20px; }
+  .ar-faq          { padding: 70px 20px; }
+
+  /* Pricing: remove artificial max-width so card fills mobile */
+  .ar-pricing__grid { max-width: 100%; }
+
+  /* Problem highlight: less padding on tablet */
+  .ar-problem__highlight { padding: 20px 24px; }
+
+  /* Demo stats: allow wrapping */
+  .ar-demo__stats { flex-wrap: wrap; gap: 16px; }
+
+  /* FAQ question: prevent layout shift on narrow screens */
+  .ar-faq__q { padding: 18px 0; }
+}
+
+/* ── Small phones: compact everything ──────────────────────── */
+@media (max-width: 480px) {
+  .ar-hero         { padding: 80px 16px 50px; }
+  .ar-demo,
+  .ar-problem,
+  .ar-steps,
+  .ar-benefits,
+  .ar-features,
+  .ar-pricing,
+  .ar-testimonials,
+  .ar-cta,
+  .ar-faq          { padding: 56px 16px; }
+  .ar-try-live     { padding: 56px 16px; }
+
+  /* Hero industry strip: stack label + items */
+  .ar-hero__logos  { flex-direction: column; align-items: flex-start; gap: 8px; }
+
+  /* Testimonial cards: tighter padding */
+  .ar-testimonial  { padding: 24px 20px; }
+
+  /* Pricing plan: compact padding + smaller price */
+  .ar-plan         { padding: 28px 20px; }
+  .ar-plan__price-amount { font-size: 2.2rem; }
+
+  /* FAQ: slightly smaller question text */
+  .ar-faq__q       { font-size: 0.88rem; }
+
+  /* Try-live card: tighter header */
+  .ar-try-live__card-head  { padding: 16px 18px; }
+  .ar-try-live__form-body  { padding: 20px 18px; }
+
+  /* CTA form: tighter */
+  .ar-cta__container { padding: 0 4px; }
+
+  /* Call UI name: truncate on very small screens */
+  .ar-call-ui__caller { flex: 1; min-width: 0; }
+  .ar-call-ui__name   {
+    font-size: 0.82rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 160px;
+  }
+}
+
+/* ── Prevent iOS Safari zoom-on-focus (needs ≥16px) ─────────  */
+@media (max-width: 640px) {
+  .ar-try-live__select,
+  .ar-try-live__phone,
+  .ar-cta__input,
+  .ar-live-call__select,
+  .ar-live-call__phone { font-size: 16px; }
 }
