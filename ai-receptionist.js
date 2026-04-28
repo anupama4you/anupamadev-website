@@ -263,7 +263,7 @@
       setSoundWave(null);
       playBtn.innerHTML = `
         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.65 6.35A7.958 7.958 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
-        Replay Demo`;
+        Watch Demo Again`;
       playBtn.disabled = false;
     }
     playing = false;
@@ -283,6 +283,58 @@
     await initVoices();
     runDemo();
   });
+
+  // ── Live Call — phone-based real demo ────────────────────
+
+  const liveBizSel  = document.getElementById('live-biz');
+  const livePhone   = document.getElementById('live-phone');
+  const liveCallBtn = document.getElementById('live-call-btn');
+  const liveStatus  = document.getElementById('live-call-status');
+
+  function flashInvalid(el) {
+    el.classList.add('ar-live-call__invalid');
+    el.focus();
+    setTimeout(() => el.classList.remove('ar-live-call__invalid'), 1800);
+  }
+
+  if (liveCallBtn) {
+    liveCallBtn.addEventListener('click', async () => {
+      const biz   = liveBizSel ? liveBizSel.value : '';
+      const phone = livePhone  ? livePhone.value.trim() : '';
+
+      if (!biz)   { flashInvalid(liveBizSel); return; }
+      if (!phone) { flashInvalid(livePhone);  return; }
+
+      liveCallBtn.disabled = true;
+      liveStatus.hidden = false;
+      liveStatus.className = 'ar-live-call__status ar-live-call__status--calling';
+      liveStatus.textContent = 'Calling your number...';
+
+      try {
+        const res  = await fetch('/.netlify/functions/call-initiate', {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify({ phone, businessType: biz }),
+        });
+        const data = await res.json();
+
+        if (!res.ok || data.error) throw new Error(data.error || 'Could not start call');
+
+        liveStatus.className = 'ar-live-call__status ar-live-call__status--success';
+        liveStatus.textContent = 'Nova is calling you now! Pick up and start talking.';
+
+        setTimeout(() => {
+          liveCallBtn.disabled = false;
+          liveStatus.hidden = true;
+        }, 35000);
+
+      } catch (err) {
+        liveStatus.className = 'ar-live-call__status ar-live-call__status--error';
+        liveStatus.textContent = err.message || 'Something went wrong — please try again.';
+        liveCallBtn.disabled = false;
+      }
+    });
+  }
 
   // ── FAQ accordion ─────────────────────────────────────────
 
