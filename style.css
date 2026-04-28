@@ -8,6 +8,16 @@
   padding: 0;
 }
 
+/* Eliminate 300ms tap delay on all touch devices */
+html {
+  touch-action: manipulation;
+}
+
+/* Remove blue tap flash on mobile; interactions provide their own :active feedback */
+a, button, [role="button"], input, select, textarea, label {
+  -webkit-tap-highlight-color: transparent;
+}
+
 :root {
   --bg:            #030712;
   --surface:       #0d1117;
@@ -159,8 +169,8 @@ body,
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 38px;
-  height: 38px;
+  width: 44px;
+  height: 44px;
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.07);
   border: 1px solid var(--border);
@@ -168,6 +178,8 @@ body,
   cursor: pointer;
   transition: all var(--dur) var(--ease);
   flex-shrink: 0;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 .theme-toggle:hover {
   background: rgba(255, 255, 255, 0.12);
@@ -247,6 +259,9 @@ body,
   cursor: pointer;
   border: none;
   white-space: nowrap;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
 }
 
 .btn--primary {
@@ -254,21 +269,16 @@ body,
   color: #fff;
   box-shadow: 0 0 30px var(--primary-glow);
 }
-.btn--primary:hover {
-  background: var(--primary-light);
-  box-shadow: 0 0 50px var(--primary-glow);
-  transform: translateY(-2px);
-}
+.btn--primary:hover  { background: var(--primary-light); box-shadow: 0 0 50px var(--primary-glow); transform: translateY(-2px); }
+.btn--primary:active { background: #4338ca; transform: translateY(0) scale(0.97); box-shadow: none; }
 
 .btn--ghost {
   background: rgba(255,255,255,0.05);
   color: var(--text);
   border: 1px solid var(--border);
 }
-.btn--ghost:hover {
-  background: rgba(255,255,255,0.09);
-  border-color: var(--border-hover);
-}
+.btn--ghost:hover  { background: rgba(255,255,255,0.09); border-color: var(--border-hover); }
+.btn--ghost:active { background: rgba(255,255,255,0.14); transform: scale(0.97); }
 
 .btn--outline {
   background: transparent;
@@ -276,11 +286,8 @@ body,
   border: 1px solid var(--border);
   padding: 12px 24px;
 }
-.btn--outline:hover {
-  border-color: var(--primary);
-  color: var(--primary-light);
-  background: var(--primary-glow);
-}
+.btn--outline:hover  { border-color: var(--primary); color: var(--primary-light); background: var(--primary-glow); }
+.btn--outline:active { transform: scale(0.97); }
 
 /* ============================================================
    NAVIGATION
@@ -337,16 +344,19 @@ body,
 .nav__links a:hover { color: var(--text); }
 
 .nav__cta {
-  padding: 8px 18px !important;
+  padding: 10px 20px !important;
   background: var(--primary) !important;
   color: #fff !important;
   border-radius: 6px;
   transition: all var(--dur) var(--ease) !important;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  min-height: 40px;
+  display: inline-flex;
+  align-items: center;
 }
-.nav__cta:hover {
-  background: var(--primary-light) !important;
-  box-shadow: 0 0 24px var(--primary-glow);
-}
+.nav__cta:hover  { background: var(--primary-light) !important; box-shadow: 0 0 24px var(--primary-glow); }
+.nav__cta:active { background: #4338ca !important; transform: scale(0.96); box-shadow: none !important; }
 
 .nav__hamburger {
   display: none;
@@ -355,7 +365,11 @@ body,
   background: none;
   border: none;
   cursor: pointer;
-  padding: 4px;
+  /* Large tap target — visually small, physically big */
+  padding: 12px 10px;
+  margin: -8px -6px;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 .nav__hamburger span {
   display: block;
@@ -364,6 +378,7 @@ body,
   background: var(--text);
   border-radius: 2px;
   transition: all var(--dur) var(--ease);
+  pointer-events: none;
 }
 
 .nav__mobile {
@@ -375,15 +390,22 @@ body,
 }
 .nav__mobile.open { display: flex; }
 .nav__mobile a {
-  padding: 15px 2rem;
+  padding: 17px 2rem;
   color: var(--text-muted);
   text-decoration: none;
   font-weight: 500;
   font-size: 0.95rem;
   border-bottom: 1px solid var(--border);
-  transition: color var(--dur) var(--ease);
+  transition: color var(--dur) var(--ease), background var(--dur) var(--ease);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  /* Minimum 44px tap target */
+  min-height: 44px;
+  display: flex;
+  align-items: center;
 }
-.nav__mobile a:hover { color: var(--text); }
+.nav__mobile a:hover  { color: var(--text); }
+.nav__mobile a:active { color: var(--text); background: rgba(99,102,241,0.08); }
 
 /* ============================================================
    HERO

@@ -486,14 +486,22 @@
     if (window.matchMedia('(pointer: coarse)').matches) return;
 
     document.querySelectorAll('.btn--primary, .nav__cta').forEach(btn => {
+      let origRect = null;
+
+      // Cache the untransformed rect on enter so the button doesn't chase the cursor
+      btn.addEventListener('mouseenter', () => {
+        btn.style.transform = '';
+        origRect = btn.getBoundingClientRect();
+      });
       btn.addEventListener('mousemove', e => {
-        const r   = btn.getBoundingClientRect();
-        const dx  = e.clientX - (r.left + r.width  / 2);
-        const dy  = e.clientY - (r.top  + r.height / 2);
-        btn.style.transform = `translate(${dx * 0.22}px, ${dy * 0.22}px)`;
+        if (!origRect) return;
+        const dx = e.clientX - (origRect.left + origRect.width  / 2);
+        const dy = e.clientY - (origRect.top  + origRect.height / 2);
+        btn.style.transform = `translate(${dx * 0.18}px, ${dy * 0.18}px)`;
       });
       btn.addEventListener('mouseleave', () => {
         btn.style.transform = '';
+        origRect = null;
       });
     });
   })();

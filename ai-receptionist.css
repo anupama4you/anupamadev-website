@@ -455,8 +455,8 @@
 /* ── Mute button ─────────────────────────────────────────── */
 
 .ar-call-mute-btn {
-  width: 30px;
-  height: 30px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
   border: 1px solid var(--border);
   background: var(--card);
@@ -467,12 +467,12 @@
   justify-content: center;
   transition: background var(--dur) var(--ease), color var(--dur) var(--ease), border-color var(--dur) var(--ease);
   flex-shrink: 0;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.ar-call-mute-btn:hover {
-  background: var(--border);
-  color: var(--text);
-}
+.ar-call-mute-btn:hover  { background: var(--border); color: var(--text); }
+.ar-call-mute-btn:active { transform: scale(0.92); }
 
 .ar-mute-icon--off { display: none; }
 
@@ -636,9 +636,14 @@
   justify-content: center;
   gap: 10px;
   transition: background var(--dur) var(--ease), transform var(--dur) var(--ease);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  min-height: 48px;
 }
 
 .ar-demo__play:hover    { background: var(--primary-light); transform: translateY(-1px); }
+.ar-demo__play:active   { transform: scale(0.97); background: #4338ca; }
 .ar-demo__play:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
 /* ── Live Call Form ──────────────────────────────────────── */
@@ -1021,20 +1026,15 @@
   transition: filter var(--dur) var(--ease), transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
   box-shadow: 0 4px 20px rgba(74, 222, 128, 0.3);
   margin-bottom: 12px;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  min-height: 52px;
 }
 
-.ar-try-live__btn:hover {
-  filter: brightness(1.08);
-  transform: translateY(-1px);
-  box-shadow: 0 6px 28px rgba(74, 222, 128, 0.4);
-}
-
-.ar-try-live__btn:disabled {
-  opacity: 0.65;
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
-}
+.ar-try-live__btn:hover    { filter: brightness(1.08); transform: translateY(-1px); box-shadow: 0 6px 28px rgba(74, 222, 128, 0.4); }
+.ar-try-live__btn:active   { filter: brightness(0.95); transform: scale(0.97); box-shadow: none; }
+.ar-try-live__btn:disabled { opacity: 0.65; cursor: not-allowed; transform: none; box-shadow: none; }
 
 .ar-try-live__privacy {
   display: flex;
@@ -1627,9 +1627,13 @@
   cursor: pointer;
   text-align: left;
   transition: color var(--dur) var(--ease);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  min-height: 48px;
 }
 
-.ar-faq__q:hover { color: var(--primary-light); }
+.ar-faq__q:hover  { color: var(--primary-light); }
+.ar-faq__q:active { color: var(--primary-light); }
 
 .ar-faq__chevron {
   flex-shrink: 0;
