@@ -9,12 +9,18 @@ function parseFrontMatter(content) {
   if (!match) return null;
 
   const meta = {};
+  let lastKey = null;
   match[1].split('\n').forEach(line => {
+    // Continuation line (indented) — append to last key
+    if (lastKey && /^\s+\S/.test(line)) {
+      meta[lastKey] += ' ' + line.trim();
+      return;
+    }
     const colon = line.indexOf(':');
     if (colon === -1) return;
     const key = line.slice(0, colon).trim();
     const val = line.slice(colon + 1).trim().replace(/^["'](.*)["']$/, '$1');
-    if (key) meta[key] = val;
+    if (key) { meta[key] = val; lastKey = key; }
   });
 
   // Parse tags list (- item format)
