@@ -13,28 +13,28 @@ tags:
 ---
 **By Anupama Dilshan**
 
----
+- - -
 
 I was going crazy working off a single laptop screen. As a software developer, I constantly have my code editor, browser, terminal, and documentation all fighting for space on one display. I finally decided to fix it properly — and honestly, I wish I did this sooner.
 
 After a bit of research I picked up the **WAVLINK Triple Display USB-C Dock** and got a 3-monitor setup running on my laptop. This is exactly how I did it, including the annoying bits nobody tells you about.
 
----
+- - -
 
 ## 🧰 What You'll Need
 
 Here's what I used:
 
-- WAVLINK Triple Display USB-C Dock
-- 2–3 monitors
-- HDMI or DisplayPort cables
-- USB-C to USB-C cable
-- DisplayLink software — this one is non-negotiable, more on that below
+* WAVLINK Triple Display USB-C Dock
+* 2–3 monitors
+* HDMI or DisplayPort cables
+* USB-C to USB-C cable
+* DisplayLink software — this one is non-negotiable, more on that below
 
-👉 [WAVLINK Dock on Amazon AU](https://www.amazon.com.au/WAVLINK-Universal-Charging-3-1-10Gbps-1xGigabit/dp/B0BWV15SX6)  
+👉 [WAVLINK Dock on Amazon AU](https://www.amazon.com.au/WAVLINK-Universal-Charging-3-1-10Gbps-1xGigabit/dp/B0BWV15SX6)\
 👉 [DisplayLink Driver Download](https://www.synaptics.com/products/displaylink-graphics/downloads/windows)
 
----
+- - -
 
 ## ⚡ Why I Needed a Dock in the First Place
 
@@ -44,7 +44,7 @@ Windows laptops have a similar issue depending on your GPU and how many ports yo
 
 The WAVLINK dock gets around all of this using **DisplayLink technology**, which basically runs the extra displays through software over USB instead of relying on your GPU directly. It sounds like a workaround, and I guess it is — but it works really well for day-to-day use.
 
----
+- - -
 
 ## 🪜 How I Set It Up (Step by Step)
 
@@ -54,19 +54,19 @@ Pretty straightforward — connect the dock to power, then run the USB-C cable f
 
 One thing I appreciated straight away: the dock also pushes **up to 100W of Power Delivery** back to your laptop, so it charges while you work. One cable in, everything running. Clean.
 
----
+- - -
 
 ### Step 2: Connect Your Monitors
 
 I plugged my monitors in using HDMI cables. The dock supports:
 
-- 1 × 4K display
-- 2 × 2K displays
-- Up to 3 monitors total
+* 1 × 4K display
+* 2 × 2K displays
+* Up to 3 monitors total
 
 I went with two monitors to start — one for my main work and one for reference/browser. Plug them in and move on to the next step before expecting anything to happen.
 
----
+- - -
 
 ### Step 3: Install DisplayLink — Don't Skip This
 
@@ -76,10 +76,10 @@ The fix is simple — you need to install **DisplayLink Manager**. It's free, gr
 
 Install it, open it, let it run in the background. That's it.
 
-- **Mac:** You absolutely need this. Nothing works without it.
-- **Windows:** Technically optional but I'd just install it anyway — smoother experience.
+* **Mac:** You absolutely need this. Nothing works without it.
+* **Windows:** Technically optional but I'd just install it anyway — smoother experience.
 
----
+- - -
 
 ### Step 4: Sort Out Permissions on Mac
 
@@ -90,20 +90,20 @@ Go to:
 
 Find DisplayLink Manager in the list and enable it. macOS blocks it by default and your monitors will just sit there doing nothing until you do this. Took me an embarrassingly long time to figure this out the first time.
 
----
+- - -
 
 ### Step 5: Arrange Your Displays
 
 Once DisplayLink is running and permissions are sorted, head into your display settings:
 
-- **Mac:** System Settings → Displays
-- **Windows:** Right-click desktop → Display Settings
+* **Mac:** System Settings → Displays
+* **Windows:** Right-click desktop → Display Settings
 
 From here, drag the displays around to match how they're physically sitting on your desk, pick your primary monitor, and make sure it's set to **Extend** rather than Mirror.
 
 That's it. You're done.
 
----
+- - -
 
 ## 🖥️ What It Looks Like When It's Working
 
@@ -113,22 +113,12 @@ The difference in productivity is night and day. I'm not exaggerating — I don'
 
 If you're in any of these situations, this setup is worth every cent:
 
-- **Software development** — code, terminal, and browser all visible at once
-- **Trading** — charts and feeds without constantly switching
-- **Video editing** — timeline, preview window, and assets all on screen
-- **Working from home** — meetings, documents, and comms all up simultaneously
+* **Software development** — code, terminal, and browser all visible at once
+* **Trading** — charts and feeds without constantly switching
+* **Video editing** — timeline, preview window, and assets all on screen
+* **Working from home** — meetings, documents, and comms all up simultaneously
 
----
-
-## ⚠️ A Few Things Worth Knowing
-
-DisplayLink isn't the same as a direct GPU connection, so there are a couple of things to keep in mind:
-
-- You might notice very slight lag if you're doing something heavy like scrubbing through 4K video
-- It's not great for gaming — the latency is noticeable
-- For everything else — coding, spreadsheets, browsing, video calls — it's completely fine, I've had zero issues
-
----
+- - -
 
 ## 🔥 If Something's Not Working
 
@@ -139,7 +129,7 @@ Ran into a monitor not being detected? Here's what worked for me:
 3. On Mac, double check the Screen Recording permission is actually toggled on
 4. Try a different cable — genuinely, a dodgy HDMI cable caused me a headache once
 
----
+- - -
 
 ## 🎯 Final Thoughts
 
