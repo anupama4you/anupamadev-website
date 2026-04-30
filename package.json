@@ -4,6 +4,7 @@
     "watch:posts": "node build.js --watch"
   },
   "dependencies": {
+    "@netlify/blobs": "^10.7.4",
     "@vapi-ai/web": "^2.5.2"
   }
 }
