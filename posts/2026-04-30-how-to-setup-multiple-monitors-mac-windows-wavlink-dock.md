@@ -8,16 +8,8 @@ excerpt: Struggling with a single laptop screen? I set up a 3-monitor
   I did it, step by step, for both Mac and Windows.
 cover: /assets/blog-images/chatgpt-image-may-1-2026-02_32_54-am.png
 tags:
-  - multi-monitor setup
-  - WAVLINK dock
-  - DisplayLink
-  - MacBook external monitor
-  - Windows dual monitor
-  - USB-C dock
-  - productivity setup
-  - monitor setup guide
-  - Apple Silicon external display
-  - docking station
+  - hardware
+  - desktop
 ---
 **By Anupama Dilshan**
 
