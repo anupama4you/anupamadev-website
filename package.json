@@ -1,4 +1,8 @@
 {
+  "scripts": {
+    "build": "node build.js",
+    "watch:posts": "node build.js --watch"
+  },
   "dependencies": {
     "@vapi-ai/web": "^2.5.2"
   }

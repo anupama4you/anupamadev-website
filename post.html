@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog — anupama.dev</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* ── Post page layout ── */
+    .post-page {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 120px 24px 96px;
+    }
+
+    .post-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      text-decoration: none;
+      margin-bottom: 40px;
+      transition: color var(--dur) var(--ease);
+    }
+    .post-back:hover { color: var(--primary-light); }
+
+    .post-header { margin-bottom: 40px; }
+
+    .post-header__tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    .post-header__tag {
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 100px;
+      background: var(--primary-glow);
+      color: var(--primary-light);
+      border: 1px solid rgba(99,102,241,0.25);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .post-header__title {
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight: 800;
+      line-height: 1.25;
+      margin-bottom: 16px;
+    }
+
+    .post-header__meta {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+    .post-header__meta svg { flex-shrink: 0; }
+
+    .post-cover {
+      width: 100%;
+      border-radius: var(--radius-lg);
+      margin-bottom: 48px;
+      object-fit: cover;
+      max-height: 420px;
+      border: 1px solid var(--border);
+    }
+
+    /* Prose styles */
+    .post-body {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: var(--text);
+    }
+    .post-body h1,
+    .post-body h2,
+    .post-body h3,
+    .post-body h4 {
+      font-weight: 700;
+      line-height: 1.3;
+      margin-top: 2.2em;
+      margin-bottom: 0.6em;
+      color: var(--text);
+    }
+    .post-body h1 { font-size: 1.7rem; }
+    .post-body h2 { font-size: 1.35rem; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+    .post-body h3 { font-size: 1.1rem; }
+    .post-body p  { margin-bottom: 1.25em; }
+    .post-body a  { color: var(--primary-light); text-decoration: underline; text-underline-offset: 3px; }
+    .post-body a:hover { color: var(--cyan); }
+    .post-body strong { font-weight: 600; color: var(--text); }
+    .post-body em { font-style: italic; color: var(--text-muted); }
+    .post-body ul,
+    .post-body ol {
+      margin: 0 0 1.25em 1.4em;
+    }
+    .post-body li { margin-bottom: 0.4em; }
+    .post-body blockquote {
+      border-left: 3px solid var(--primary);
+      margin: 1.5em 0;
+      padding: 12px 20px;
+      background: var(--primary-glow);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+    .post-body code {
+      font-family: 'Menlo', 'Consolas', monospace;
+      font-size: 0.88em;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 2px 6px;
+    }
+    .post-body pre {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      overflow-x: auto;
+      margin-bottom: 1.25em;
+    }
+    .post-body pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: 0.875rem;
+    }
+    .post-body hr {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 2.5em 0;
+    }
+    .post-body img {
+      max-width: 100%;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+    }
+    .post-body table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1.25em;
+      font-size: 0.9rem;
+    }
+    .post-body th,
+    .post-body td {
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      text-align: left;
+    }
+    .post-body th {
+      background: var(--surface);
+      font-weight: 600;
+    }
+
+    /* Post footer */
+    .post-footer {
+      margin-top: 64px;
+      padding-top: 40px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: gap;
+      gap: 16px;
+    }
+    .post-footer__back {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--primary-light);
+      text-decoration: none;
+    }
+    .post-footer__back:hover { color: var(--cyan); }
+
+    /* Loading / error */
+    .post-state {
+      text-align: center;
+      padding: 80px 24px;
+      color: var(--text-muted);
+    }
+    .post-state__icon { margin-bottom: 16px; opacity: 0.35; }
+
+    /* Skeleton */
+    .post-skeleton { animation: fadeIn 0.3s; }
+    .skel {
+      background: linear-gradient(90deg, var(--border) 25%, rgba(255,255,255,0.04) 50%, var(--border) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.4s infinite;
+      border-radius: 6px;
+    }
+    @keyframes shimmer {
+      0%   { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    [data-theme="light"] .post-body code { background: rgba(0,0,0,0.05); }
+    [data-theme="light"] .post-body pre  { background: #f1f5f9; }
+  </style>
+</head>
+<body>
+
+  <!-- ==================== NAVIGATION ==================== -->
+  <nav class="nav" id="nav">
+    <div class="nav__container">
+      <a href="/" class="nav__logo">anupama<span class="nav__logo-accent">.dev</span></a>
+      <ul class="nav__links">
+        <li><a href="/#services">Services</a></li>
+        <li><a href="/#work">Work</a></li>
+        <li><a href="/#about">About</a></li>
+        <li><a href="ai-receptionist.html" class="nav__nova-link">Nova AI <span class="nav__nova-badge">New</span></a></li>
+        <li><a href="blog.html">Blog</a></li>
+        <li><a href="/#contact" class="nav__cta">Let's Talk</a></li>
+      </ul>
+      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle light/dark mode">
+        <svg class="theme-toggle__moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+        <svg class="theme-toggle__sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5"/>
+          <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+      </button>
+      <button class="nav__hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <div class="nav__mobile" id="mobile-menu">
+      <a href="/#services">Services</a>
+      <a href="/#work">Work</a>
+      <a href="/#about">About</a>
+      <a href="ai-receptionist.html" class="nav__nova-link">Nova AI <span class="nav__nova-badge">New</span></a>
+      <a href="blog.html">Blog</a>
+      <a href="/#contact">Let's Talk</a>
+    </div>
+  </nav>
+
+  <!-- ==================== POST ==================== -->
+  <main class="post-page" id="post-page">
+    <a href="blog.html" class="post-back">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
+      Back to Blog
+    </a>
+
+    <!-- skeleton shown while loading -->
+    <div id="post-content" class="post-skeleton">
+      <div style="display:flex;gap:8px;margin-bottom:20px">
+        <div class="skel" style="height:22px;width:70px;border-radius:100px"></div>
+        <div class="skel" style="height:22px;width:90px;border-radius:100px"></div>
+      </div>
+      <div class="skel" style="height:36px;margin-bottom:12px"></div>
+      <div class="skel" style="height:36px;width:65%;margin-bottom:24px"></div>
+      <div class="skel" style="height:14px;width:180px;margin-bottom:48px"></div>
+      <div class="skel" style="height:360px;border-radius:18px;margin-bottom:48px"></div>
+      <div class="skel" style="height:14px;margin-bottom:12px"></div>
+      <div class="skel" style="height:14px;margin-bottom:12px"></div>
+      <div class="skel" style="height:14px;width:80%;margin-bottom:12px"></div>
+    </div>
+  </main>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="footer">
+    <div class="footer__container">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <a href="/" class="nav__logo">anupama<span class="nav__logo-accent">.dev</span></a>
+          <p>AI-powered software solutions for businesses that want to move faster and smarter.</p>
+        </div>
+        <div class="footer__links">
+          <a href="/#services">Services</a>
+          <a href="/#work">Work</a>
+          <a href="/#about">About</a>
+          <a href="blog.html">Blog</a>
+          <a href="/#contact">Contact</a>
+          <a href="https://github.com/anupama4you" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://www.linkedin.com/in/anupama-dilshan" target="_blank" rel="noopener">LinkedIn</a>
+        </div>
+      </div>
+      <div class="footer__copy">
+        <span>© 2025 anupama.dev. All rights reserved.</span>
+        <span>Adelaide, South Australia 🇦🇺</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <!-- marked.js for markdown rendering -->
+  <script src="https://cdn.jsdelivr.net/npm/marked@12/marked.min.js"></script>
+  <script>
+    (function () {
+      const slug = new URLSearchParams(location.search).get('slug');
+
+      function setMeta(title, desc) {
+        document.title = `${title} — anupama.dev`;
+        let m = document.querySelector('meta[name="description"]');
+        if (!m) { m = document.createElement('meta'); m.name = 'description'; document.head.appendChild(m); }
+        m.content = desc;
+      }
+
+      function formatDate(iso) {
+        if (!iso) return '';
+        return new Date(iso).toLocaleDateString('en-AU', { year: 'numeric', month: 'long', day: 'numeric' });
+      }
+
+      function stripFrontMatter(md) {
+        return md.replace(/^---[\s\S]*?---\n?/, '');
+      }
+
+      function renderError(msg) {
+        document.getElementById('post-content').innerHTML = `
+          <div class="post-state">
+            <div class="post-state__icon">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            </div>
+            <p>${msg}</p>
+            <br>
+            <a href="blog.html" style="color:var(--primary-light)">← Back to Blog</a>
+          </div>`;
+      }
+
+      if (!slug) { renderError('No post specified.'); return; }
+
+      fetch('/posts/index.json')
+        .then(r => r.json())
+        .then(posts => {
+          const meta = posts.find(p => p.slug === slug);
+          if (!meta) { renderError('Post not found.'); return; }
+
+          setMeta(meta.title, meta.excerpt || '');
+
+          return fetch(`/posts/${meta.filename}`)
+            .then(r => {
+              if (!r.ok) throw new Error('not found');
+              return r.text();
+            })
+            .then(md => {
+              const body = stripFrontMatter(md);
+              const tagsHTML = (meta.tags || []).map(t =>
+                `<span class="post-header__tag">${t}</span>`
+              ).join('');
+
+              const coverHTML = meta.cover
+                ? `<img class="post-cover" src="${meta.cover}" alt="${meta.title}">`
+                : '';
+
+              const html = `
+                <div class="post-header">
+                  ${tagsHTML ? `<div class="post-header__tags">${tagsHTML}</div>` : ''}
+                  <h1 class="post-header__title">${meta.title}</h1>
+                  <div class="post-header__meta">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                    ${formatDate(meta.date)}
+                  </div>
+                </div>
+                ${coverHTML}
+                <div class="post-body">${marked.parse(body)}</div>
+                <div class="post-footer">
+                  <a href="blog.html" class="post-footer__back">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
+                    All posts
+                  </a>
+                </div>`;
+
+              document.getElementById('post-content').innerHTML = html;
+              document.getElementById('post-content').className = '';
+            });
+        })
+        .catch(() => renderError('Could not load post. Please try again.'));
+    })();
+  </script>
+</body>
+</html>

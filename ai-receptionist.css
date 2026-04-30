@@ -1060,6 +1060,79 @@
   color: #4ade80 !important;
 }
 
+/* ── Mobile-only "Book Free Demo" button in nav bar ─────── */
+
+.ar-nav__book-btn {
+  display: none;
+  align-items: center;
+  padding: 9px 15px;
+  background: var(--primary);
+  color: #fff;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+  box-shadow: 0 0 18px var(--primary-glow);
+  transition: background var(--dur) var(--ease), box-shadow var(--dur) var(--ease), transform var(--dur) var(--ease);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  min-height: 38px;
+}
+.ar-nav__book-btn:hover  { background: var(--primary-light); box-shadow: 0 0 28px var(--primary-glow); }
+.ar-nav__book-btn:active { transform: scale(0.96); box-shadow: none; }
+
+@media (max-width: 768px) {
+  .ar-nav__book-btn { display: inline-flex; }
+}
+
+/* Hide on very small screens if it squishes the logo */
+@media (max-width: 360px) {
+  .ar-nav__book-btn { display: none; }
+}
+
+/* ── Mobile menu: improved hierarchy ────────────────────── */
+
+.ar-mobile__divider {
+  height: 1px;
+  background: var(--border);
+  margin: 4px 0;
+  pointer-events: none;
+}
+
+.nav__mobile .ar-mobile__try {
+  gap: 10px;
+  background: rgba(74, 222, 128, 0.06);
+  border-left: 3px solid var(--green);
+  padding-left: calc(2rem - 3px);
+}
+
+.nav__mobile .ar-mobile__cta {
+  margin: 8px 16px 4px;
+  padding: 15px 24px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--primary), var(--purple));
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.93rem;
+  text-align: center;
+  justify-content: center;
+  border-bottom: none;
+  box-shadow: 0 4px 20px rgba(99, 102, 241, 0.35);
+  transition: filter var(--dur) var(--ease), transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+}
+.nav__mobile .ar-mobile__cta:hover  { filter: brightness(1.1); box-shadow: 0 6px 28px rgba(99,102,241,0.45); }
+.nav__mobile .ar-mobile__cta:active { transform: scale(0.97); box-shadow: none; }
+
+.nav__mobile .ar-mobile__back {
+  opacity: 0.45;
+  font-size: 0.82rem;
+  border-bottom: none;
+  padding-top: 12px;
+  padding-bottom: 20px;
+}
+.nav__mobile .ar-mobile__back:hover { opacity: 0.7; }
+
 /* invalid shake reused from ar-live-call */
 
 /* ── Responsive ──────────────────────────────────────────── */
