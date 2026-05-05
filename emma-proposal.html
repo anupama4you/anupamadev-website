@@ -1,0 +1,1811 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Emma — Made for Wealth Australia Migration</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:     #05080f;
+      --bg2:    #080d1a;
+      --bg3:    #0c1228;
+      --bg4:    #101830;
+      --cyan:   #00cfff;
+      --cyan-d: rgba(0,207,255,.1);
+      --gold:   #e8a020;
+      --goldb:  #f5b830;
+      --gold-d: rgba(232,160,32,.1);
+      --gold-b: rgba(232,160,32,.25);
+      --purple: #7c3aed;
+      --green:  #22c55e;
+      --red:    #ef4444;
+      --text:   #dde6f0;
+      --muted:  #8496a8;
+      --border: rgba(255,255,255,.07);
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      line-height: 1.15;
+    }
+
+    .container { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+    section { padding: 96px 0; }
+
+    .grid-bg {
+      position: absolute; inset: 0; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(232,160,32,.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,207,255,.025) 1px, transparent 1px);
+      background-size: 56px 56px;
+      mask-image: radial-gradient(ellipse 85% 85% at 50% 50%, black, transparent);
+    }
+
+    .tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: 'Inter', sans-serif;
+      font-size: .68rem; font-weight: 700; letter-spacing: .18em;
+      text-transform: uppercase; color: var(--gold); margin-bottom: .9rem;
+    }
+    .tag::before { content: ''; width: 18px; height: 1px; background: var(--gold); flex-shrink:0; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 300;
+      background: rgba(5,8,15,.92); backdrop-filter: blur(24px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-in {
+      max-width: 1120px; margin: 0 auto; padding: 0 24px;
+      height: 58px; display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo {
+      font-family: 'Space Grotesk', sans-serif; font-weight: 700;
+      font-size: .95rem; color: #fff; text-decoration: none; letter-spacing: -.02em;
+    }
+    .nav-logo span { color: var(--cyan); }
+    .nav-pill {
+      display: flex; align-items: center; gap: 7px;
+      font-size: .68rem; font-weight: 600; color: var(--gold); letter-spacing: .06em;
+      background: var(--gold-d); border: 1px solid var(--gold-b);
+      padding: 5px 13px; border-radius: 100px;
+    }
+    .nav-pill-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--gold); animation: blink 2s infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+    .nav-cta {
+      background: var(--gold); color: #050810; font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700; font-size: .8rem; letter-spacing: -.01em;
+      padding: 8px 18px; border-radius: 6px; text-decoration: none; transition: opacity .2s;
+    }
+    .nav-cta:hover { opacity: .85; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh; display: flex; align-items: center; padding-top: 58px;
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 60% 55% at 68% 50%, rgba(0,207,255,.07) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 45% at 18% 65%, rgba(232,160,32,.06) 0%, transparent 70%);
+    }
+    .hero-in {
+      max-width: 1120px; margin: 0 auto; padding: 0 24px;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 40px;
+      align-items: center; width: 100%; position: relative; z-index: 1;
+    }
+
+    .hero-pill {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--gold-d); border: 1px solid var(--gold-b);
+      color: var(--gold); font-size: .68rem; font-weight: 700;
+      letter-spacing: .12em; text-transform: uppercase;
+      padding: 5px 14px; border-radius: 100px; margin-bottom: 1.3rem;
+    }
+    .hero-pill-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--gold); animation: blink 2.4s infinite; }
+
+    .hero-hi {
+      display: block;
+      font-family: 'Inter', sans-serif; font-size: 1rem; font-weight: 500;
+      color: var(--gold); letter-spacing: 0; margin-bottom: .35rem;
+      font-style: italic;
+    }
+    .hero-h1 {
+      font-size: clamp(2.1rem, 4vw, 3.5rem);
+      color: #fff; margin-bottom: 1.2rem;
+    }
+    .hero-h1-grad {
+      background: linear-gradient(128deg, var(--cyan) 0%, #7c3aed 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .hero-sub {
+      font-size: .97rem; color: var(--muted); max-width: 440px;
+      margin-bottom: 1.9rem; line-height: 1.72;
+    }
+    .hero-sub strong { color: var(--text); font-weight: 600; }
+
+    .hero-actions { display: flex; gap: 11px; flex-wrap: wrap; margin-bottom: 1.5rem; }
+    .btn-gold {
+      background: linear-gradient(135deg, var(--goldb), var(--gold));
+      color: #050810; font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700; font-size: .88rem; letter-spacing: -.01em;
+      padding: 13px 26px; border-radius: 7px; text-decoration: none;
+      display: inline-flex; align-items: center; gap: 7px;
+      box-shadow: 0 0 24px rgba(232,160,32,.38); transition: transform .2s, box-shadow .2s;
+    }
+    .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 0 38px rgba(232,160,32,.55); }
+    .btn-ghost {
+      background: transparent; color: var(--text);
+      font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: .88rem;
+      letter-spacing: -.01em; padding: 13px 26px; border-radius: 7px;
+      text-decoration: none; border: 1px solid var(--border); transition: border-color .2s, color .2s;
+    }
+    .btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+
+    .hero-checks { display: flex; gap: 18px; flex-wrap: wrap; }
+    .hero-check {
+      display: flex; align-items: center; gap: 6px;
+      font-size: .78rem; color: var(--muted);
+    }
+    .hero-check svg { color: var(--green); flex-shrink: 0; }
+
+    /* ── EMMA AVATAR ── */
+    .emma-wrap {
+      position: relative; display: flex; align-items: center; justify-content: center; height: 510px;
+    }
+    #ep-canvas { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
+
+    .emma-orbits {
+      position: absolute; width: 430px; height: 430px;
+      display: flex; align-items: center; justify-content: center; transform-style: preserve-3d;
+    }
+    .e-ring { position: absolute; border-radius: 50%; border: 1px solid transparent; top: 50%; left: 50%; }
+    .e-ring-1 { width:370px;height:370px;margin:-185px 0 0 -185px; border-color:rgba(0,207,255,.2); animation:orb1 18s linear infinite; }
+    .e-ring-1::after { content:'';position:absolute;width:9px;height:9px;background:var(--cyan);border-radius:50%;top:-4.5px;left:50%;margin-left:-4.5px;box-shadow:0 0 12px var(--cyan),0 0 24px rgba(0,207,255,.4); }
+    .e-ring-2 { width:302px;height:302px;margin:-151px 0 0 -151px;border-color:rgba(232,160,32,.28);transform:rotateX(72deg);animation:orb2 14s linear infinite reverse; }
+    .e-ring-2::after { content:'';position:absolute;width:7px;height:7px;background:var(--gold);border-radius:50%;top:-3.5px;left:42%;box-shadow:0 0 10px var(--gold); }
+    .e-ring-3 { width:405px;height:405px;margin:-202.5px 0 0 -202.5px;border-color:rgba(124,58,237,.18);transform:rotateY(68deg);animation:orb3 26s linear infinite; }
+    .e-ring-3::after { content:'';position:absolute;width:6px;height:6px;background:var(--purple);border-radius:50%;bottom:-3px;right:26%;box-shadow:0 0 9px var(--purple); }
+    @keyframes orb1{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+    @keyframes orb2{from{transform:rotateX(72deg) rotate(0)}to{transform:rotateX(72deg) rotate(360deg)}}
+    @keyframes orb3{from{transform:rotateY(68deg) rotate(0)}to{transform:rotateY(68deg) rotate(360deg)}}
+
+    .e-portrait-wrap { position:relative;z-index:2;width:246px;height:286px; }
+    .e-halo-out { position:absolute;inset:-52px;border-radius:50%;background:radial-gradient(ellipse at 50% 50%,rgba(232,160,32,.07) 0%,transparent 70%);animation:breathe 4.5s ease-in-out infinite .5s; }
+    .e-halo     { position:absolute;inset:-26px;border-radius:50%;background:radial-gradient(ellipse at 50% 50%,rgba(0,207,255,.16) 0%,transparent 70%);animation:breathe 4.5s ease-in-out infinite; }
+    @keyframes breathe{0%,100%{opacity:.6;transform:scale(1)}50%{opacity:1;transform:scale(1.1)}}
+    .e-clip {
+      width:100%;height:100%;border-radius:50% 50% 46% 46%;overflow:hidden;position:relative;
+      box-shadow:0 0 50px rgba(0,207,255,.16),0 0 90px rgba(0,207,255,.06);
+    }
+    .e-clip::after { content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 58%,rgba(5,8,15,.5) 100%);pointer-events:none;z-index:1; }
+    .e-scan { position:absolute;left:0;right:0;height:2px;z-index:3;pointer-events:none;background:linear-gradient(90deg,transparent,rgba(0,207,255,.6),transparent);animation:scan 5s ease-in-out infinite 1.2s; }
+    @keyframes scan{0%{top:0;opacity:0}5%{opacity:1}95%{opacity:1}100%{top:100%;opacity:0}}
+    .e-svg{width:100%;height:100%;display:block;}
+    .lid-l{transform-origin:78px 110px;animation:blink-lid 6s ease-in-out infinite}
+    .lid-r{transform-origin:122px 110px;animation:blink-lid 6s ease-in-out infinite .06s}
+    @keyframes blink-lid{0%,88%,100%{transform:scaleY(0)}93%{transform:scaleY(1)}}
+    .e-name { position:absolute;top:-44px;left:50%;transform:translateX(-50%);font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.45rem;letter-spacing:-.02em;color:#fff;white-space:nowrap; }
+    .e-name span{color:var(--gold);}
+    .e-status { position:absolute;bottom:-52px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:8px;background:rgba(5,8,15,.88);border:1px solid var(--gold-b);padding:7px 16px;border-radius:100px;white-space:nowrap;font-size:.73rem;font-weight:600;color:var(--gold); }
+    .e-status-dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 7px var(--green);animation:blink 2s infinite;}
+    .e-wave{display:flex;align-items:center;gap:2.5px;}
+    .e-wave span{display:block;width:2.5px;background:var(--cyan);border-radius:3px;animation:wave 1.3s ease-in-out infinite;}
+    .e-wave span:nth-child(1){height:5px;animation-delay:0s}
+    .e-wave span:nth-child(2){height:11px;animation-delay:.15s}
+    .e-wave span:nth-child(3){height:17px;animation-delay:.3s}
+    .e-wave span:nth-child(4){height:11px;animation-delay:.45s}
+    .e-wave span:nth-child(5){height:5px;animation-delay:.6s}
+    @keyframes wave{0%,100%{transform:scaleY(.3)}50%{transform:scaleY(1)}}
+
+    /* ── LIVE DEMO SECTION ── */
+    .demo-sec { background: var(--bg2); position: relative; overflow: hidden; }
+    .demo-sec::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold-b), transparent);
+    }
+    .demo-sec::after {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold-b), transparent);
+    }
+    .demo-in {
+      display: grid; grid-template-columns: 1fr 1.1fr; gap: 56px; align-items: start;
+    }
+    .demo-copy h2 { font-size: clamp(1.75rem, 3vw, 2.4rem); color: #fff; margin-bottom: .8rem; }
+    .demo-copy p  { font-size: .95rem; color: var(--muted); line-height: 1.72; margin-bottom: 1.4rem; }
+    .demo-hints { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .demo-hints li {
+      display: flex; align-items: flex-start; gap: 9px;
+      font-size: .85rem; color: var(--muted);
+    }
+    .demo-hints svg { color: var(--gold); flex-shrink: 0; margin-top: 2px; }
+
+    /* Call UI */
+    .call-ui {
+      background: var(--bg3); border: 1px solid var(--border); border-radius: 18px;
+      overflow: hidden; position: relative;
+    }
+    .call-ui::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(232,160,32,.4), transparent);
+    }
+    .cui-head {
+      background: var(--bg4); padding: 14px 18px;
+      display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+    }
+    .cui-caller { display: flex; align-items: center; gap: 11px; }
+    .cui-avatar {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--goldb), #b07010);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Space Grotesk', sans-serif; font-weight: 700;
+      font-size: .78rem; color: #05080f; flex-shrink: 0; letter-spacing: -.02em;
+    }
+    .cui-name { font-size: .85rem; font-weight: 600; color: #fff; font-family: 'Space Grotesk', sans-serif; letter-spacing: -.01em; }
+    .cui-sub  { font-size: .7rem; color: var(--muted); margin-top: 2px; }
+    .cui-right { display: flex; align-items: center; gap: 12px; }
+    .cui-live {
+      display: flex; align-items: center; gap: 5px;
+      font-size: .68rem; font-weight: 700; color: var(--green); letter-spacing: .08em;
+    }
+    .cui-live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); box-shadow: 0 0 6px var(--green); animation: blink 1.5s infinite; }
+    .cui-live-dot.idle { background: var(--muted); box-shadow: none; animation: none; }
+
+    .cui-wave { display: flex; align-items: center; gap: 2px; }
+    .cui-wave span { display: block; width: 2px; height: 4px; background: var(--cyan); border-radius: 2px; }
+    .cui-wave.active span { animation: wave 1.3s ease-in-out infinite; }
+    .cui-wave.active span:nth-child(1){height:5px;animation-delay:0s}
+    .cui-wave.active span:nth-child(2){height:10px;animation-delay:.15s}
+    .cui-wave.active span:nth-child(3){height:15px;animation-delay:.3s}
+    .cui-wave.active span:nth-child(4){height:10px;animation-delay:.45s}
+    .cui-wave.active span:nth-child(5){height:5px;animation-delay:.6s}
+
+    .cui-timer { font-size: .78rem; color: var(--muted); font-variant-numeric: tabular-nums; min-width: 34px; text-align: right; }
+
+    .cui-log {
+      padding: 16px 18px; min-height: 240px; max-height: 280px;
+      overflow-y: auto; display: flex; flex-direction: column; gap: 12px;
+    }
+    .cui-log::-webkit-scrollbar { width: 4px; }
+    .cui-log::-webkit-scrollbar-track { background: transparent; }
+    .cui-log::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+    .cui-empty {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 10px;
+      text-align: center; padding: 24px 0;
+    }
+    .cui-empty-ring {
+      width: 56px; height: 56px; border-radius: 50%;
+      border: 1px solid var(--gold-b); background: var(--gold-d);
+      display: flex; align-items: center; justify-content: center; color: var(--gold);
+    }
+    .cui-empty p { font-size: .82rem; color: var(--muted); line-height: 1.5; max-width: 200px; }
+
+    /* transcript bubbles */
+    .log-msg { display: flex; gap: 9px; opacity: 0; transform: translateY(6px); transition: opacity .35s ease, transform .35s ease; }
+    .log-msg.show { opacity: 1; transform: translateY(0); }
+    .log-msg.caller { flex-direction: row-reverse; }
+    .log-avatar {
+      width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .62rem; font-weight: 700; font-family: 'Space Grotesk', sans-serif;
+    }
+    .log-avatar.emma-av   { background: linear-gradient(135deg, var(--cyan), #006088); color: #fff; }
+    .log-avatar.caller-av { background: rgba(255,255,255,.08); color: var(--muted); }
+    .log-body { flex: 1; }
+    .log-who  { font-size: .65rem; color: var(--muted); margin-bottom: 3px; font-weight: 600; letter-spacing: .03em; }
+    .caller .log-who { text-align: right; }
+    .log-bubble {
+      display: inline-block; padding: 9px 13px; border-radius: 12px;
+      font-size: .82rem; line-height: 1.52; max-width: 100%;
+    }
+    .log-bubble.emma-bub   { background: rgba(0,207,255,.09); border: 1px solid rgba(0,207,255,.16); color: var(--text); border-bottom-left-radius: 3px; }
+    .log-bubble.caller-bub { background: rgba(255,255,255,.05); border: 1px solid var(--border); color: var(--muted); border-bottom-right-radius: 3px; }
+    .log-typing { display: flex; gap: 4px; align-items: center; padding: 10px 13px; }
+    .log-typing span { width: 6px; height: 6px; border-radius: 50%; background: var(--cyan); animation: tdot 1.2s ease-in-out infinite; }
+    .log-typing span:nth-child(2){animation-delay:.2s}.log-typing span:nth-child(3){animation-delay:.4s}
+    @keyframes tdot{0%,80%,100%{transform:scale(.5);opacity:.4}40%{transform:scale(1);opacity:1}}
+
+    .cui-foot {
+      padding: 12px 18px; border-top: 1px solid var(--border);
+      background: var(--bg4); display: flex; align-items: center; gap: 10px;
+    }
+    .cui-status-text { font-size: .72rem; color: var(--muted); flex: 1; }
+    .cui-mute-btn {
+      width: 34px; height: 34px; border-radius: 8px; border: 1px solid var(--border);
+      background: transparent; color: var(--muted); cursor: pointer;
+      display: flex; align-items: center; justify-content: center; transition: all .2s;
+      flex-shrink: 0;
+    }
+    .cui-mute-btn:hover { border-color: var(--cyan); color: var(--cyan); }
+    .cui-mute-btn.muted { background: rgba(239,68,68,.1); border-color: rgba(239,68,68,.3); color: #ef4444; }
+    .cui-mute-icon-off { display: none; }
+    .cui-mute-btn.muted .cui-mute-icon-on  { display: none; }
+    .cui-mute-btn.muted .cui-mute-icon-off { display: block; }
+
+    /* start / end button */
+    .demo-start-btn {
+      width: 100%; margin-top: 12px;
+      background: linear-gradient(135deg, var(--goldb), var(--gold));
+      color: #050810; font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700; font-size: .9rem; letter-spacing: -.01em;
+      padding: 14px 24px; border-radius: 9px; border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      box-shadow: 0 0 22px rgba(232,160,32,.35); transition: transform .2s, box-shadow .2s, background .2s;
+    }
+    .demo-start-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 0 36px rgba(232,160,32,.52); }
+    .demo-start-btn:disabled { opacity: .7; cursor: not-allowed; transform: none; box-shadow: none; }
+    .demo-start-btn.ending { background: linear-gradient(135deg, #ef4444, #b91c1c); box-shadow: 0 0 22px rgba(239,68,68,.3); }
+    .demo-note { margin-top: 10px; font-size: .72rem; color: var(--muted); text-align: center; }
+    .anim-test-btn {
+      display: block; width: 100%; margin-top: 8px;
+      background: transparent; border: 1px solid var(--border);
+      color: var(--muted); font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600; font-size: .78rem; letter-spacing: -.01em;
+      padding: 9px 16px; border-radius: 8px; cursor: pointer;
+      transition: border-color .2s, color .2s;
+    }
+    .anim-test-btn:hover { border-color: var(--cyan); color: var(--cyan); }
+    .anim-test-btn.running { border-color: var(--cyan); color: var(--cyan); }
+
+    /* ── RECEPTIONIST AVATAR ── */
+    .demo-right-wrap { display: flex; gap: 20px; align-items: flex-start; }
+    .rcp-avatar-wrap {
+      width: 168px; flex-shrink: 0;
+      display: flex; flex-direction: column; align-items: center; gap: 10px;
+      position: relative;
+    }
+    .rcp-svg {
+      width: 100%; height: auto; display: block;
+      border-radius: 18px 18px 46% 46%;
+      box-shadow: 0 0 40px rgba(0,207,255,.14), 0 0 80px rgba(0,207,255,.06);
+    }
+    .rcp-label {
+      display: flex; align-items: center; gap: 6px;
+      font-size: .7rem; font-weight: 700; color: var(--gold); letter-spacing: .06em;
+    }
+    .rcp-label-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--green); box-shadow: 0 0 6px var(--green); animation: blink 2s infinite;
+    }
+    .demo-call-col { flex: 1; min-width: 0; }
+
+    /* Receptionist blink */
+    .rcp-lid-l { transform-origin: 82px 100px; animation: blink-lid 5.5s ease-in-out infinite; }
+    .rcp-lid-r { transform-origin: 118px 100px; animation: blink-lid 5.5s ease-in-out infinite .08s; }
+
+    /* Scan line */
+    #rcp-scan { animation: rcp-scan 5s ease-in-out infinite 1.5s; }
+    @keyframes rcp-scan {
+      0%   { transform: translateY(0);    opacity: 0; }
+      5%   { opacity: .7; }
+      95%  { opacity: .7; }
+      100% { transform: translateY(135px); opacity: 0; }
+    }
+
+    /* Halo breathe */
+    #rcp-halo { animation: rcp-breathe 4.2s ease-in-out infinite; }
+    @keyframes rcp-breathe { 0%,100%{opacity:.4}50%{opacity:.85} }
+
+    /* LED states */
+    .rcp-state-idle     #rcp-led { fill:#2a3a50; }
+    .rcp-state-ringing  #rcp-led { fill:#e8a020; animation:rcp-led-pulse .8s ease-in-out infinite; }
+    .rcp-state-connecting #rcp-led { fill:#e8a020; animation:rcp-led-pulse .45s ease-in-out infinite; }
+    .rcp-state-active   #rcp-led { fill:#22c55e; }
+    .rcp-state-speaking #rcp-led { fill:#00cfff; }
+    .rcp-state-listening #rcp-led { fill:#22c55e; }
+    .rcp-state-ended    #rcp-led { fill:#2a3a50; }
+    @keyframes rcp-led-pulse { 0%,100%{opacity:1}50%{opacity:.2} }
+
+    /* Mic glow when speaking */
+    .rcp-state-speaking #rcp-mic-cap { stroke:rgba(0,207,255,.9); }
+    .rcp-state-speaking #rcp-mic-glow { opacity:1; }
+
+    /* Status ring pulse on ringing */
+    .rcp-state-ringing  #rcp-ring { stroke:rgba(232,160,32,.5); animation:rcp-ring-p 1s ease-in-out infinite; }
+    .rcp-state-speaking #rcp-ring,
+    .rcp-state-listening #rcp-ring,
+    .rcp-state-active   #rcp-ring { stroke:rgba(0,207,255,.2); }
+    @keyframes rcp-ring-p { 0%,100%{stroke-opacity:.5}50%{stroke-opacity:1} }
+
+    /* ── ANIMATED TRANSCRIPT ── */
+    .transcript-sec { background: var(--bg); }
+    .transcript-in {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center;
+    }
+    .transcript-copy h2 { font-size: clamp(1.75rem, 3vw, 2.4rem); color: #fff; margin-bottom: .8rem; }
+    .transcript-copy p  { font-size: .95rem; color: var(--muted); line-height: 1.72; }
+    .transcript-bullets { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-top: 1.3rem; }
+    .transcript-bullets li { display: flex; align-items: flex-start; gap: 9px; font-size: .85rem; color: var(--muted); }
+    .transcript-bullets svg { color: var(--gold); flex-shrink: 0; margin-top: 2px; }
+
+    .tx-box {
+      background: var(--bg2); border: 1px solid var(--border); border-radius: 18px; overflow: hidden;
+    }
+    .tx-head {
+      background: var(--bg3); padding: 13px 17px;
+      display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+    }
+    .tx-caller { display: flex; align-items: center; gap: 10px; }
+    .tx-av {
+      width: 38px; height: 38px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--goldb), #b07010);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: .75rem; color: #05080f;
+    }
+    .tx-name { font-size: .83rem; font-weight: 600; color: #fff; font-family: 'Space Grotesk', sans-serif; letter-spacing: -.01em; }
+    .tx-sub  { font-size: .68rem; color: var(--muted); }
+    .tx-live { display: flex; align-items: center; gap: 5px; font-size: .68rem; font-weight: 700; color: var(--green); letter-spacing: .08em; }
+    .tx-live-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--green); box-shadow: 0 0 5px var(--green); animation: blink 1.5s infinite; }
+    .tx-log { padding: 18px; display: flex; flex-direction: column; gap: 12px; min-height: 280px; }
+    .tx-foot {
+      padding: 11px 17px; border-top: 1px solid var(--border); background: var(--bg3);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .tx-foot-l { font-size: .7rem; color: var(--muted); }
+    .tx-foot-l strong { color: var(--gold); }
+    .replay-btn {
+      font-size: .7rem; font-weight: 600; color: var(--cyan); background: none;
+      border: none; cursor: pointer; display: flex; align-items: center; gap: 4px;
+    }
+    .replay-btn:hover { opacity: .7; }
+
+    /* ── KNOWS ── */
+    .knows { background: var(--bg2); }
+    .knows-intro { max-width: 580px; margin-bottom: 2.8rem; }
+    .knows-intro h2 { font-size: clamp(1.75rem, 3vw, 2.4rem); color: #fff; margin-bottom: .8rem; }
+    .knows-intro p  { font-size: .95rem; color: var(--muted); line-height: 1.72; }
+    .knows-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .know-card {
+      background: var(--bg3); border: 1px solid var(--border); border-radius: 15px;
+      padding: 26px; transition: border-color .3s, transform .3s; position: relative; overflow: hidden;
+    }
+    .know-card::before { content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:0;transition:opacity .3s; }
+    .know-card:hover { border-color: var(--gold-b); transform: translateY(-3px); }
+    .know-card:hover::before { opacity: 1; }
+    .know-icon {
+      width: 40px; height: 40px; background: var(--gold-d); border: 1px solid var(--gold-b);
+      border-radius: 9px; display: flex; align-items: center; justify-content: center;
+      color: var(--gold); margin-bottom: .9rem;
+    }
+    .know-card h3 { font-size: .92rem; color: #fff; margin-bottom: .75rem; }
+    .know-list { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+    .know-list li { display: flex; align-items: center; gap: 8px; font-size: .81rem; color: var(--muted); }
+    .know-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--gold); flex-shrink: 0; opacity: .7; }
+    .know-note { margin-top: .9rem; padding: 7px 11px; background: var(--gold-d); border: 1px solid var(--gold-b); border-radius: 7px; font-size: .73rem; color: var(--gold); line-height: 1.5; }
+
+    /* ── PROBLEM ── */
+    .problem { background: var(--bg); }
+    .problem-hd { max-width: 560px; margin-bottom: 2.8rem; }
+    .problem-hd h2 { font-size: clamp(1.75rem, 3vw, 2.4rem); color: #fff; margin-bottom: .8rem; }
+    .problem-hd p  { font-size: .95rem; color: var(--muted); line-height: 1.72; }
+    .prob-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 17px; }
+    .prob-card {
+      background: var(--bg2); border: 1px solid var(--border); border-radius: 14px;
+      padding: 26px; transition: border-color .3s, transform .3s; position: relative; overflow: hidden;
+    }
+    .prob-card::before { content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#ef4444,transparent);opacity:0;transition:opacity .3s; }
+    .prob-card:hover { border-color: rgba(239,68,68,.3); transform: translateY(-4px); }
+    .prob-card:hover::before { opacity: 1; }
+    .prob-icon { width:46px;height:46px;background:rgba(239,68,68,.09);border:1px solid rgba(239,68,68,.18);border-radius:10px;display:flex;align-items:center;justify-content:center;color:#ef4444;margin-bottom:.9rem; }
+    .prob-card h3 { font-size: .95rem; color: #fff; margin-bottom: .5rem; }
+    .prob-card p  { font-size: .83rem; color: var(--muted); line-height: 1.65; }
+    .prob-stat { margin-top: .75rem; padding: 7px 11px; background: rgba(239,68,68,.07); border-radius: 7px; font-size: .73rem; color: #fca5a5; font-weight: 600; }
+    .prob-bottom {
+      margin-top: 2.4rem; background: linear-gradient(135deg, rgba(239,68,68,.07), rgba(239,68,68,.03));
+      border: 1px solid rgba(239,68,68,.18); border-radius: 14px;
+      padding: 24px 30px; display: flex; align-items: center; gap: 20px;
+    }
+    .prob-big { font-family: 'Space Grotesk', sans-serif; font-size: 2.8rem; font-weight: 700; letter-spacing: -.03em; color: #ef4444; white-space: nowrap; flex-shrink: 0; }
+    .prob-bottom p { font-size: .88rem; color: #fca5a5; line-height: 1.6; }
+    .prob-bottom strong { color: #ef4444; }
+
+    /* ── ROI ── */
+    .roi { background: var(--bg2); }
+    .roi-hd { max-width: 560px; margin-bottom: 2.8rem; }
+    .roi-hd h2 { font-size: clamp(1.75rem, 3vw, 2.4rem); color: #fff; margin-bottom: .8rem; }
+    .roi-hd p  { font-size: .95rem; color: var(--muted); line-height: 1.72; }
+    .roi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 44px; align-items: center; }
+    .roi-stats { display: flex; flex-direction: column; gap: 13px; }
+    .roi-stat { background: var(--bg3); border: 1px solid var(--border); border-radius: 13px; padding: 19px 22px; display: flex; align-items: center; gap: 15px; }
+    .roi-ico { width: 48px; height: 48px; border-radius: 11px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .roi-num { font-family: 'Space Grotesk', sans-serif; font-size: 2rem; font-weight: 700; letter-spacing: -.03em; color: #fff; line-height: 1; }
+    .roi-lbl { font-size: .78rem; color: var(--muted); margin-top: 3px; }
+    .roi-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 17px; padding: 30px; }
+    .roi-card h3 { font-size: .95rem; color: #fff; margin-bottom: 1.2rem; }
+    .roi-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 13px; border-radius: 8px; margin-bottom: 8px; }
+    .roi-bad  { background: rgba(239,68,68,.07); border: 1px solid rgba(239,68,68,.13); }
+    .roi-good { background: rgba(34,197,94,.07);  border: 1px solid rgba(34,197,94,.13); }
+    .roi-row-l { font-size: .83rem; color: var(--muted); }
+    .roi-row-v { font-weight: 700; font-size: .88rem; }
+    .roi-bad  .roi-row-v { color: #ef4444; }
+    .roi-good .roi-row-v { color: #22c55e; }
+    .roi-save { margin-top: 14px; padding: 18px; text-align: center; background: linear-gradient(135deg, rgba(232,160,32,.12), rgba(232,160,32,.04)); border: 1px solid var(--gold-b); border-radius: 11px; }
+    .roi-save-n { font-family: 'Space Grotesk', sans-serif; font-size: 2.3rem; font-weight: 700; letter-spacing: -.03em; color: var(--gold); }
+    .roi-save-l { font-size: .78rem; color: var(--muted); margin-top: 3px; }
+
+    /* ── HOW ── */
+    .how { background: var(--bg); }
+    .how-hd { text-align: center; max-width: 500px; margin: 0 auto 2.8rem; }
+    .how-hd h2 { font-size: clamp(1.75rem, 3vw, 2.4rem); color: #fff; margin-bottom: .75rem; }
+    .how-hd p  { font-size: .95rem; color: var(--muted); line-height: 1.72; }
+    .steps { display: grid; grid-template-columns: repeat(3, 1fr); position: relative; }
+    .steps::before { content:'';position:absolute;top:31px;left:calc(16.6% + 26px);right:calc(16.6% + 26px);height:1px;background:linear-gradient(90deg,var(--gold),var(--cyan));opacity:.2; }
+    .step { text-align: center; padding: 0 24px; }
+    .step-n { width:62px;height:62px;border-radius:50%;margin:0 auto 1.2rem;background:linear-gradient(135deg,var(--gold-d),rgba(0,207,255,.07));border:1px solid var(--gold-b);display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;font-size:1.15rem;font-weight:700;letter-spacing:-.02em;color:var(--gold);position:relative;z-index:1; }
+    .step h3 { font-size: .92rem; color: #fff; margin-bottom: .55rem; }
+    .step p   { font-size: .83rem; color: var(--muted); line-height: 1.65; }
+
+    /* ── PRICING ── */
+    .pricing { background: var(--bg2); }
+    .pricing-hd { text-align: center; max-width: 440px; margin: 0 auto 2.8rem; }
+    .pricing-hd h2 { font-size: clamp(1.75rem, 3vw, 2.4rem); color: #fff; margin-bottom: .75rem; }
+    .pricing-hd p  { font-size: .9rem; color: var(--muted); line-height: 1.72; }
+    .plans { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .plan { background: var(--bg3); border: 1px solid var(--border); border-radius: 18px; padding: 30px; position: relative; transition: transform .3s, border-color .3s; }
+    .plan:hover { transform: translateY(-5px); }
+    .plan-feat { border-color: var(--gold-b); background: linear-gradient(180deg, rgba(232,160,32,.07) 0%, var(--bg3) 40%); }
+    .plan-badge { position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--goldb),var(--gold));color:#05080f;font-family:'Space Grotesk',sans-serif;font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 14px;border-radius:100px;white-space:nowrap; }
+    .plan-name { font-size: 1.15rem; color: #fff; margin-bottom: .35rem; }
+    .plan-price { display: flex; align-items: baseline; gap: 3px; margin: 1.1rem 0; }
+    .plan-amt { font-family: 'Space Grotesk', sans-serif; font-size: 2.7rem; font-weight: 700; letter-spacing: -.04em; color: #fff; }
+    .plan-per { font-size: .8rem; color: var(--muted); }
+    .plan-desc { font-size: .81rem; color: var(--muted); margin-bottom: 1.2rem; line-height: 1.6; }
+    .plan-list { list-style: none; display: flex; flex-direction: column; gap: 9px; margin-bottom: 1.6rem; }
+    .plan-list li { display: flex; align-items: flex-start; gap: 8px; font-size: .81rem; color: var(--muted); }
+    .plan-list svg { color: var(--gold); flex-shrink: 0; margin-top: 1px; }
+    .plan-cta { display:block;text-align:center;padding:11px;border-radius:7px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:.85rem;letter-spacing:-.01em;text-decoration:none;transition:all .2s; }
+    .plan-cta-gold { background:linear-gradient(135deg,var(--goldb),var(--gold));color:#05080f;box-shadow:0 0 16px rgba(232,160,32,.28); }
+    .plan-cta-gold:hover { box-shadow:0 0 28px rgba(232,160,32,.5);transform:translateY(-1px); }
+    .plan-cta-out { border:1px solid var(--border);color:var(--text); }
+    .plan-cta-out:hover { border-color:var(--gold);color:var(--gold); }
+
+    /* ── CTA ── */
+    .cta-sec { text-align: center; position: relative; overflow: hidden; }
+    .cta-sec::before { content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:600px;background:radial-gradient(ellipse at center,rgba(232,160,32,.06),transparent 70%);pointer-events:none; }
+    .cta-card { max-width:620px;margin:0 auto;background:var(--bg2);border:1px solid var(--gold-b);border-radius:22px;padding:50px 40px;position:relative;z-index:1; }
+    .cta-card::before { content:'';position:absolute;top:0;left:10%;right:10%;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent); }
+    .cta-card h2 { font-size: clamp(1.6rem, 3vw, 2.1rem); color: #fff; margin-bottom: .75rem; }
+    .cta-card p  { color: var(--muted); margin-bottom: 1.8rem; font-size: .92rem; line-height: 1.7; }
+    .cta-form { display: flex; flex-direction: column; gap: 10px; }
+    .cta-form input, .cta-form select { background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:11px 13px;color:var(--text);font-size:.86rem;font-family:'Inter',sans-serif;outline:none;transition:border-color .2s;width:100%; }
+    .cta-form input:focus, .cta-form select:focus { border-color: var(--gold); }
+    .cta-form input::placeholder { color: var(--muted); }
+    .cta-form select option { background: var(--bg3); }
+    .cta-privacy { margin-top: .8rem; font-size: .72rem; color: var(--muted); display: flex; align-items: center; justify-content: center; gap: 6px; }
+
+    /* ── FOOTER ── */
+    footer { border-top: 1px solid var(--border); padding: 26px 24px; }
+    .foot-in { max-width: 1120px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+    footer p { font-size: .76rem; color: var(--muted); }
+    footer a { color: var(--gold); text-decoration: none; }
+
+    /* ── REVEAL ── */
+    .reveal { opacity: 0; transform: translateY(22px); transition: opacity .6s ease, transform .6s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── RESPONSIVE ── */
+    @media(max-width: 900px) {
+      .hero-in { grid-template-columns: 1fr; text-align: center; }
+      .hero-sub { margin: 0 auto 1.9rem; }
+      .hero-actions, .hero-checks { justify-content: center; }
+      .emma-wrap { height: 360px; order: -1; }
+      .emma-orbits { width: 300px; height: 300px; }
+      .e-ring-1 { width: 275px; height: 275px; margin: -137.5px 0 0 -137.5px; }
+      .e-ring-2 { width: 215px; height: 215px; margin: -107.5px 0 0 -107.5px; }
+      .e-ring-3 { width: 290px; height: 290px; margin: -145px 0 0 -145px; }
+      .e-portrait-wrap { width: 182px; height: 212px; }
+      .demo-in, .transcript-in, .roi-grid { grid-template-columns: 1fr; }
+      .knows-grid, .prob-grid, .plans, .steps { grid-template-columns: 1fr; }
+      .steps::before { display: none; }
+      .prob-bottom { flex-direction: column; text-align: center; }
+      .cta-card { padding: 34px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <div class="nav-in">
+    <a href="#" class="nav-logo">anupama<span>.dev</span></a>
+    <div class="nav-pill">
+      <span class="nav-pill-dot"></span>
+      Built for Wealth Australia Migration
+    </div>
+    <a href="#book" class="nav-cta">Let's Talk</a>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="grid-bg"></div>
+  <div class="hero-in">
+
+    <div class="hero-copy">
+      <div class="hero-pill">
+        <span class="hero-pill-dot"></span>
+        A proposal made exclusively for you
+      </div>
+      <h1 class="hero-h1">
+        <span class="hero-hi">"Hi — I'm Emma, and I work for Wealth Australia Migration."</span>
+        Your clients will never go<br><span class="hero-h1-grad">unanswered again.</span>
+      </h1>
+      <p class="hero-sub">
+        We didn't build a generic chatbot. We built <strong>Emma</strong> — trained on
+        Australian migration law, your visa services, and your client language.
+        Ready to represent your practice the moment you say go.
+      </p>
+      <div class="hero-actions">
+        <a href="#live-demo" class="btn-gold">
+          Try Emma Live
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>
+        </a>
+        <a href="#roi" class="btn-ghost">See the Numbers</a>
+      </div>
+      <div class="hero-checks">
+        <div class="hero-check">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          Live in under 24 hours
+        </div>
+        <div class="hero-check">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          No lock-in contract
+        </div>
+        <div class="hero-check">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          MARA-compliant responses
+        </div>
+      </div>
+    </div>
+
+    <!-- EMMA -->
+    <div class="emma-wrap">
+      <canvas id="ep-canvas"></canvas>
+      <div class="emma-orbits">
+        <div class="e-ring e-ring-1"></div>
+        <div class="e-ring e-ring-2"></div>
+        <div class="e-ring e-ring-3"></div>
+      </div>
+      <div class="e-portrait-wrap">
+        <div class="e-halo-out"></div>
+        <div class="e-halo"></div>
+        <div class="e-clip">
+          <div class="e-scan"></div>
+          <svg class="e-svg" viewBox="0 0 200 250" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="skin" cx="50%" cy="38%" r="58%"><stop offset="0%" stop-color="#fde3c2"/><stop offset="65%" stop-color="#f5c8a0"/><stop offset="100%" stop-color="#e0a878"/></radialGradient>
+              <radialGradient id="iris" cx="35%" cy="32%" r="65%"><stop offset="0%" stop-color="#80f0ff"/><stop offset="35%" stop-color="#00b8d8"/><stop offset="100%" stop-color="#004466"/></radialGradient>
+              <filter id="eg" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+              <radialGradient id="amb" cx="50%" cy="55%" r="50%"><stop offset="0%" stop-color="rgba(0,180,220,0.16)"/><stop offset="100%" stop-color="transparent"/></radialGradient>
+            </defs>
+            <rect width="200" height="250" fill="#06080f"/>
+            <rect width="200" height="250" fill="url(#amb)"/>
+            <line x1="0" y1="50"  x2="200" y2="50"  stroke="rgba(0,207,255,.045)" stroke-width="1"/>
+            <line x1="0" y1="100" x2="200" y2="100" stroke="rgba(0,207,255,.045)" stroke-width="1"/>
+            <line x1="0" y1="150" x2="200" y2="150" stroke="rgba(0,207,255,.045)" stroke-width="1"/>
+            <line x1="0" y1="200" x2="200" y2="200" stroke="rgba(0,207,255,.045)" stroke-width="1"/>
+            <ellipse cx="100" cy="105" rx="74" ry="90" fill="#0b0818"/>
+            <path d="M84 195 L84 252 Q100 256 116 252 L116 195 Q100 202 84 195Z" fill="url(#skin)"/>
+            <ellipse cx="100" cy="122" rx="58" ry="74" fill="url(#skin)"/>
+            <ellipse cx="100" cy="148" rx="58" ry="48" fill="#e09070" opacity=".15"/>
+            <ellipse cx="66"  cy="138" rx="16" ry="10" fill="#ff8888" opacity=".16"/>
+            <ellipse cx="134" cy="138" rx="16" ry="10" fill="#ff8888" opacity=".16"/>
+            <path d="M26 100 Q26 22 100 20 Q174 22 174 100 Q164 52 100 50 Q36 52 26 100Z" fill="#0b0818"/>
+            <path d="M26 100 Q18 148 24 190 Q34 218 52 232 Q40 202 34 165 Q26 130 26 100Z" fill="#0b0818"/>
+            <path d="M174 100 Q182 148 176 190 Q166 218 148 232 Q160 202 166 165 Q174 130 174 100Z" fill="#0b0818"/>
+            <path d="M52 38 Q100 24 148 38 Q142 44 100 42 Q58 44 52 38Z" fill="#1a1238" opacity=".85"/>
+            <path d="M40 110 Q32 118 33 128 Q34 140 42 142 Q46 133 46 122 Q46 113 40 110Z" fill="#f5c8a0"/>
+            <path d="M160 110 Q168 118 167 128 Q166 140 158 142 Q154 133 154 122 Q154 113 160 110Z" fill="#f5c8a0"/>
+            <path d="M62 93 Q74 86 90 90"  stroke="#4a2a12" stroke-width="2.8" fill="none" stroke-linecap="round"/>
+            <path d="M110 90 Q126 86 138 93" stroke="#4a2a12" stroke-width="2.8" fill="none" stroke-linecap="round"/>
+            <path d="M62 108 Q70 101 78 100 Q86 101 94 108" fill="#0b0818"/>
+            <path d="M106 108 Q114 101 122 100 Q130 101 138 108" fill="#0b0818"/>
+            <ellipse cx="78"  cy="110" rx="15" ry="9.5" fill="#f8f8ff"/>
+            <ellipse cx="122" cy="110" rx="15" ry="9.5" fill="#f8f8ff"/>
+            <circle cx="78"  cy="110" r="8.5" fill="url(#iris)" filter="url(#eg)"/>
+            <circle cx="122" cy="110" r="8.5" fill="url(#iris)" filter="url(#eg)"/>
+            <circle id="emma-pupil-l" cx="78"  cy="110" r="4.2" fill="#001020"/>
+            <circle id="emma-pupil-r" cx="122" cy="110" r="4.2" fill="#001020"/>
+            <circle cx="74"  cy="106" r="2.8" fill="white" opacity=".88"/>
+            <circle cx="118" cy="106" r="2.8" fill="white" opacity=".88"/>
+            <circle cx="82"  cy="113" r="1.3" fill="white" opacity=".36"/>
+            <circle cx="126" cy="113" r="1.3" fill="white" opacity=".36"/>
+            <circle cx="78"  cy="110" r="8.5" fill="none" stroke="rgba(0,207,255,.5)" stroke-width=".7"/>
+            <circle cx="122" cy="110" r="8.5" fill="none" stroke="rgba(0,207,255,.5)" stroke-width=".7"/>
+            <path d="M62 108 Q70 117 78 116 Q86 117 94 108" fill="#f5c8a0" opacity=".5"/>
+            <path d="M106 108 Q114 117 122 116 Q130 117 138 108" fill="#f5c8a0" opacity=".5"/>
+            <ellipse class="lid-l" cx="78"  cy="110" rx="15" ry="9.5" fill="#0b0818"/>
+            <ellipse class="lid-r" cx="122" cy="110" rx="15" ry="9.5" fill="#0b0818"/>
+            <path d="M96 128 Q93 136 94 142" stroke="#d09870" stroke-width="1.1" fill="none" opacity=".42"/>
+            <path d="M104 128 Q107 136 106 142" stroke="#d09870" stroke-width="1.1" fill="none" opacity=".42"/>
+            <path d="M91 142 Q100 146 109 142" stroke="#c08870" stroke-width="1.3" fill="none" opacity=".5"/>
+            <!-- Mouth interior — grows as jaw opens -->
+            <ellipse id="emma-inner-mouth" cx="100" cy="159" rx="17" ry="1" fill="#2d0808"/>
+            <!-- Teeth — fades in when mouth opens -->
+            <rect id="emma-teeth" x="85" y="156" width="30" height="5.5" rx="1.5" fill="#f0ece8" opacity="0"/>
+            <!-- Upper lip — fixed -->
+            <path d="M82 156 Q90 149 96 151 Q100 149 104 151 Q110 149 118 156 Q110 153 104 154 Q100 152 96 154 Q90 153 82 156Z" fill="#c05040"/>
+            <path d="M87 156 Q94 152 100 153 Q106 152 113 156" stroke="#a03030" stroke-width=".8" fill="none"/>
+            <!-- Lower lip / jaw — translates down when speaking -->
+            <g id="emma-jaw-g">
+              <path d="M82 156 Q90 167 100 168 Q110 167 118 156 Q110 161 100 162 Q90 161 82 156Z" fill="#d06050"/>
+              <path d="M89 160 Q100 157 111 160" stroke="white" stroke-width="1.1" fill="none" opacity=".3" stroke-linecap="round"/>
+            </g>
+            <g opacity=".2"><path d="M40 108 L28 100 L28 84" stroke="#00cfff" stroke-width=".9" fill="none"/><circle cx="28" cy="84" r="2.2" fill="#00cfff"/><path d="M28 84 L18 84" stroke="#00cfff" stroke-width=".9" fill="none"/><circle cx="18" cy="84" r="1.2" fill="#00cfff" opacity=".6"/></g>
+            <g opacity=".2"><path d="M160 108 L172 100 L172 84" stroke="#00cfff" stroke-width=".9" fill="none"/><circle cx="172" cy="84" r="2.2" fill="#00cfff"/><path d="M172 84 L182 84" stroke="#00cfff" stroke-width=".9" fill="none"/><circle cx="182" cy="84" r="1.2" fill="#00cfff" opacity=".6"/></g>
+            <g opacity=".16"><path d="M40 145 L28 155" stroke="#e8a020" stroke-width=".9" fill="none"/><path d="M160 145 L172 155" stroke="#e8a020" stroke-width=".9" fill="none"/></g>
+            <circle cx="52"  cy="75" r="1.8" fill="#00cfff" opacity=".5"/>
+            <circle cx="148" cy="75" r="1.8" fill="#00cfff" opacity=".5"/>
+            <circle cx="38"  cy="130" r="1.4" fill="#e8a020" opacity=".6"/>
+            <circle cx="162" cy="130" r="1.4" fill="#e8a020" opacity=".6"/>
+          </svg>
+        </div>
+        <div class="e-name">Emma <span>· WAM</span></div>
+        <div class="e-status">
+          <span class="e-status-dot"></span>
+          Wealth Australia Migration
+          <div class="e-wave"><span></span><span></span><span></span><span></span><span></span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── LIVE DEMO ── -->
+<section class="demo-sec" id="live-demo">
+  <div class="container">
+    <div class="demo-in">
+
+      <div class="demo-copy reveal">
+        <div class="tag">Experience Emma Live</div>
+        <h2>Talk to Emma right now —<br>as one of your clients would.</h2>
+        <p>
+          Click the button, allow microphone access, and speak to Emma. She'll
+          answer as Wealth Australia Migration's receptionist — ask about visa
+          eligibility, try to book an appointment, throw her a tricky question.
+          This is exactly what your callers will experience.
+        </p>
+        <ul class="demo-hints">
+          <li>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Real AI — not a recording or script
+          </li>
+          <li>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            She greets callers as "Wealth Australia Migration"
+          </li>
+          <li>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Try: "I'm a nurse on a 485 visa, what are my options?"
+          </li>
+          <li>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            No phone number needed — runs right in your browser
+          </li>
+        </ul>
+      </div>
+
+      <div class="reveal demo-right-wrap">
+
+        <!-- ── RECEPTIONIST AVATAR ── -->
+        <div class="rcp-avatar-wrap">
+          <svg id="rcp-svg" class="rcp-svg rcp-state-idle" viewBox="0 0 200 300" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="rcp-skin" cx="50%" cy="38%" r="58%">
+                <stop offset="0%" stop-color="#fde3c2"/><stop offset="65%" stop-color="#f5c8a0"/><stop offset="100%" stop-color="#e0a878"/>
+              </radialGradient>
+              <radialGradient id="rcp-iris" cx="35%" cy="32%" r="65%">
+                <stop offset="0%" stop-color="#80f0ff"/><stop offset="35%" stop-color="#00b8d8"/><stop offset="100%" stop-color="#004466"/>
+              </radialGradient>
+              <radialGradient id="rcp-amb" cx="50%" cy="68%" r="58%">
+                <stop offset="0%" stop-color="rgba(232,160,32,.13)"/><stop offset="100%" stop-color="transparent"/>
+              </radialGradient>
+              <filter id="rcp-eg" x="-30%" y="-30%" width="160%" height="160%">
+                <feGaussianBlur stdDeviation="2" result="b"/>
+                <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+              <filter id="rcp-mglow" x="-80%" y="-80%" width="360%" height="360%">
+                <feGaussianBlur stdDeviation="4"/>
+              </filter>
+            </defs>
+
+            <!-- Background -->
+            <rect width="200" height="300" fill="#06080f"/>
+            <rect width="200" height="300" fill="url(#rcp-amb)"/>
+            <line x1="0" y1="75"  x2="200" y2="75"  stroke="rgba(0,207,255,.03)" stroke-width="1"/>
+            <line x1="0" y1="150" x2="200" y2="150" stroke="rgba(0,207,255,.03)" stroke-width="1"/>
+            <line x1="0" y1="225" x2="200" y2="225" stroke="rgba(0,207,255,.03)" stroke-width="1"/>
+
+            <!-- Head halo (breathes) -->
+            <ellipse id="rcp-halo" cx="100" cy="98" rx="68" ry="72" fill="none" stroke="rgba(0,207,255,.08)" stroke-width="18"/>
+
+            <!-- Status orbit ring -->
+            <ellipse id="rcp-ring" cx="100" cy="98" rx="62" ry="66" fill="none" stroke="transparent" stroke-width="1.5"/>
+
+            <!-- BODY / SHOULDERS -->
+            <path d="M0 300 L0 238 Q18 202 60 190 Q78 195 100 195 Q122 195 140 190 Q182 202 200 238 L200 300Z" fill="#101928"/>
+            <path d="M0 300 L0 252 Q16 218 58 204 Q80 198 100 198 Q120 198 142 204 Q184 218 200 252 L200 300Z" fill="#0c1420"/>
+            <!-- Collar V -->
+            <path d="M68 192 Q84 218 100 213 Q116 218 132 192 L124 208 Q112 228 100 224 Q88 228 76 208Z" fill="#080e1c"/>
+            <!-- Gold collar accent -->
+            <path d="M86 216 Q100 228 114 216" stroke="#e8a020" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <!-- Lapel hints -->
+            <path d="M68 192 Q78 210 86 216" stroke="rgba(255,255,255,.05)" stroke-width="1" fill="none"/>
+            <path d="M132 192 Q122 210 114 216" stroke="rgba(255,255,255,.05)" stroke-width="1" fill="none"/>
+
+            <!-- Name badge -->
+            <rect x="76" y="240" width="48" height="24" rx="4" fill="#0a1320" stroke="rgba(232,160,32,.35)" stroke-width="1"/>
+            <rect x="78" y="242" width="44" height="8" rx="2" fill="rgba(232,160,32,.1)"/>
+            <text x="100" y="249" fill="#e8a020" font-size="5.8" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-weight="700" letter-spacing="0.08em">EMMA</text>
+            <text x="100" y="258" fill="#4a6070" font-size="3.8" text-anchor="middle" font-family="Inter,sans-serif" letter-spacing="0.06em">AI RECEPTIONIST</text>
+
+            <!-- NECK -->
+            <rect x="88" y="180" width="24" height="18" rx="8" fill="url(#rcp-skin)"/>
+            <rect x="88" y="190" width="24" height="8" rx="4" fill="#d09070" opacity=".2"/>
+
+            <!-- HAIR base (dark cap) -->
+            <ellipse cx="100" cy="92" rx="54" ry="66" fill="#0b0818"/>
+
+            <!-- FACE oval -->
+            <ellipse cx="100" cy="102" rx="44" ry="56" fill="url(#rcp-skin)"/>
+            <!-- Cheek blush -->
+            <ellipse cx="72" cy="122" rx="12" ry="7" fill="#ff8888" opacity=".13"/>
+            <ellipse cx="128" cy="122" rx="12" ry="7" fill="#ff8888" opacity=".13"/>
+
+            <!-- HAIR front / parting -->
+            <path d="M56 78 Q62 36 100 34 Q138 36 144 78 Q136 50 100 48 Q64 50 56 78Z" fill="#0b0818"/>
+            <!-- Hair sides -->
+            <path d="M144 78 Q150 96 150 126 Q148 148 140 168 Q148 138 148 102 Q148 84 144 78Z" fill="#0b0818"/>
+            <path d="M56 78 Q50 96 50 126 Q52 148 60 168 Q52 138 52 102 Q52 84 56 78Z" fill="#0b0818"/>
+            <!-- Hair sheen -->
+            <path d="M74 40 Q100 36 126 40 Q114 42 100 42 Q86 42 74 40Z" fill="#2a1860" opacity=".55"/>
+
+            <!-- EARS -->
+            <path d="M56 102 Q49 110 50 120 Q51 130 58 132 Q62 124 62 114 Q62 105 56 102Z" fill="url(#rcp-skin)"/>
+            <path d="M144 102 Q151 110 150 120 Q149 130 142 132 Q138 124 138 114 Q138 105 144 102Z" fill="url(#rcp-skin)"/>
+
+            <!-- HEADSET BAND (over top of head) -->
+            <path d="M52 114 Q54 42 100 38 Q146 42 148 114" fill="none" stroke="#1a2540" stroke-width="6" stroke-linecap="round"/>
+            <path d="M52 114 Q54 44 100 40 Q146 44 148 114" fill="none" stroke="#253060" stroke-width="3" stroke-linecap="round"/>
+            <!-- Band cyan accent -->
+            <path d="M72 56 Q100 46 128 56" fill="none" stroke="rgba(0,207,255,.22)" stroke-width="1.2" stroke-linecap="round"/>
+
+            <!-- Left ear cushion (Emma's right, viewer's left) -->
+            <ellipse cx="50" cy="115" rx="10" ry="12" fill="#1e2a45" stroke="rgba(0,207,255,.22)" stroke-width="1.2"/>
+            <ellipse cx="50" cy="115" rx="6" ry="8" fill="#0d1528"/>
+
+            <!-- Right ear cushion (Emma's left, viewer's right) — has LED -->
+            <ellipse cx="150" cy="115" rx="10" ry="12" fill="#1e2a45" stroke="rgba(0,207,255,.22)" stroke-width="1.2"/>
+            <ellipse cx="150" cy="115" rx="6" ry="8" fill="#0d1528"/>
+            <!-- LED indicator on right cushion -->
+            <circle id="rcp-led" cx="157" cy="108" r="3.5" fill="#2a3a50"/>
+            <!-- LED glow (appears when active) -->
+            <circle id="rcp-led-glow" cx="157" cy="108" r="6" fill="rgba(0,207,255,.0)" filter="url(#rcp-eg)"/>
+
+            <!-- BOOM MIC (from left ear cushion toward mouth) -->
+            <path d="M44 122 Q34 134 32 150 Q31 162 36 170" fill="none" stroke="#1e2a45" stroke-width="3.5" stroke-linecap="round"/>
+            <path d="M44 122 Q34 134 32 150 Q31 162 36 170" fill="none" stroke="#2a3860" stroke-width="1.8" stroke-linecap="round"/>
+            <!-- Mic capsule -->
+            <ellipse id="rcp-mic-cap" cx="36" cy="173" rx="6" ry="8" fill="#1e2a45" stroke="rgba(0,207,255,.3)" stroke-width="1.2"/>
+            <ellipse cx="36" cy="173" rx="3" ry="4.5" fill="#0d1528"/>
+            <!-- Mic glow (hidden until speaking) -->
+            <ellipse id="rcp-mic-glow" cx="36" cy="173" rx="10" ry="13" fill="rgba(0,207,255,.22)" filter="url(#rcp-mglow)" opacity="0"/>
+
+            <!-- EYEBROWS -->
+            <path d="M66 90 Q74 84 88 87" stroke="#4a2a12" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+            <path d="M112 87 Q126 84 134 90" stroke="#4a2a12" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+
+            <!-- EYE WHITES -->
+            <ellipse cx="82" cy="101" rx="13" ry="8.5" fill="#f8f8ff"/>
+            <ellipse cx="118" cy="101" rx="13" ry="8.5" fill="#f8f8ff"/>
+            <!-- IRISES -->
+            <circle cx="82" cy="101" r="7.5" fill="url(#rcp-iris)" filter="url(#rcp-eg)"/>
+            <circle cx="118" cy="101" r="7.5" fill="url(#rcp-iris)" filter="url(#rcp-eg)"/>
+            <!-- PUPILS -->
+            <circle id="rcp-pupil-l" cx="82" cy="101" r="3.8" fill="#001020"/>
+            <circle id="rcp-pupil-r" cx="118" cy="101" r="3.8" fill="#001020"/>
+            <!-- Catchlights -->
+            <circle cx="79" cy="98" r="2.2" fill="white" opacity=".85"/>
+            <circle cx="115" cy="98" r="2.2" fill="white" opacity=".85"/>
+            <circle cx="85" cy="104" r="1.1" fill="white" opacity=".32"/>
+            <circle cx="121" cy="104" r="1.1" fill="white" opacity=".32"/>
+            <!-- Iris rim -->
+            <circle cx="82"  cy="101" r="7.5" fill="none" stroke="rgba(0,207,255,.4)" stroke-width=".7"/>
+            <circle cx="118" cy="101" r="7.5" fill="none" stroke="rgba(0,207,255,.4)" stroke-width=".7"/>
+            <!-- Lower lid crease -->
+            <path d="M69 101 Q76 109 82 108 Q88 109 95 101" fill="#f5c8a0" opacity=".4"/>
+            <path d="M105 101 Q112 109 118 108 Q124 109 131 101" fill="#f5c8a0" opacity=".4"/>
+            <!-- EYELIDS (blink) -->
+            <ellipse class="rcp-lid-l" cx="82"  cy="101" rx="13" ry="8.5" fill="#0b0818"/>
+            <ellipse class="rcp-lid-r" cx="118" cy="101" rx="13" ry="8.5" fill="#0b0818"/>
+
+            <!-- NOSE -->
+            <path d="M97 116 Q94 124 95 130" stroke="#d09870" stroke-width="1.1" fill="none" opacity=".4"/>
+            <path d="M103 116 Q106 124 105 130" stroke="#d09870" stroke-width="1.1" fill="none" opacity=".4"/>
+            <path d="M92 130 Q100 134 108 130" stroke="#c08870" stroke-width="1.2" fill="none" opacity=".44"/>
+
+            <!-- MOUTH — animatable -->
+            <ellipse id="rcp-inner-mouth" cx="100" cy="149" rx="14" ry="1" fill="#2d0808"/>
+            <rect id="rcp-teeth" x="88" y="146" width="24" height="4.5" rx="1.2" fill="#f0ece8" opacity="0"/>
+            <!-- Upper lip -->
+            <path d="M86 146 Q92 140 96 142 Q100 140 104 142 Q108 140 114 146 Q108 143 104 144 Q100 142 96 144 Q92 143 86 146Z" fill="#c05040"/>
+            <path d="M90 146 Q96 143 100 144 Q104 143 110 146" stroke="#a03030" stroke-width=".7" fill="none"/>
+            <!-- Lower lip / jaw group -->
+            <g id="rcp-jaw-g">
+              <path d="M86 146 Q92 156 100 157 Q108 156 114 146 Q108 150 100 151 Q92 150 86 146Z" fill="#d06050"/>
+              <path d="M90 150 Q100 148 110 150" stroke="white" stroke-width="1" fill="none" opacity=".25" stroke-linecap="round"/>
+            </g>
+
+            <!-- Scan line -->
+            <rect id="rcp-scan" x="56" y="36" width="88" height="2" rx="1" fill="rgba(0,207,255,.5)"/>
+
+            <!-- Circuit accent dots (like hero) -->
+            <circle cx="52" cy="70" r="1.6" fill="#00cfff" opacity=".4"/>
+            <circle cx="148" cy="70" r="1.6" fill="#00cfff" opacity=".4"/>
+            <circle cx="38" cy="130" r="1.2" fill="#e8a020" opacity=".5"/>
+            <circle cx="162" cy="130" r="1.2" fill="#e8a020" opacity=".5"/>
+          </svg>
+          <div class="rcp-label">
+            <span class="rcp-label-dot"></span>
+            Emma · Online
+          </div>
+        </div>
+        <!-- ── END AVATAR ── -->
+
+        <div class="demo-call-col">
+        <div class="call-ui">
+          <div class="cui-head">
+            <div class="cui-caller">
+              <div class="cui-avatar">WAM</div>
+              <div>
+                <div class="cui-name">Wealth Australia Migration</div>
+                <div class="cui-sub" id="cui-status-sub">Emma is ready to answer</div>
+              </div>
+            </div>
+            <div class="cui-right">
+              <div class="cui-wave" id="cui-wave">
+                <span></span><span></span><span></span><span></span><span></span>
+              </div>
+              <div class="cui-timer" id="cui-timer">0:00</div>
+              <button class="cui-mute-btn" id="cui-mute" title="Mute / unmute" style="display:none">
+                <svg class="cui-mute-icon-on" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+                <svg class="cui-mute-icon-off" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="cui-log" id="cui-log">
+            <div class="cui-empty" id="cui-empty">
+              <div class="cui-empty-ring">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+              </div>
+              <p>Start the call below — Emma will greet you as Wealth Australia Migration.</p>
+            </div>
+          </div>
+
+          <div class="cui-foot">
+            <span class="cui-status-text" id="cui-status-text">Ready — click below to begin</span>
+          </div>
+        </div>
+
+        <button class="demo-start-btn" id="demo-start-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+          Start Demo — Talk to Emma
+        </button>
+        <p class="demo-note">Microphone required &nbsp;·&nbsp; Free &nbsp;·&nbsp; 90 seconds max</p>
+        <button class="anim-test-btn" id="anim-test-btn">Preview animation — no mic needed</button>
+        </div><!-- end demo-call-col -->
+      </div><!-- end demo-right-wrap -->
+
+    </div>
+  </div>
+</section>
+
+<!-- ── ANIMATED TRANSCRIPT ── -->
+<section class="transcript-sec">
+  <div class="container">
+    <div class="transcript-in">
+      <div class="transcript-copy reveal">
+        <div class="tag">Hear Emma in Action</div>
+        <h2>This is exactly what your<br>clients hear — from day one.</h2>
+        <p>Emma already knows how to greet callers on behalf of Wealth Australia Migration, answer common visa questions, and book consultations.</p>
+        <ul class="transcript-bullets">
+          <li>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Answers within 2 seconds, 24 hours a day
+          </li>
+          <li>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Qualifies leads before booking — your time isn't wasted
+          </li>
+          <li>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Handles after-hours enquiries that currently go to voicemail
+          </li>
+        </ul>
+      </div>
+      <div class="reveal">
+        <div class="tx-box">
+          <div class="tx-head">
+            <div class="tx-caller">
+              <div class="tx-av">WAM</div>
+              <div>
+                <div class="tx-name">Wealth Australia Migration</div>
+                <div class="tx-sub">+61 (02) ···· ····</div>
+              </div>
+            </div>
+            <div class="tx-live"><span class="tx-live-dot"></span> LIVE</div>
+          </div>
+          <div class="tx-log" id="tx-log"></div>
+          <div class="tx-foot">
+            <div class="tx-foot-l">Answering for <strong>Wealth Australia Migration</strong></div>
+            <button class="replay-btn" id="tx-replay">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.36"/></svg>
+              Replay
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── KNOWS ── -->
+<section class="knows">
+  <div class="container">
+    <div class="knows-intro reveal">
+      <div class="tag">Pre-Configured for You</div>
+      <h2>Emma already knows<br>your practice inside out.</h2>
+      <p>We don't hand you a blank AI and ask you to figure it out. Emma is trained and ready for Wealth Australia Migration from the moment she goes live.</p>
+    </div>
+    <div class="knows-grid">
+      <div class="know-card reveal">
+        <div class="know-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14.5 10c-.83 0-1.5-.67-1.5-1.5v-5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5z"/><path d="M20.5 10H19V8.5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/><path d="M9.5 14c.83 0 1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5S8 21.33 8 20.5v-5c0-.83.67-1.5 1.5-1.5z"/><path d="M3.5 14H5v1.5c0 .83-.67 1.5-1.5 1.5S2 16.33 2 15.5 2.67 14 3.5 14z"/><path d="M14 14.5c0-.83.67-1.5 1.5-1.5h5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5h-5c-.83 0-1.5-.67-1.5-1.5z"/><path d="M15.5 19H14v1.5c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5-.67-1.5-1.5-1.5z"/><path d="M10 9.5C10 8.67 9.33 8 8.5 8h-5C2.67 8 2 8.67 2 9.5S2.67 11 3.5 11h5c.83 0 1.5-.67 1.5-1.5z"/><path d="M8.5 5H10V3.5C10 2.67 9.33 2 8.5 2S7 2.67 7 3.5 7.67 5 8.5 5z"/></svg></div>
+        <h3>Your Visa Services</h3>
+        <ul class="know-list">
+          <li><span class="know-dot"></span>Skilled Independent — Subclass 189</li>
+          <li><span class="know-dot"></span>State Nominated — Subclass 190 &amp; 491</li>
+          <li><span class="know-dot"></span>Employer Sponsored — 482 &amp; 186</li>
+          <li><span class="know-dot"></span>Partner &amp; Family — 820/801, 309/100</li>
+          <li><span class="know-dot"></span>Student Visa — Subclass 500</li>
+          <li><span class="know-dot"></span>Business &amp; Investor — 188, 888</li>
+        </ul>
+        <div class="know-note">Emma explains each pathway without giving legal advice — keeping you MARA-compliant.</div>
+      </div>
+      <div class="know-card reveal">
+        <div class="know-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+        <h3>Client FAQs She Handles Instantly</h3>
+        <ul class="know-list">
+          <li><span class="know-dot"></span>"Am I eligible for skilled migration?"</li>
+          <li><span class="know-dot"></span>"How long does a partner visa take?"</li>
+          <li><span class="know-dot"></span>"What documents do I need to apply?"</li>
+          <li><span class="know-dot"></span>"What does a consultation cost?"</li>
+          <li><span class="know-dot"></span>"Can my employer sponsor me?"</li>
+          <li><span class="know-dot"></span>"My visa was refused — what can I do?"</li>
+        </ul>
+        <div class="know-note">All answers reviewed and approved by you before going live.</div>
+      </div>
+      <div class="know-card reveal">
+        <div class="know-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+        <h3>Booking &amp; Schedule Logic</h3>
+        <ul class="know-list">
+          <li><span class="know-dot"></span>Books paid consultations in real-time</li>
+          <li><span class="know-dot"></span>Syncs with Google Calendar / Calendly</li>
+          <li><span class="know-dot"></span>Sends SMS &amp; email confirmations</li>
+          <li><span class="know-dot"></span>Follows your business hours exactly</li>
+          <li><span class="know-dot"></span>Routes urgent deadline calls directly to you</li>
+          <li><span class="know-dot"></span>Collects client details before appointments</li>
+        </ul>
+        <div class="know-note">Your consultants walk in to pre-qualified clients with context.</div>
+      </div>
+      <div class="know-card reveal">
+        <div class="know-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+        <h3>Multilingual — Your Client Demographics</h3>
+        <ul class="know-list">
+          <li><span class="know-dot"></span>Mandarin &amp; Cantonese</li>
+          <li><span class="know-dot"></span>Hindi &amp; Punjabi</li>
+          <li><span class="know-dot"></span>Tagalog (Filipino)</li>
+          <li><span class="know-dot"></span>Vietnamese</li>
+          <li><span class="know-dot"></span>Arabic</li>
+          <li><span class="know-dot"></span>English (Australian)</li>
+        </ul>
+        <div class="know-note">Emma detects language and responds naturally — no extra setup.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PROBLEM ── -->
+<section class="problem">
+  <div class="container">
+    <div class="problem-hd reveal">
+      <div class="tag">The Real Cost of Missed Calls</div>
+      <h2>Your phone rings after hours.<br>No one answers. They call the next firm.</h2>
+      <p>Migration clients are anxious. Visa deadlines don't move. If they can't reach you within minutes, they don't wait.</p>
+    </div>
+    <div class="prob-grid">
+      <div class="prob-card reveal">
+        <div class="prob-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+        <h3>After-hours enquiries go nowhere</h3>
+        <p>Most migration enquiries come in after 5:30 PM and on weekends — especially from clients who are still working full-time. Your office is closed. Their anxiety isn't.</p>
+        <div class="prob-stat">Over 60% of first-contact calls happen outside business hours</div>
+      </div>
+      <div class="prob-card reveal">
+        <div class="prob-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <h3>Agents are too busy to answer</h3>
+        <p>When consultants are in visa interviews or client meetings, every ringing phone is a lost lead. No one can be in two places at once.</p>
+        <div class="prob-stat">Each missed call = a potential $400–$8,000+ case lost</div>
+      </div>
+      <div class="prob-card reveal">
+        <div class="prob-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="1" y="3" width="15" height="13" rx="2"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>
+        <h3>Repetitive calls drain your team</h3>
+        <p>The same questions — "Am I eligible?", "How long does it take?", "What are your fees?" — answered dozens of times a week by skilled agents doing admin work.</p>
+        <div class="prob-stat">Agents lose 12–18 hours/week to routine phone admin</div>
+      </div>
+    </div>
+    <div class="prob-bottom reveal">
+      <div class="prob-big">30–40%</div>
+      <p>of inbound calls to migration firms go unanswered. At an average case value of <strong>$4,500 per client</strong>, that's revenue quietly walking out the door every day. <strong>Emma closes that gap.</strong></p>
+    </div>
+  </div>
+</section>
+
+<!-- ── ROI ── -->
+<section class="roi" id="roi">
+  <div class="container">
+    <div class="roi-hd reveal">
+      <div class="tag">Return on Investment</div>
+      <h2>Emma costs less than one<br>missed consultation.</h2>
+      <p>For a firm like Wealth Australia Migration, the maths are impossible to ignore.</p>
+    </div>
+    <div class="roi-grid">
+      <div class="roi-stats">
+        <div class="roi-stat reveal">
+          <div class="roi-ico" style="background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.2)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2"><line x1="12" y1="2" x2="12" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+          <div><div class="roi-num" data-target="52000" data-prefix="$">$0</div><div class="roi-lbl">Saved per year vs. a full-time receptionist</div></div>
+        </div>
+        <div class="roi-stat reveal">
+          <div class="roi-ico" style="background:rgba(232,160,32,.1);border:1px solid rgba(232,160,32,.22)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#e8a020" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+          <div><div class="roi-num" data-target="15">0</div><div class="roi-lbl">New consultations captured per month (est.)</div></div>
+        </div>
+        <div class="roi-stat reveal">
+          <div class="roi-ico" style="background:rgba(0,207,255,.1);border:1px solid rgba(0,207,255,.2)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00cfff" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+          <div><div class="roi-num" data-target="6750" data-prefix="$">$0</div><div class="roi-lbl">Additional monthly revenue recovered</div></div>
+        </div>
+        <div class="roi-stat reveal">
+          <div class="roi-ico" style="background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.2)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+          <div><div class="roi-num" data-target="20" data-suffix="+ hrs">0</div><div class="roi-lbl">Agent hours freed from routine call admin each week</div></div>
+        </div>
+      </div>
+      <div class="roi-card reveal">
+        <h3>Emma vs. Hiring a Receptionist</h3>
+        <div class="roi-row roi-bad"><span class="roi-row-l">Full-time receptionist (AUS award wage)</span><span class="roi-row-v">$54,000 / yr</span></div>
+        <div class="roi-row roi-bad"><span class="roi-row-l">Superannuation (11.5%)</span><span class="roi-row-v">$6,210 / yr</span></div>
+        <div class="roi-row roi-bad"><span class="roi-row-l">Recruitment &amp; onboarding</span><span class="roi-row-v">$3,500+</span></div>
+        <div class="roi-row roi-bad"><span class="roi-row-l">Training, sick days, annual leave</span><span class="roi-row-v">$4,000+</span></div>
+        <div class="roi-row roi-good"><span class="roi-row-l">Emma — Professional Plan</span><span class="roi-row-v">$249 / mo</span></div>
+        <div class="roi-save">
+          <div class="roi-save-n">$52,000+</div>
+          <div class="roi-save-l">saved every year — on staffing alone</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── HOW IT WORKS ── -->
+<section class="how">
+  <div class="container">
+    <div class="how-hd reveal">
+      <div class="tag" style="justify-content:center">How It Works</div>
+      <h2>We've already done<br>the heavy lifting.</h2>
+      <p>Emma can be live for Wealth Australia Migration in under 24 hours.</p>
+    </div>
+    <div class="steps">
+      <div class="step reveal">
+        <div class="step-n">01</div>
+        <h3>We review your practice together</h3>
+        <p>A 30-minute onboarding call. We walk through your visa services, fees, team availability, and how you'd like clients handled. You approve everything before Emma goes live.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-n">02</div>
+        <h3>Emma is configured &amp; live</h3>
+        <p>We train Emma on your specifics. She's connected to your calendar and phone number within 24 hours. No IT team or technical knowledge needed.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-n">03</div>
+        <h3>Your calendar fills itself</h3>
+        <p>Your consultants focus on cases. Emma handles every call, books every consultation, sends SMS confirmations automatically. You check the dashboard each morning.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PRICING ── -->
+<section class="pricing" id="pricing">
+  <div class="container">
+    <div class="pricing-hd reveal">
+      <div class="tag" style="justify-content:center">Packages</div>
+      <h2>A plan built for<br>where you are now.</h2>
+      <p>No setup fees. No lock-in contracts. Scale up as you grow.</p>
+    </div>
+    <div class="plans">
+      <div class="plan reveal">
+        <div class="plan-name">Starter</div>
+        <div class="plan-price"><span class="plan-amt">$149</span><span class="plan-per">/month</span></div>
+        <p class="plan-desc">Capture after-hours enquiries and reduce voicemail drop-offs from day one.</p>
+        <ul class="plan-list">
+          <li><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Up to 80 calls / month</li>
+          <li><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>24/7 call answering</li>
+          <li><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Consultation booking</li>
+          <li><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Email confirmations</li>
+          <li><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>1 agent / 1 location</li>
+          <li><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Email support</li>
+        </ul>
+        <a href="#book" class="plan-cta plan-cta-out">Book a Demo</a>
+      </div>
+      <div class="plan plan-feat reveal">
+        <div class="plan-badge">Recommended for WAM</div>
+        <div class="plan-name">Professional</div>
+        <div class="plan-price"><span class="plan-amt">$249</span><span class="plan-per">/month</span></div>
+        <p class="plan-desc">The complete Emma experience — SMS, multilingual, calendar sync, and analytics.</p>
+        <ul class="plan-list">
+          <li><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Up to 300 calls / month</li>
+          <li><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Everything in Starter</li>
+          <li><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>SMS confirmations &amp; reminders</li>
+          <li><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Google Calendar / Calendly sync</li>
+          <li><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Multilingual (Mandarin, Hindi, Tagalog…)</li>
+          <li><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Call analytics dashboard</li>
+          <li><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Priority support</li>
+        </ul>
+        <a href="#book" class="plan-cta plan-cta-gold">Book a Demo</a>
+      </div>
+      <div class="plan reveal">
+        <div class="plan-name">Enterprise</div>
+        <div class="plan-price"><span class="plan-amt">$499</span><span class="plan-per">/month</span></div>
+        <p class="plan-desc">For high-volume practices with multiple agents, locations, or CRM requirements.</p>
+        <ul class="plan-list">
+          <li><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Unlimited calls</li>
+          <li><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Everything in Professional</li>
+          <li><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Custom AI voice &amp; persona</li>
+          <li><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>CRM integration (HubSpot, Salesforce)</li>
+          <li><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Multi-agent call routing</li>
+          <li><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Dedicated account manager</li>
+        </ul>
+        <a href="#book" class="plan-cta plan-cta-out">Book a Demo</a>
+      </div>
+    </div>
+    <p style="text-align:center;margin-top:1.6rem;font-size:.76rem;color:var(--muted)">All plans include full setup &nbsp;·&nbsp; No credit card required &nbsp;·&nbsp; Cancel anytime</p>
+  </div>
+</section>
+
+<!-- ── CTA ── -->
+<section class="cta-sec" id="book">
+  <div class="container">
+    <div class="cta-card reveal">
+      <div class="tag" style="justify-content:center;margin-bottom:.9rem">The next step</div>
+      <h2>Emma is ready.<br>When should she start?</h2>
+      <p>Leave your details and we'll set up a free 30-minute call — we'll show you exactly how Emma will work for Wealth Australia Migration, answer every question, and if you're happy, have her live before the week is out.</p>
+      <form class="cta-form" onsubmit="handleSubmit(event)">
+        <input type="text"  placeholder="Your name" required>
+        <input type="tel"   placeholder="Best phone number" required>
+        <input type="email" placeholder="Email address" required>
+        <select required>
+          <option value="" disabled selected>What's your biggest challenge right now?</option>
+          <option>Missing calls after hours</option>
+          <option>Admin taking too much agent time</option>
+          <option>Want to reduce staffing costs</option>
+          <option>Need to handle more enquiry volume</option>
+          <option>All of the above</option>
+        </select>
+        <button type="submit" class="btn-gold" style="justify-content:center;border:none;cursor:pointer;width:100%;padding:14px">
+          Book My Free Demo
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
+        </button>
+      </form>
+      <p class="cta-privacy">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        In touch within 1 business day. No spam, no pressure.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="foot-in">
+    <p>Built by <a href="#">anupama.dev</a> — prepared exclusively for Wealth Australia Migration</p>
+    <p>Questions? <a href="mailto:hello@anupama.dev">hello@anupama.dev</a></p>
+  </div>
+</footer>
+
+<!-- VAPI SDK -->
+<script src="vapi-sdk.js"></script>
+
+<script>
+/* ── PARTICLES ── */
+(function(){
+  const canvas=document.getElementById('ep-canvas'),wrap=canvas.parentElement,ctx=canvas.getContext('2d');
+  let W,H,pts=[];
+  function resize(){W=canvas.width=wrap.offsetWidth;H=canvas.height=wrap.offsetHeight;}
+  resize();window.addEventListener('resize',resize);
+  const COLS=['rgba(0,207,255,','rgba(232,160,32,','rgba(124,58,237,'];
+  function spawn(){const a=Math.random()*Math.PI*2,r=80+Math.random()*125;return{x:W/2+Math.cos(a)*r,y:H/2+Math.sin(a)*r,r:1+Math.random()*2.2,vx:(Math.random()-.5)*.32,vy:(Math.random()-.5)*.32,life:1,decay:.003+Math.random()*.006,col:COLS[Math.floor(Math.random()*COLS.length)]};}
+  for(let i=0;i<60;i++)pts.push(spawn());
+  (function draw(){ctx.clearRect(0,0,W,H);for(let i=pts.length-1;i>=0;i--){const p=pts[i];p.x+=p.vx;p.y+=p.vy;p.life-=p.decay;if(p.life<=0){pts.splice(i,1);pts.push(spawn());continue;}ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=p.col+p.life.toFixed(2)+')';ctx.fill();}requestAnimationFrame(draw);})();
+})();
+
+/* ── REVEAL ── */
+const revObs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');});},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>revObs.observe(el));
+
+/* ── ROI COUNTERS ── */
+function animNum(el){
+  const t=parseInt(el.dataset.target,10),pre=el.dataset.prefix||'',suf=el.dataset.suffix||'';
+  const steps=1800/16;let cur=0,inc=t/steps;
+  const iv=setInterval(()=>{cur=Math.min(cur+inc,t);const v=Math.round(cur);el.textContent=pre+(t>=1000?v.toLocaleString():v)+suf;if(cur>=t)clearInterval(iv);},16);
+}
+const cObs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){animNum(x.target);cObs.unobserve(x.target);}});},{threshold:.5});
+document.querySelectorAll('[data-target]').forEach(el=>cObs.observe(el));
+
+/* ── ANIMATED TRANSCRIPT ── */
+const TX=[
+  {role:'emma',  delay:500,  text:'Thank you for calling Wealth Australia Migration, this is Emma! How can I help you with your visa enquiry today?'},
+  {role:'caller',delay:2400, text:"Hi, I'm on a 485 graduate visa and it expires in 4 months. I'm not sure what my options are..."},
+  {role:'emma',  delay:4600, text:"Of course — four months is plenty of time to explore your pathways. Based on your 485, you may be eligible for the Skilled Independent 189, State Nominated 190, or an Employer Sponsored 482. Could I ask what your occupation is?"},
+  {role:'caller',delay:7600, text:"I'm a registered nurse. I've been working at a hospital in Sydney."},
+  {role:'emma',  delay:9500, text:"Wonderful — nursing is on the skilled occupation list with a strong points profile. I'd love to connect you with one of our registered migration agents for a proper assessment. Would Thursday at 10 AM or Friday at 2 PM work for you?"},
+  {role:'caller',delay:12600,text:"Thursday at 10 works perfectly, thank you!"},
+  {role:'emma',  delay:14400,text:"Booked! You'll receive a confirmation SMS shortly. Is there anything else I can help you with today?"},
+];
+let txPlaying=false,txTimers=[];
+function clearTx(){txTimers.forEach(t=>clearTimeout(t));txTimers=[];document.getElementById('tx-log').innerHTML='';txPlaying=false;}
+function playTx(){
+  if(txPlaying)return;txPlaying=true;
+  const log=document.getElementById('tx-log');log.innerHTML='';
+  TX.forEach((m,i)=>{
+    const t=setTimeout(()=>{
+      const tw=log.querySelector('.tx-typing');if(tw)tw.remove();
+      const el=document.createElement('div');el.className='log-msg '+m.role;
+      el.innerHTML=`<div class="log-avatar ${m.role==='emma'?'emma-av':'caller-av'}">${m.role==='emma'?'E':'C'}</div><div class="log-body"><div class="log-who">${m.role==='emma'?'Emma · Wealth Australia Migration':'Caller'}</div><div class="log-bubble ${m.role==='emma'?'emma-bub':'caller-bub'}">${m.text}</div></div>`;
+      log.appendChild(el);requestAnimationFrame(()=>el.classList.add('show'));log.scrollTop=log.scrollHeight;
+      if(i<TX.length-1&&TX[i+1].role==='emma'){
+        const tt=setTimeout(()=>{const d=document.createElement('div');d.className='log-msg emma tx-typing';d.innerHTML=`<div class="log-avatar emma-av">E</div><div class="log-body"><div class="log-bubble emma-bub" style="padding:0"><div class="log-typing"><span></span><span></span><span></span></div></div></div>`;log.appendChild(d);requestAnimationFrame(()=>d.classList.add('show'));log.scrollTop=log.scrollHeight;},300);
+        txTimers.push(tt);
+      }
+    },m.delay);txTimers.push(t);
+  });
+  const done=setTimeout(()=>{txPlaying=false;},TX[TX.length-1].delay+1200);txTimers.push(done);
+}
+const txObs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting&&!txPlaying){clearTx();setTimeout(playTx,400);}});},{threshold:.3});
+const txBox=document.querySelector('.tx-box');if(txBox)txObs.observe(txBox);
+document.getElementById('tx-replay').addEventListener('click',()=>{clearTx();setTimeout(playTx,200);});
+
+/* ── EMMA ANIMATOR (lip-sync + gaze + states) ── */
+class EmmaAnimator {
+  constructor() {
+    this.jaw = 0; this.jawTarget = 0;
+    this.gazeX = 0; this.gazeY = 0;
+    this.gazeTargetX = 0; this.gazeTargetY = 0;
+    this.gazeTimer = 2;
+    this.state = 'idle';
+    this.time = 0;
+    this.raf = null;
+
+    this.jawGroup   = document.getElementById('emma-jaw-g');
+    this.innerMouth = document.getElementById('emma-inner-mouth');
+    this.teeth      = document.getElementById('emma-teeth');
+    this.pupilL     = document.getElementById('emma-pupil-l');
+    this.pupilR     = document.getElementById('emma-pupil-r');
+    this.portrait   = document.querySelector('.e-portrait-wrap');
+    this.halo       = document.querySelector('.e-halo');
+
+    this._tick = this._tick.bind(this);
+  }
+
+  _tick() {
+    const dt = 0.016;
+    this.time += dt;
+
+    // Smooth jaw interpolation
+    this.jaw += (this.jawTarget - this.jaw) * 0.22;
+
+    // Smooth gaze
+    this.gazeX += (this.gazeTargetX - this.gazeX) * 0.07;
+    this.gazeY += (this.gazeTargetY - this.gazeY) * 0.07;
+
+    // Idle: slow eye wander
+    if (this.state === 'idle') {
+      this.gazeTimer -= dt;
+      if (this.gazeTimer <= 0) {
+        this.gazeTargetX = (Math.random() - 0.5) * 0.9;
+        this.gazeTargetY = (Math.random() - 0.5) * 0.6;
+        this.gazeTimer = 1.8 + Math.random() * 3.2;
+      }
+      this.jawTarget *= 0.85;
+    }
+
+    // Head bob while speaking (subtle, driven by jaw amplitude)
+    if (this.state === 'speaking' && this.portrait && this.jaw > 0.05) {
+      const bob  = Math.sin(this.time * 4.2) * this.jaw * 1.8;
+      const sway = Math.sin(this.time * 2.1) * this.jaw * 0.9;
+      this.portrait.style.transform = `translate(${sway.toFixed(2)}px, ${bob.toFixed(2)}px)`;
+    } else if (this.portrait && this.jaw < 0.02) {
+      this.portrait.style.transform = '';
+    }
+
+    this._applyJaw(this.jaw);
+    this._applyGaze(this.gazeX, this.gazeY);
+    this.raf = requestAnimationFrame(this._tick);
+  }
+
+  _applyJaw(v) {
+    const drop = v * 13;
+    const ry   = 1 + v * 6.5;
+    if (this.jawGroup)   this.jawGroup.setAttribute('transform', `translate(0,${drop.toFixed(2)})`);
+    if (this.innerMouth) {
+      this.innerMouth.setAttribute('ry', ry.toFixed(2));
+      this.innerMouth.setAttribute('cy', (158 + ry * 0.85).toFixed(2));
+    }
+    if (this.teeth) this.teeth.setAttribute('opacity', Math.max(0, Math.min(1, v * 3 - 0.15)).toFixed(2));
+  }
+
+  _applyGaze(gx, gy) {
+    const mx = 2.5, my = 1.5;
+    if (this.pupilL) {
+      this.pupilL.setAttribute('cx', (78  + gx * mx).toFixed(2));
+      this.pupilL.setAttribute('cy', (110 + gy * my).toFixed(2));
+    }
+    if (this.pupilR) {
+      this.pupilR.setAttribute('cx', (122 + gx * mx).toFixed(2));
+      this.pupilR.setAttribute('cy', (110 + gy * my).toFixed(2));
+    }
+  }
+
+  setVolume(v) {
+    // VAPI volume-level is 0–1 but usually quiet — amplify
+    this.jawTarget = Math.min(1, v * 3.2);
+  }
+
+  setState(s) {
+    this.state = s;
+    if (s === 'listening') {
+      this.gazeTargetX = 0; this.gazeTargetY = -0.4;
+      if (this.halo) this.halo.style.background =
+        'radial-gradient(ellipse at 50% 50%, rgba(0,207,255,.28) 0%, transparent 70%)';
+    } else if (s === 'speaking') {
+      this.gazeTargetX = 0; this.gazeTargetY = -0.2;
+      if (this.halo) this.halo.style.background =
+        'radial-gradient(ellipse at 50% 50%, rgba(0,207,255,.22) 0%, transparent 70%)';
+    } else {
+      this.gazeTargetX = 0; this.gazeTargetY = 0;
+      if (this.halo) this.halo.style.background = '';
+    }
+  }
+
+  start() { if (!this.raf) this.raf = requestAnimationFrame(this._tick); }
+
+  reset() {
+    this.jawTarget = 0;
+    this.setState('idle');
+    if (this.portrait) this.portrait.style.transform = '';
+  }
+}
+const emmaAnim = new EmmaAnimator();
+emmaAnim.start();
+
+/* ── RECEPTIONIST AVATAR ANIMATOR ── */
+class ReceptionistAnimator {
+  constructor() {
+    this.jaw = 0; this.jawTarget = 0;
+    this.gazeX = 0; this.gazeY = 0;
+    this.gazeTargetX = 0; this.gazeTargetY = 0;
+    this.gazeTimer = 2.5;
+    this.state = 'idle';
+    this.time = 0;
+    this.raf = null;
+
+    this.svg       = document.getElementById('rcp-svg');
+    this.jawGroup  = document.getElementById('rcp-jaw-g');
+    this.inner     = document.getElementById('rcp-inner-mouth');
+    this.teeth     = document.getElementById('rcp-teeth');
+    this.pupilL    = document.getElementById('rcp-pupil-l');
+    this.pupilR    = document.getElementById('rcp-pupil-r');
+    this.micGlow   = document.getElementById('rcp-mic-glow');
+    this.ledGlow   = document.getElementById('rcp-led-glow');
+    this.label     = document.querySelector('.rcp-label');
+
+    this._tick = this._tick.bind(this);
+  }
+
+  _tick() {
+    const dt = 0.016;
+    this.time += dt;
+    this.jaw  += (this.jawTarget - this.jaw) * 0.22;
+    this.gazeX += (this.gazeTargetX - this.gazeX) * 0.08;
+    this.gazeY += (this.gazeTargetY - this.gazeY) * 0.08;
+
+    if (this.state === 'idle') {
+      this.gazeTimer -= dt;
+      if (this.gazeTimer <= 0) {
+        this.gazeTargetX = (Math.random() - 0.5) * 0.7;
+        this.gazeTargetY = (Math.random() - 0.5) * 0.5;
+        this.gazeTimer = 2 + Math.random() * 3.5;
+      }
+      this.jawTarget *= 0.88;
+    } else if (this.state === 'ringing') {
+      // subtle "looking at phone" then back to camera
+      this.gazeTargetX = Math.sin(this.time * 1.2) * 0.3;
+      this.gazeTargetY = -0.2;
+    }
+
+    this._applyJaw(this.jaw);
+    this._applyGaze(this.gazeX, this.gazeY);
+
+    // Mic glow pulses gently when speaking
+    if (this.micGlow && this.state === 'speaking') {
+      this.micGlow.setAttribute('opacity', (0.5 + Math.sin(this.time * 8) * 0.3 * this.jaw).toFixed(2));
+    }
+
+    this.raf = requestAnimationFrame(this._tick);
+  }
+
+  _applyJaw(v) {
+    const drop = v * 11;
+    const ry   = 1 + v * 5.5;
+    if (this.jawGroup) this.jawGroup.setAttribute('transform', `translate(0,${drop.toFixed(2)})`);
+    if (this.inner)    { this.inner.setAttribute('ry', ry.toFixed(2)); this.inner.setAttribute('cy', (149 + ry * 0.8).toFixed(2)); }
+    if (this.teeth)    this.teeth.setAttribute('opacity', Math.max(0, Math.min(1, v * 3 - 0.15)).toFixed(2));
+  }
+
+  _applyGaze(gx, gy) {
+    const mx = 2, my = 1.2;
+    if (this.pupilL) { this.pupilL.setAttribute('cx', (82  + gx * mx).toFixed(2)); this.pupilL.setAttribute('cy', (101 + gy * my).toFixed(2)); }
+    if (this.pupilR) { this.pupilR.setAttribute('cx', (118 + gx * mx).toFixed(2)); this.pupilR.setAttribute('cy', (101 + gy * my).toFixed(2)); }
+  }
+
+  setVolume(v) { this.jawTarget = Math.min(1, v * 3.2); }
+
+  setState(s) {
+    this.state = s;
+    if (this.svg) this.svg.setAttribute('class', `rcp-svg rcp-state-${s}`);
+    const labelStates = { idle:'Emma · Online', ringing:'Emma · Calling…', connecting:'Emma · Connecting…', active:'Emma · In Call', speaking:'Emma · Speaking', listening:'Emma · Listening', ended:'Emma · Call ended' };
+    if (this.label) {
+      const dot = this.label.querySelector('.rcp-label-dot');
+      if (dot) dot.style.background = s==='ringing'||s==='connecting'?'var(--gold)' : s==='ended'?'var(--muted)' : 'var(--green)';
+      if (dot) dot.style.boxShadow  = s==='ringing'||s==='connecting'?'0 0 6px var(--gold)' : s==='ended'?'none' : '0 0 6px var(--green)';
+    }
+    if (this.label) { const t = this.label.childNodes[1]; if(t) t.textContent = ' '+(labelStates[s]||'Emma'); }
+    // Gaze targets
+    const gazeMap = { idle:[0,0], ringing:[0.2,-0.3], connecting:[0,-0.2], active:[0,-0.3], speaking:[0,-0.15], listening:[0,-0.35], ended:[0,0.1] };
+    const g = gazeMap[s] || [0,0];
+    this.gazeTargetX = g[0]; this.gazeTargetY = g[1];
+  }
+
+  start() { if (!this.raf) this.raf = requestAnimationFrame(this._tick); }
+
+  reset() {
+    this.jawTarget = 0;
+    if (this.micGlow) this.micGlow.setAttribute('opacity','0');
+    this.setState('idle');
+  }
+}
+const rcpAnim = new ReceptionistAnimator();
+rcpAnim.start();
+
+/* ── ANIMATION TEST (no mic / VAPI needed) ── */
+(function(){
+  const btn = document.getElementById('anim-test-btn');
+  if (!btn) return;
+
+  let testRaf = null;
+  let testTime = 0;
+  let running = false;
+
+  // Simulated speech envelope: bursts of talking with natural pauses
+  function speechEnvelope(t) {
+    // Multiple overlapping sine waves + noise bursts to feel like real speech rhythm
+    const burst1 = Math.max(0, Math.sin(t * 3.7) * 0.8 + Math.sin(t * 7.1) * 0.3);
+    const burst2 = Math.max(0, Math.sin(t * 2.3 + 1.2) * 0.6 + Math.sin(t * 5.5) * 0.2);
+    const pause  = (Math.sin(t * 0.8) > 0.3) ? 1 : 0.05; // natural pauses
+    return Math.max(0, Math.min(1, (burst1 * 0.55 + burst2 * 0.45) * pause));
+  }
+
+  function tick() {
+    testTime += 0.018;
+    const vol = speechEnvelope(testTime);
+    emmaAnim.setVolume(vol);
+    rcpAnim.setVolume(vol);
+    const s = vol > 0.12 ? 'speaking' : 'listening';
+    emmaAnim.setState(s);
+    rcpAnim.setState(s);
+    testRaf = requestAnimationFrame(tick);
+  }
+
+  function stop() {
+    cancelAnimationFrame(testRaf);
+    testRaf = null;
+    running = false;
+    emmaAnim.reset();
+    rcpAnim.reset();
+    btn.textContent = 'Preview animation — no mic needed';
+    btn.classList.remove('running');
+  }
+
+  btn.addEventListener('click', () => {
+    if (running) { stop(); return; }
+    running = true;
+    testTime = Math.random() * 10; // start mid-phrase so it's not always the same
+    btn.textContent = 'Stop preview';
+    btn.classList.add('running');
+    tick();
+    // Auto-stop after 20 seconds
+    setTimeout(() => { if (running) stop(); }, 20000);
+  });
+})();
+
+/* ── VAPI LIVE DEMO ── */
+(function(){
+  const startBtn    = document.getElementById('demo-start-btn');
+  const cuiLog      = document.getElementById('cui-log');
+  const cuiEmpty    = document.getElementById('cui-empty');
+  const statusText  = document.getElementById('cui-status-text');
+  const statusSub   = document.getElementById('cui-status-sub');
+  const cuiWave     = document.getElementById('cui-wave');
+  const cuiTimer    = document.getElementById('cui-timer');
+  const muteBtn     = document.getElementById('cui-mute');
+
+  const LIMIT   = 90;
+  const CAP     = 3;
+  const SKEY    = 'emma-wam-demo';
+
+  function getUsage(){try{const r=localStorage.getItem(SKEY),d=r?JSON.parse(r):{};const today=new Date().toDateString();if(d.date!==today)return{date:today,count:0};return d;}catch{return{date:new Date().toDateString(),count:0};}}
+  function incUsage(){const u=getUsage();u.count++;try{localStorage.setItem(SKEY,JSON.stringify(u));}catch{}}
+  function isCapped(){return getUsage().count>=CAP;}
+
+  let vapi=null,assistantId=null,callActive=false,muted=false;
+  let timerSecs=0,timerIv=null,limitTo=null;
+  let curBubble=null,curRole=null;
+
+  function fmt(s){return`${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;}
+
+  function setWave(on){cuiWave.className='cui-wave'+(on?' active':'');}
+
+  function addBubble(role,text){
+    if(cuiEmpty)cuiEmpty.style.display='none';
+    const el=document.createElement('div');el.className='log-msg '+role;
+    el.innerHTML=`<div class="log-avatar ${role==='emma'?'emma-av':'caller-av'}">${role==='emma'?'E':'Y'}</div><div class="log-body"><div class="log-who">${role==='emma'?'Emma · Wealth Australia Migration':'You'}</div><div class="log-bubble ${role==='emma'?'emma-bub':'caller-bub'}">${text}</div></div>`;
+    cuiLog.appendChild(el);requestAnimationFrame(()=>el.classList.add('show'));cuiLog.scrollTop=cuiLog.scrollHeight;return el;
+  }
+  function updateBubble(el,text){const b=el.querySelector('.log-bubble');if(b)b.textContent=text;cuiLog.scrollTop=cuiLog.scrollHeight;}
+
+  function resetCall(){
+    clearInterval(timerIv);clearTimeout(limitTo);
+    timerIv=null;timerSecs=0;
+    cuiLog.innerHTML='';if(cuiEmpty){cuiEmpty.style.display='';cuiLog.appendChild(cuiEmpty);}
+    statusText.textContent='Ready — click below to begin';
+    statusSub.textContent='Emma is ready to answer';
+    cuiTimer.textContent='0:00';
+    setWave(false);callActive=false;muted=false;curBubble=null;curRole=null;
+    muteBtn.classList.remove('muted');muteBtn.style.display='none';
+  }
+
+  function endCall(msg){
+    clearInterval(timerIv);clearTimeout(limitTo);
+    statusText.textContent=msg;statusSub.textContent='Call ended';
+    setWave(false);callActive=false;curBubble=null;curRole=null;
+    startBtn.innerHTML=`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg> Try Again`;
+    startBtn.classList.remove('ending');startBtn.disabled=false;muteBtn.style.display='none';
+  }
+
+  async function initVapi(){
+    if(vapi)return true;
+    if(!window.Vapi||!window.Vapi.default){
+      statusText.textContent='VAPI SDK not loaded — open via netlify dev, not file://';
+      startBtn.disabled=false;
+      return false;
+    }
+    try{
+      const res=await fetch('/.netlify/functions/vapi-emma-config');
+      if(!res.ok) throw new Error(`Config endpoint returned ${res.status} — run: npx netlify dev`);
+      const data=await res.json();
+      if(!data.publicKey)  throw new Error('VAPI_PUBLIC_KEY missing from .env');
+      if(!data.assistantId)throw new Error('VAPI_EMMA_ASSISTANT_ID missing from .env');
+      vapi=new window.Vapi.default(data.publicKey);
+      assistantId=data.assistantId;
+
+      vapi.on('call-start',()=>{
+        callActive=true;incUsage();
+        emmaAnim.setState('listening');
+        rcpAnim.setState('active');
+        statusText.textContent='Connected — say hello!';
+        statusSub.textContent='Emma is listening...';
+        muteBtn.style.display='flex';
+        timerIv=setInterval(()=>{timerSecs++;const rem=LIMIT-timerSecs;cuiTimer.textContent=rem>10?fmt(timerSecs):`0:${String(rem).padStart(2,'0')} ⏱`;},1000);
+        limitTo=setTimeout(()=>{vapi.say("Thanks so much for trying Emma! That's our demo time for today — feel free to book a free consultation with Anupama to see the full experience. Have a great day!",true);},LIMIT*1000);
+        startBtn.innerHTML=`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> End Call`;
+        startBtn.classList.add('ending');startBtn.disabled=false;
+      });
+      vapi.on('speech-start',()=>{setWave(true);statusText.textContent='Emma is speaking...';emmaAnim.setState('speaking');rcpAnim.setState('speaking');});
+      vapi.on('speech-end', ()=>{setWave(false);statusText.textContent='Emma is listening...';emmaAnim.setState('listening');emmaAnim.jawTarget=0;rcpAnim.setState('listening');rcpAnim.jawTarget=0;});
+      vapi.on('volume-level',(level)=>{ if(callActive){emmaAnim.setVolume(level);rcpAnim.setVolume(level);} });
+      vapi.on('message',(msg)=>{
+        if(msg.type!=='transcript')return;
+        const role=msg.role==='assistant'?'emma':'caller';
+        const text=(msg.transcript||'').trim();if(!text)return;
+        if(!curBubble||curRole!==role){curBubble=addBubble(role,text);curRole=role;}
+        else{updateBubble(curBubble,text);}
+        if(msg.transcriptType==='final'){curBubble=null;curRole=null;}
+      });
+      vapi.on('call-end',()=>{emmaAnim.reset();rcpAnim.setState('ended');setTimeout(()=>rcpAnim.reset(),3000);endCall('Call ended — hope that was impressive!');});
+      vapi.on('error',()=>{emmaAnim.reset();rcpAnim.reset();endCall('Something went wrong — try again');});
+      return true;
+    }catch(err){
+      console.error('[Emma VAPI]', err);
+      statusText.textContent=err.message||'Could not connect — check console';
+      startBtn.disabled=false;
+      startBtn.innerHTML=`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg> Retry`;
+      return false;
+    }
+  }
+
+  if(isCapped()){startBtn.disabled=true;startBtn.innerHTML='Demo limit reached for today — come back tomorrow';statusText.textContent='Come back tomorrow to try again!';}
+
+  startBtn.addEventListener('click',async()=>{
+    if(callActive){vapi.stop();return;}
+    if(isCapped()){statusText.textContent='Daily demo limit reached.';return;}
+    resetCall();
+    startBtn.disabled=true;
+    startBtn.innerHTML=`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> Connecting...`;
+    rcpAnim.setState('ringing');
+    statusText.textContent='Connecting to Emma...';statusSub.textContent='Allow microphone access when prompted';
+    const ok=await initVapi();
+    if(ok) rcpAnim.setState('connecting');
+    if(ok) vapi.start(assistantId,{
+      assistantOverrides:{
+        firstMessage:"Thank you for calling Wealth Australia Migration, this is Emma speaking! How can I help you with your visa enquiry today?"
+      }
+    });
+  });
+
+  muteBtn.addEventListener('click',()=>{
+    if(!vapi)return;muted=!muted;vapi.setMuted(muted);
+    muteBtn.classList.toggle('muted',muted);
+  });
+})();
+
+/* ── FORM ── */
+function handleSubmit(e){
+  e.preventDefault();
+  const btn=e.target.querySelector('button[type=submit]');
+  btn.textContent="Request received — we'll be in touch very soon!";
+  btn.style.background='linear-gradient(135deg,#22c55e,#16a34a)';
+  btn.style.boxShadow='0 0 22px rgba(34,197,94,.4)';
+  btn.disabled=true;
+}
+</script>
+</body>
+</html>
