@@ -216,6 +216,61 @@
     .e-wave span:nth-child(5){height:5px;animation-delay:.6s}
     @keyframes wave{0%,100%{transform:scaleY(.3)}50%{transform:scaleY(1)}}
 
+    /* ── HUB DIAGRAM ── */
+    .hub-diagram { display: flex; justify-content: center; padding: 8px 0 32px; }
+    .hub-svg { width: 100%; max-width: 600px; height: auto; }
+    @media (max-width: 600px) {
+      .hub-svg { max-width: 340px; }
+    }
+
+    /* ── POST-DEMO CTA ── */
+    .post-demo-cta {
+      background: var(--bg); position: relative;
+      padding: 80px 0;
+    }
+    .post-demo-cta::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--cyan-d), transparent);
+    }
+    .pdc-inner {
+      max-width: 680px; margin: 0 auto;
+      display: flex; flex-direction: column; align-items: center;
+      text-align: center; gap: 24px;
+    }
+    .pdc-badge {
+      display: inline-flex; align-items: center; gap: 7px;
+      font-size: .72rem; font-weight: 700; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--green);
+      background: rgba(34,197,94,.08); border: 1px solid rgba(34,197,94,.2);
+      padding: 5px 14px; border-radius: 100px;
+    }
+    .pdc-inner h2 { font-size: clamp(1.8rem, 3.5vw, 2.6rem); color: #fff; }
+    .pdc-inner > p { font-size: .95rem; color: var(--muted); max-width: 520px; line-height: 1.72; }
+    .pdc-steps {
+      display: flex; align-items: center; justify-content: center;
+      gap: 12px; flex-wrap: wrap; width: 100%; margin: 8px 0;
+    }
+    .pdc-step {
+      display: flex; align-items: flex-start; gap: 12px;
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: 12px; padding: 16px 18px; flex: 1; min-width: 160px; max-width: 200px;
+    }
+    .pdc-step-num {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--gold); color: #050810;
+      font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: .85rem;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .pdc-step-text { font-size: .8rem; color: var(--muted); line-height: 1.55; text-align: left; }
+    .pdc-step-text strong { color: #fff; display: block; margin-bottom: 2px; }
+    .pdc-step-arrow { font-size: 1.1rem; color: var(--gold); opacity: .5; flex-shrink: 0; }
+    .pdc-note { font-size: .72rem; color: rgba(255,255,255,.25); letter-spacing: .04em; margin-top: -8px; }
+    @media (max-width: 640px) {
+      .pdc-steps { flex-direction: column; align-items: stretch; }
+      .pdc-step { max-width: 100%; }
+      .pdc-step-arrow { transform: rotate(90deg); align-self: center; }
+    }
+
     /* ── LIVE DEMO SECTION ── */
     .demo-sec { background: var(--bg2); position: relative; overflow: hidden; }
     .demo-sec::before {
@@ -225,6 +280,190 @@
     .demo-sec::after {
       content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
       background: linear-gradient(90deg, transparent, var(--gold-b), transparent);
+    }
+
+    /* ── PHONE UI ── */
+    .phone-wrap {
+      display: flex; flex-direction: column; align-items: center;
+      gap: 32px;
+    }
+    .phone-intro { text-align: center; max-width: 520px; }
+    .phone-intro h2 { font-size: clamp(1.75rem, 3vw, 2.4rem); color: #fff; margin-bottom: .7rem; }
+    .phone-intro p  { font-size: .92rem; color: var(--muted); line-height: 1.7; }
+
+    .phone-shell {
+      width: 320px;
+      background: #0a0c14;
+      border-radius: 40px;
+      border: 1.5px solid rgba(255,255,255,.1);
+      box-shadow:
+        0 0 0 6px rgba(255,255,255,.03),
+        0 32px 80px rgba(0,0,0,.7),
+        inset 0 1px 0 rgba(255,255,255,.08);
+      overflow: hidden;
+      position: relative;
+    }
+    /* side buttons */
+    .phone-shell::before {
+      content: '';
+      position: absolute; left: -3px; top: 100px;
+      width: 3px; height: 56px;
+      background: rgba(255,255,255,.08);
+      border-radius: 2px 0 0 2px;
+    }
+    .phone-shell::after {
+      content: '';
+      position: absolute; right: -3px; top: 130px;
+      width: 3px; height: 36px;
+      background: rgba(255,255,255,.08);
+      border-radius: 0 2px 2px 0;
+    }
+
+    /* Status bar */
+    .phone-statusbar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 20px 0;
+      font-size: .6rem; font-weight: 600; color: rgba(255,255,255,.5);
+      letter-spacing: .04em;
+    }
+    .phone-statusbar-right { display: flex; align-items: center; gap: 5px; }
+    /* Dynamic island */
+    .phone-island {
+      width: 90px; height: 26px;
+      background: #000;
+      border-radius: 100px;
+      margin: 8px auto 0;
+    }
+
+    /* Screen body */
+    .phone-screen {
+      padding: 20px 20px 24px;
+      display: flex; flex-direction: column; align-items: center;
+      gap: 16px;
+    }
+
+    /* Contact area */
+    .phone-contact {
+      display: flex; flex-direction: column; align-items: center; gap: 10px;
+      text-align: center;
+    }
+    .phone-avatar {
+      width: 72px; height: 72px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #0c1830, #1a2a48);
+      border: 2px solid rgba(232,160,32,.3);
+      overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 0 24px rgba(232,160,32,.15);
+    }
+    .phone-avatar img {
+      width: 100%; height: 100%; object-fit: cover;
+      mix-blend-mode: screen;
+    }
+    .phone-contact-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: .95rem; font-weight: 700; color: #fff;
+      letter-spacing: -.01em; line-height: 1.2;
+    }
+    .phone-contact-label {
+      font-size: .68rem; color: var(--muted); letter-spacing: .05em;
+    }
+
+    /* Call status */
+    .phone-status {
+      font-size: .72rem; color: var(--gold);
+      font-weight: 600; letter-spacing: .06em;
+      text-transform: uppercase;
+      display: flex; align-items: center; gap: 7px;
+      min-height: 18px;
+    }
+    .phone-status-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--muted); flex-shrink: 0;
+    }
+    .phone-status-dot.active {
+      background: var(--green);
+      box-shadow: 0 0 6px var(--green);
+      animation: blink 1.5s infinite;
+    }
+
+    /* Wave */
+    .phone-wave {
+      display: flex; align-items: center; justify-content: center;
+      gap: 3px; height: 28px;
+    }
+    .phone-wave span {
+      display: block; width: 3px; border-radius: 3px;
+      background: var(--cyan); height: 4px; transition: height .1s;
+    }
+    .phone-wave.active span { animation: wave 1.3s ease-in-out infinite; }
+    .phone-wave.active span:nth-child(1){animation-delay:0s}
+    .phone-wave.active span:nth-child(2){animation-delay:.12s}
+    .phone-wave.active span:nth-child(3){animation-delay:.24s}
+    .phone-wave.active span:nth-child(4){animation-delay:.36s}
+    .phone-wave.active span:nth-child(5){animation-delay:.48s}
+    .phone-wave.active span:nth-child(6){animation-delay:.36s}
+    .phone-wave.active span:nth-child(7){animation-delay:.24s}
+
+    /* Transcript */
+    .phone-transcript {
+      width: 100%;
+      background: rgba(255,255,255,.03);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      min-height: 160px; max-height: 200px;
+      overflow-y: auto; padding: 12px;
+      display: flex; flex-direction: column; gap: 8px;
+      scrollbar-width: thin; scrollbar-color: rgba(232,160,32,.3) transparent;
+    }
+    .phone-transcript::-webkit-scrollbar { width: 4px; }
+    .phone-transcript::-webkit-scrollbar-thumb { background: rgba(232,160,32,.3); border-radius: 4px; }
+    .phone-transcript-empty {
+      flex: 1; display: flex; align-items: center; justify-content: center;
+      font-size: .72rem; color: var(--text-dim, #4b5563); text-align: center;
+      padding: 20px; line-height: 1.6;
+    }
+    .phone-timer {
+      font-size: .72rem; color: var(--muted);
+      font-variant-numeric: tabular-nums; letter-spacing: .04em;
+      min-height: 16px;
+    }
+
+    /* Call buttons */
+    .phone-btns {
+      display: flex; align-items: center; justify-content: center; gap: 20px;
+      padding: 4px 0 8px;
+    }
+    .phone-btn {
+      display: flex; flex-direction: column; align-items: center; gap: 5px;
+      background: none; border: none; cursor: pointer;
+      font-family: inherit;
+    }
+    .phone-btn-circle {
+      width: 52px; height: 52px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      transition: transform .15s, opacity .15s;
+    }
+    .phone-btn:hover .phone-btn-circle { transform: scale(1.07); }
+    .phone-btn:active .phone-btn-circle { transform: scale(.95); opacity: .85; }
+    .phone-btn-label {
+      font-size: .58rem; color: rgba(255,255,255,.45);
+      letter-spacing: .04em; text-transform: uppercase; font-weight: 500;
+    }
+
+    .phone-btn-call .phone-btn-circle  { background: #22c55e; box-shadow: 0 0 22px rgba(34,197,94,.45); }
+    .phone-btn-end  .phone-btn-circle  { background: #ef4444; box-shadow: 0 0 18px rgba(239,68,68,.35); }
+    .phone-btn-mute .phone-btn-circle  { background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.1); }
+    .phone-btn-mute.muted .phone-btn-circle { background: rgba(239,68,68,.15); border-color: rgba(239,68,68,.3); }
+    .phone-btn-mute svg { color: rgba(255,255,255,.7); }
+
+    .phone-btns-idle .phone-btn-end,
+    .phone-btns-idle .phone-btn-mute { display: none; }
+    .phone-btns-active .phone-btn-call { display: none; }
+
+    .phone-note {
+      font-size: .68rem; color: rgba(255,255,255,.25);
+      text-align: center; letter-spacing: .03em;
     }
     .demo-in {
       display: grid; grid-template-columns: 1fr 1.1fr; gap: 56px; align-items: start;
@@ -284,10 +523,12 @@
     .cui-log {
       padding: 16px 18px; min-height: 240px; max-height: 280px;
       overflow-y: auto; display: flex; flex-direction: column; gap: 12px;
+      scrollbar-width: thin; scrollbar-color: rgba(232,160,32,.35) transparent;
     }
-    .cui-log::-webkit-scrollbar { width: 4px; }
+    .cui-log::-webkit-scrollbar { width: 5px; }
     .cui-log::-webkit-scrollbar-track { background: transparent; }
-    .cui-log::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+    .cui-log::-webkit-scrollbar-thumb { background: rgba(232,160,32,.35); border-radius: 4px; }
+    .cui-log::-webkit-scrollbar-thumb:hover { background: rgba(232,160,32,.6); }
 
     .cui-empty {
       flex: 1; display: flex; flex-direction: column;
@@ -458,7 +699,15 @@
     .tx-sub  { font-size: .68rem; color: var(--muted); }
     .tx-live { display: flex; align-items: center; gap: 5px; font-size: .68rem; font-weight: 700; color: var(--green); letter-spacing: .08em; }
     .tx-live-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--green); box-shadow: 0 0 5px var(--green); animation: blink 1.5s infinite; }
-    .tx-log { padding: 18px; display: flex; flex-direction: column; gap: 12px; min-height: 280px; }
+    .tx-log {
+      padding: 18px; display: flex; flex-direction: column; gap: 12px;
+      min-height: 280px; max-height: 340px; overflow-y: auto;
+      scrollbar-width: thin; scrollbar-color: rgba(232,160,32,.35) transparent;
+    }
+    .tx-log::-webkit-scrollbar { width: 5px; }
+    .tx-log::-webkit-scrollbar-track { background: transparent; }
+    .tx-log::-webkit-scrollbar-thumb { background: rgba(232,160,32,.35); border-radius: 4px; }
+    .tx-log::-webkit-scrollbar-thumb:hover { background: rgba(232,160,32,.6); }
     .tx-foot {
       padding: 11px 17px; border-top: 1px solid var(--border); background: var(--bg3);
       display: flex; align-items: center; justify-content: space-between;
@@ -595,6 +844,83 @@
     .cta-form select option { background: var(--bg3); }
     .cta-privacy { margin-top: .8rem; font-size: .72rem; color: var(--muted); display: flex; align-items: center; justify-content: center; gap: 6px; }
 
+    /* ── WAM TRUST STRIP ── */
+    .trust-strip {
+      padding: 20px 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: var(--bg2);
+    }
+    .trust-strip-in {
+      max-width: 1120px; margin: 0 auto; padding: 0 24px;
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px;
+    }
+    .trust-strip-left {
+      display: flex; align-items: center; gap: 16px;
+    }
+    .trust-strip-logo {
+      height: 40px; width: auto; mix-blend-mode: screen; border-radius: 4px;
+    }
+    .trust-badges {
+      display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+    }
+    .trust-badge-img {
+      height: 32px; width: auto; opacity: .65; filter: grayscale(1) brightness(1.4);
+      transition: opacity .2s, filter .2s;
+    }
+    .trust-badge-img:hover { opacity: 1; filter: grayscale(0); }
+
+    /* ── PRACTICE SECTION ── */
+    .practice { background: var(--bg2); }
+    .practice-hd { text-align: center; margin-bottom: 48px; }
+    .practice-hd h2 { font-size: clamp(1.5rem, 3vw, 2.1rem); margin-bottom: .8rem; }
+    .practice-hd p { color: var(--muted); max-width: 540px; margin: 0 auto; }
+    .practice-grid {
+      display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 40px;
+    }
+    .practice-photo {
+      border-radius: 12px; overflow: hidden; position: relative;
+      border: 1px solid var(--border);
+    }
+    .practice-photo img {
+      width: 100%; height: 220px; object-fit: cover; display: block;
+      transition: transform .4s ease;
+    }
+    .practice-photo:hover img { transform: scale(1.04); }
+    .practice-photo-label {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      background: linear-gradient(transparent, rgba(5,8,15,.88));
+      padding: 20px 14px 12px;
+      font-size: .72rem; font-weight: 600; color: var(--gold); letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+    .practice-photo--tall img { height: 456px; }
+    .practice-details {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+    }
+    .practice-detail-card {
+      background: var(--bg3); border: 1px solid var(--border); border-radius: 10px;
+      padding: 18px 20px; display: flex; align-items: flex-start; gap: 12px;
+    }
+    .practice-detail-icon {
+      width: 36px; height: 36px; flex-shrink: 0; border-radius: 8px;
+      background: var(--gold-d); border: 1px solid var(--gold-b);
+      display: flex; align-items: center; justify-content: center; color: var(--gold);
+    }
+    .practice-detail-card h4 { font-size: .78rem; color: var(--text); margin-bottom: 3px; font-family: 'Inter', sans-serif; font-weight: 600; }
+    .practice-detail-card p { font-size: .73rem; color: var(--muted); line-height: 1.5; }
+
+    @media(max-width: 900px) {
+      .trust-strip-in { flex-direction: column; align-items: flex-start; }
+      .practice-grid { grid-template-columns: 1fr 1fr; }
+      .practice-photo--tall img { height: 220px; }
+      .practice-details { grid-template-columns: 1fr 1fr; }
+    }
+    @media(max-width: 560px) {
+      .practice-grid, .practice-details { grid-template-columns: 1fr; }
+      .trust-badges { gap: 8px; }
+    }
+
     /* ── FOOTER ── */
     footer { border-top: 1px solid var(--border); padding: 26px 24px; }
     .foot-in { max-width: 1120px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
@@ -621,8 +947,126 @@
       .steps::before { display: none; }
       .prob-bottom { flex-direction: column; text-align: center; }
       .cta-card { padding: 34px 20px; }
+      .avatar-3d-frame { width: 220px; height: 320px; }
+      .demo-row { flex-direction: column; align-items: center; }
+      .demo-row .phone-shell { width: 100%; max-width: 340px; }
+      .hero-in { flex-direction: column; gap: 40px; }
+      .hero-copy { text-align: center; }
+      .hero-checks { justify-content: center; }
+      .hero-actions { justify-content: center; }
+      .emma-wrap { height: 360px; }
+      .trust-strip-in { flex-direction: column; gap: 16px; }
+      .trust-strip-left { flex-direction: column; gap: 12px; align-items: flex-start; }
+      .trust-badges { justify-content: flex-start; flex-wrap: wrap; }
+      .knows-grid { grid-template-columns: 1fr; }
+      .practice-grid { grid-template-columns: 1fr; }
+      .practice-details { flex-direction: column; }
+      .demo-in { grid-template-columns: 1fr; }
+      .plans-grid { grid-template-columns: 1fr; }
+      .roi-grid { grid-template-columns: 1fr; }
+      .phone-wrap { padding: 0 8px; }
     }
+
+    /* ── 3D AVATAR PANEL ── */
+    .demo-row {
+      display: flex; align-items: flex-start; justify-content: center;
+      gap: 40px; flex-wrap: wrap;
+    }
+    .avatar-3d-panel {
+      display: flex; flex-direction: column; align-items: center;
+      gap: 14px; flex-shrink: 0;
+    }
+    .avatar-3d-frame {
+      width: 260px; height: 420px;
+      border-radius: 32px; overflow: hidden; position: relative;
+      background: linear-gradient(170deg, #0d1428 0%, #060a14 100%);
+      border: 1.5px solid rgba(255,255,255,.09);
+      box-shadow: 0 32px 80px rgba(0,0,0,.6), 0 0 40px rgba(0,207,255,.05);
+    }
+    .avatar-3d-frame canvas { width: 100% !important; height: 100% !important; display: block; }
+    .avatar-3d-glow {
+      position: absolute; inset: 0; border-radius: 32px;
+      pointer-events: none; z-index: 2;
+      border: 1.5px solid transparent;
+      transition: border-color .5s, box-shadow .5s;
+    }
+    .avatar-3d-glow.speaking {
+      border-color: rgba(0,207,255,.55);
+      box-shadow: inset 0 0 28px rgba(0,207,255,.07), 0 0 28px rgba(0,207,255,.18);
+    }
+    .avatar-3d-glow.listening {
+      border-color: rgba(232,160,32,.4);
+      box-shadow: inset 0 0 22px rgba(232,160,32,.05), 0 0 20px rgba(232,160,32,.1);
+    }
+    .avatar-loading {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 10px; font-size: .72rem; color: var(--muted); letter-spacing: .03em;
+    }
+    .avatar-loading-spinner {
+      width: 24px; height: 24px;
+      border: 2px solid rgba(0,207,255,.15);
+      border-top-color: var(--cyan);
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .avatar-3d-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700; font-size: 1.05rem; color: #fff; letter-spacing: -.01em;
+    }
+    .avatar-3d-role {
+      font-size: .68rem; color: var(--muted); letter-spacing: .07em;
+      text-transform: uppercase; font-weight: 500; margin-top: -8px;
+    }
+
+    /* CSS fallback avatar */
+    .av-fallback {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 14px;
+    }
+    .av-fb-ring {
+      position: absolute; border-radius: 50%; border: 1px solid transparent;
+    }
+    .av-fb-ring1 { width: 200px; height: 200px; border-color: rgba(0,207,255,.18); animation: orb1 14s linear infinite; }
+    .av-fb-ring2 { width: 160px; height: 160px; border-color: rgba(232,160,32,.2); transform: rotateX(65deg); animation: orb2 10s linear infinite reverse; }
+    .av-fb-portrait {
+      position: relative; z-index: 2; width: 158px; height: 190px;
+      flex-shrink: 0;
+    }
+    .av-fb-halo {
+      position: absolute; inset: -28px; border-radius: 50%;
+      background: radial-gradient(ellipse at 50% 50%, rgba(0,207,255,.12) 0%, transparent 70%);
+      animation: breathe 4s ease-in-out infinite;
+    }
+    .av-fb-circle {
+      width: 100%; height: 100%; border-radius: 50% 50% 44% 44%;
+      overflow: hidden; position: relative;
+      box-shadow: 0 0 40px rgba(0,207,255,.12), 0 0 80px rgba(0,207,255,.05);
+      border: 1.5px solid rgba(0,207,255,.18);
+    }
+    .av-fb-circle svg { width: 100%; height: 100%; display: block; }
+    .av-fb-scan {
+      position: absolute; left: 0; right: 0; height: 1.5px;
+      background: linear-gradient(90deg, transparent, rgba(0,207,255,.55), transparent);
+      animation: scan 5s ease-in-out infinite 1s; pointer-events: none;
+    }
+    .av-fb-wave {
+      display: flex; align-items: center; gap: 3px; height: 20px;
+    }
+    .av-fb-wave span {
+      display: block; width: 3px; border-radius: 3px;
+      background: var(--cyan); height: 4px; transition: height .1s;
+    }
+    .av-fb-wave.active span { animation: wave 1.3s ease-in-out infinite; }
+    .av-fb-wave.active span:nth-child(1){animation-delay:0s}
+    .av-fb-wave.active span:nth-child(2){animation-delay:.12s}
+    .av-fb-wave.active span:nth-child(3){animation-delay:.24s}
+    .av-fb-wave.active span:nth-child(4){animation-delay:.12s}
+    .av-fb-wave.active span:nth-child(5){animation-delay:0s}
   </style>
+  <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.161.0/build/three.module.min.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.161.0/examples/jsm/"}}</script>
 </head>
 <body>
 
@@ -632,6 +1076,7 @@
     <a href="#" class="nav-logo">anupama<span>.dev</span></a>
     <div class="nav-pill">
       <span class="nav-pill-dot"></span>
+      <img src="https://wealthaustraliamigration.com.au/wp-content/uploads/2023/01/logo.jpg" alt="Wealth Australia Migration" style="height:18px;width:auto;mix-blend-mode:screen;border-radius:2px;vertical-align:middle;margin-right:4px;">
       Built for Wealth Australia Migration
     </div>
     <a href="#book" class="nav-cta">Let's Talk</a>
@@ -648,14 +1093,19 @@
         <span class="hero-pill-dot"></span>
         A proposal made exclusively for you
       </div>
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:1.4rem;padding:12px 16px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:10px;width:fit-content">
+        <span style="font-size:.68rem;font-weight:600;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;white-space:nowrap">Prepared for</span>
+        <div style="width:1px;height:24px;background:var(--border)"></div>
+        <img src="https://wealthaustraliamigration.com.au/wp-content/uploads/2023/01/logo.jpg"
+             alt="Wealth Australia Migration"
+             style="height:32px;width:auto;mix-blend-mode:screen;border-radius:4px">
+      </div>
       <h1 class="hero-h1">
         <span class="hero-hi">"Hi — I'm Emma, and I work for Wealth Australia Migration."</span>
-        Your clients will never go<br><span class="hero-h1-grad">unanswered again.</span>
+        Every call answered. Every client<br><span class="hero-h1-grad">welcomed. 24/7.</span>
       </h1>
       <p class="hero-sub">
-        We didn't build a generic chatbot. We built <strong>Emma</strong> — trained on
-        Australian migration law, your visa services, and your client language.
-        Ready to represent your practice the moment you say go.
+        Emma answers calls, books consultations, and handles enquiries around the clock — so no client ever reaches your voicemail and calls the next firm. Ready to represent Wealth Australia Migration the moment you say go.
       </p>
       <div class="hero-actions">
         <a href="#live-demo" class="btn-gold">
@@ -760,9 +1210,22 @@
             <circle cx="148" cy="75" r="1.8" fill="#00cfff" opacity=".5"/>
             <circle cx="38"  cy="130" r="1.4" fill="#e8a020" opacity=".6"/>
             <circle cx="162" cy="130" r="1.4" fill="#e8a020" opacity=".6"/>
+            <!-- Phone handset at right ear -->
+            <g>
+              <rect x="150" y="100" width="29" height="52" rx="6" fill="#0d1830" stroke="#e8a020" stroke-width="1.6"/>
+              <rect x="154" y="108" width="21" height="26" rx="3" fill="#060e22"/>
+              <rect x="156" y="111" width="17" height="2" rx="1" fill="#00cfff" opacity=".65"/>
+              <rect x="156" y="116" width="13" height="2" rx="1" fill="#00cfff" opacity=".38"/>
+              <rect x="156" y="121" width="15" height="2" rx="1" fill="#00cfff" opacity=".28"/>
+              <circle cx="164.5" cy="127" r="3" fill="#22c55e"/>
+              <circle cx="164.5" cy="127" r="5" fill="none" stroke="#22c55e" stroke-width=".8" opacity=".45"/>
+              <rect x="158" y="104" width="13" height="3" rx="1.5" fill="#e8a020" opacity=".65"/>
+              <circle cx="164.5" cy="145" r="3.5" fill="none" stroke="#e8a020" stroke-width="1.1" opacity=".55"/>
+              <rect x="150" y="100" width="29" height="52" rx="6" fill="none" stroke="#00cfff" stroke-width=".5" opacity=".35"/>
+            </g>
           </svg>
         </div>
-        <div class="e-name">Emma <span>· WAM</span></div>
+        <div class="e-name">Emma <span>· AI Receptionist</span></div>
         <div class="e-status">
           <span class="e-status-dot"></span>
           Wealth Australia Migration
@@ -774,41 +1237,124 @@
   </div>
 </section>
 
+<!-- ── WAM TRUST STRIP ── -->
+<div class="trust-strip">
+  <div class="trust-strip-in">
+    <div class="trust-strip-left">
+      <img src="https://wealthaustraliamigration.com.au/wp-content/uploads/2023/01/logo.jpg"
+           alt="Wealth Australia Migration" class="trust-strip-logo">
+    </div>
+    <div class="trust-badges">
+      <img src="https://wealthaustraliamigration.com.au/wp-content/uploads/2025/10/MARN-Charcoal-150x150.jpg" alt="MARN" class="trust-badge-img" title="MARA Registered">
+      <img src="https://wealthaustraliamigration.com.au/wp-content/uploads/2025/10/MIA_Logo_Blue-e1761368037812-150x150.jpg" alt="MIA" class="trust-badge-img" title="Migration Institute of Australia">
+      <img src="https://wealthaustraliamigration.com.au/wp-content/uploads/2025/10/ME-logo_member-150x150.png" alt="ME Member" class="trust-badge-img" title="Member">
+      <img src="https://wealthaustraliamigration.com.au/wp-content/uploads/2025/10/NZ-imm-trademark-150x150.jpg" alt="NZ Immigration" class="trust-badge-img" title="New Zealand Immigration">
+      <img src="https://wealthaustraliamigration.com.au/wp-content/uploads/2025/10/MA-logo-e1761368003762-150x150.png" alt="MA" class="trust-badge-img" title="Migration Alliance">
+    </div>
+  </div>
+</div>
+
 <!-- ── LIVE DEMO ── -->
 <section class="demo-sec" id="live-demo">
   <div class="container">
-    <div class="demo-in">
+    <div class="phone-wrap reveal">
 
-      <div class="demo-copy reveal">
-        <div class="tag">Experience Emma Live</div>
-        <h2>Talk to Emma right now —<br>as one of your clients would.</h2>
-        <p>
-          Click the button, allow microphone access, and speak to Emma. She'll
-          answer as Wealth Australia Migration's receptionist — ask about visa
-          eligibility, try to book an appointment, throw her a tricky question.
-          This is exactly what your callers will experience.
-        </p>
-        <ul class="demo-hints">
-          <li>
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-            Real AI — not a recording or script
-          </li>
-          <li>
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-            She greets callers as "Wealth Australia Migration"
-          </li>
-          <li>
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-            Try: "I'm a nurse on a 485 visa, what are my options?"
-          </li>
-          <li>
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-            No phone number needed — runs right in your browser
-          </li>
-        </ul>
+      <div class="phone-intro">
+        <div class="tag" style="justify-content:center">Experience Emma Live</div>
+        <h2>Call Emma — right now,<br>from your browser.</h2>
+        <p>No phone number needed. Allow microphone access and speak to Emma exactly as your clients will. Try: <em>"I'd like to book a consultation about a partner visa."</em></p>
       </div>
 
-      <div class="reveal demo-right-wrap">
+      <div class="demo-row">
+
+        <!-- 3D AVATAR -->
+        <div class="avatar-3d-panel">
+          <div class="avatar-3d-frame" id="avatar-3d-frame">
+            <div id="avatar-3d-glow" class="avatar-3d-glow"></div>
+            <div id="avatar-loading" class="avatar-loading">
+              <div class="avatar-loading-spinner"></div>
+              Loading Emma…
+            </div>
+          </div>
+          <div class="avatar-3d-name">Emma</div>
+          <div class="avatar-3d-role">AI Receptionist</div>
+        </div>
+
+        <!-- PHONE MOCKUP -->
+        <div class="phone-shell">
+
+        <div class="phone-statusbar">
+          <span id="phone-time">9:41</span>
+          <div class="phone-statusbar-right">
+            <svg width="14" height="10" viewBox="0 0 14 10" fill="rgba(255,255,255,.5)"><rect x="0" y="3" width="3" height="7" rx="1"/><rect x="4" y="2" width="3" height="8" rx="1"/><rect x="8" y="0" width="3" height="10" rx="1"/><rect x="12" y="1" width="2" height="6" rx="1" opacity=".4"/></svg>
+            <svg width="12" height="10" viewBox="0 0 12 10" fill="rgba(255,255,255,.5)"><path d="M6 1.5C3.8 1.5 1.8 2.4.4 3.9L1.8 5.3C2.8 4.2 4.3 3.5 6 3.5s3.2.7 4.2 1.8l1.4-1.4C10.2 2.4 8.2 1.5 6 1.5z"/><path d="M6 5C4.7 5 3.5 5.5 2.7 6.4L4.1 7.8C4.6 7.3 5.3 7 6 7s1.4.3 1.9.8l1.4-1.4C8.5 5.5 7.3 5 6 5z"/><circle cx="6" cy="9" r="1"/></svg>
+            <span style="font-size:.58rem">100%</span>
+          </div>
+        </div>
+        <div class="phone-island"></div>
+
+        <div class="phone-screen">
+
+          <div class="phone-contact">
+            <div class="phone-avatar">
+              <img src="https://wealthaustraliamigration.com.au/wp-content/uploads/2023/01/logo.jpg" alt="WAM">
+            </div>
+            <div class="phone-contact-name">Wealth Australia Migration</div>
+            <div class="phone-contact-label">Emma · AI Receptionist</div>
+          </div>
+
+          <div class="phone-status">
+            <span class="phone-status-dot" id="phone-status-dot"></span>
+            <span id="cui-status-text">Ready</span>
+          </div>
+
+          <div class="phone-wave" id="cui-wave">
+            <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+          </div>
+
+          <div class="phone-transcript" id="cui-log">
+            <div class="phone-transcript-empty" id="cui-empty">
+              Tap the call button to speak<br>with Emma live
+            </div>
+          </div>
+
+          <div class="phone-timer" id="cui-timer"></div>
+
+          <div class="phone-btns phone-btns-idle" id="phone-btns">
+            <!-- Mute (hidden until active) -->
+            <button class="phone-btn phone-btn-mute" id="cui-mute" aria-label="Mute">
+              <div class="phone-btn-circle">
+                <svg class="cui-mute-icon-on" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+                <svg class="cui-mute-icon-off" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+              </div>
+              <span class="phone-btn-label">Mute</span>
+            </button>
+            <!-- Call -->
+            <button class="phone-btn phone-btn-call" id="demo-start-btn" aria-label="Call">
+              <div class="phone-btn-circle">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="white" stroke="none"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
+              </div>
+              <span class="phone-btn-label">Call</span>
+            </button>
+            <!-- End -->
+            <button class="phone-btn phone-btn-end" id="phone-end-btn" aria-label="End call">
+              <div class="phone-btn-circle">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="white" stroke="none"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z" transform="rotate(135 12 12)"/></svg>
+              </div>
+              <span class="phone-btn-label">End</span>
+            </button>
+          </div>
+
+          <p class="phone-note">Microphone required · 90 seconds max · Free demo</p>
+
+        </div>
+      </div><!-- /phone-shell -->
+
+      </div><!-- /demo-row -->
+
+    </div><!-- /phone-wrap -->
+
+      <div class="reveal demo-right-wrap" style="display:none">
 
         <!-- ── RECEPTIONIST AVATAR ── -->
         <div class="rcp-avatar-wrap">
@@ -1030,20 +1576,20 @@
     <div class="transcript-in">
       <div class="transcript-copy reveal">
         <div class="tag">Hear Emma in Action</div>
-        <h2>This is exactly what your<br>clients hear — from day one.</h2>
-        <p>Emma already knows how to greet callers on behalf of Wealth Australia Migration, answer common visa questions, and book consultations.</p>
+        <h2>A real booking — in under<br>2 minutes, start to finish.</h2>
+        <p>Emma greets the caller, collects their details, explains the consultation fee, picks a time, and confirms the booking — then tells them an SMS is on its way.</p>
         <ul class="transcript-bullets">
           <li>
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-            Answers within 2 seconds, 24 hours a day
+            Answers every call — no voicemail, no missed leads
           </li>
           <li>
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-            Qualifies leads before booking — your time isn't wasted
+            Never gives visa advice — always directs to your advisors
           </li>
           <li>
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-            Handles after-hours enquiries that currently go to voicemail
+            Your advisors walk in knowing the client's name &amp; reason
           </li>
         </ul>
       </div>
@@ -1073,67 +1619,122 @@
   </div>
 </section>
 
+<!-- ── POST-DEMO CTA ── -->
+<section class="post-demo-cta">
+  <div class="container">
+    <div class="pdc-inner reveal">
+      <div class="pdc-badge">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        You just called Emma
+      </div>
+      <h2>Ready to add Emma<br>to your team?</h2>
+      <p>That conversation you just had — your clients will have that experience every time they call Wealth Australia Migration. Let's get Emma live for your practice.</p>
+      <div class="pdc-steps">
+        <div class="pdc-step">
+          <div class="pdc-step-num">1</div>
+          <div class="pdc-step-text"><strong>Brief call</strong><br>30 min with Anupama to confirm Emma's scope</div>
+        </div>
+        <div class="pdc-step-arrow">→</div>
+        <div class="pdc-step">
+          <div class="pdc-step-num">2</div>
+          <div class="pdc-step-text"><strong>Configure</strong><br>Emma trained on your practice details</div>
+        </div>
+        <div class="pdc-step-arrow">→</div>
+        <div class="pdc-step">
+          <div class="pdc-step-num">3</div>
+          <div class="pdc-step-text"><strong>Go live</strong><br>Emma answering calls within 24 hours</div>
+        </div>
+      </div>
+      <a href="#contact" class="btn-gold" style="font-size:1rem;padding:14px 32px">
+        Book Your Onboarding Call
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <p class="pdc-note">No lock-in. Cancel any time. Live in under 24 hours.</p>
+    </div>
+  </div>
+</section>
+
 <!-- ── KNOWS ── -->
 <section class="knows">
   <div class="container">
     <div class="knows-intro reveal">
-      <div class="tag">Pre-Configured for You</div>
-      <h2>Emma already knows<br>your practice inside out.</h2>
-      <p>We don't hand you a blank AI and ask you to figure it out. Emma is trained and ready for Wealth Australia Migration from the moment she goes live.</p>
+      <div class="tag">Pre-Configured &amp; Trainable</div>
+      <h2>Emma learns everything<br>about your practice.</h2>
+      <p>We configure Emma with your practice details from day one — and you can keep training her with new FAQs, services, and scripts as your business grows.</p>
     </div>
-    <div class="knows-grid">
-      <div class="know-card reveal">
-        <div class="know-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14.5 10c-.83 0-1.5-.67-1.5-1.5v-5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5z"/><path d="M20.5 10H19V8.5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/><path d="M9.5 14c.83 0 1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5S8 21.33 8 20.5v-5c0-.83.67-1.5 1.5-1.5z"/><path d="M3.5 14H5v1.5c0 .83-.67 1.5-1.5 1.5S2 16.33 2 15.5 2.67 14 3.5 14z"/><path d="M14 14.5c0-.83.67-1.5 1.5-1.5h5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5h-5c-.83 0-1.5-.67-1.5-1.5z"/><path d="M15.5 19H14v1.5c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5-.67-1.5-1.5-1.5z"/><path d="M10 9.5C10 8.67 9.33 8 8.5 8h-5C2.67 8 2 8.67 2 9.5S2.67 11 3.5 11h5c.83 0 1.5-.67 1.5-1.5z"/><path d="M8.5 5H10V3.5C10 2.67 9.33 2 8.5 2S7 2.67 7 3.5 7.67 5 8.5 5z"/></svg></div>
-        <h3>Your Visa Services</h3>
-        <ul class="know-list">
-          <li><span class="know-dot"></span>Skilled Independent — Subclass 189</li>
-          <li><span class="know-dot"></span>State Nominated — Subclass 190 &amp; 491</li>
-          <li><span class="know-dot"></span>Employer Sponsored — 482 &amp; 186</li>
-          <li><span class="know-dot"></span>Partner &amp; Family — 820/801, 309/100</li>
-          <li><span class="know-dot"></span>Student Visa — Subclass 500</li>
-          <li><span class="know-dot"></span>Business &amp; Investor — 188, 888</li>
-        </ul>
-        <div class="know-note">Emma explains each pathway without giving legal advice — keeping you MARA-compliant.</div>
-      </div>
-      <div class="know-card reveal">
-        <div class="know-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
-        <h3>Client FAQs She Handles Instantly</h3>
-        <ul class="know-list">
-          <li><span class="know-dot"></span>"Am I eligible for skilled migration?"</li>
-          <li><span class="know-dot"></span>"How long does a partner visa take?"</li>
-          <li><span class="know-dot"></span>"What documents do I need to apply?"</li>
-          <li><span class="know-dot"></span>"What does a consultation cost?"</li>
-          <li><span class="know-dot"></span>"Can my employer sponsor me?"</li>
-          <li><span class="know-dot"></span>"My visa was refused — what can I do?"</li>
-        </ul>
-        <div class="know-note">All answers reviewed and approved by you before going live.</div>
-      </div>
-      <div class="know-card reveal">
-        <div class="know-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
-        <h3>Booking &amp; Schedule Logic</h3>
-        <ul class="know-list">
-          <li><span class="know-dot"></span>Books paid consultations in real-time</li>
-          <li><span class="know-dot"></span>Syncs with Google Calendar / Calendly</li>
-          <li><span class="know-dot"></span>Sends SMS &amp; email confirmations</li>
-          <li><span class="know-dot"></span>Follows your business hours exactly</li>
-          <li><span class="know-dot"></span>Routes urgent deadline calls directly to you</li>
-          <li><span class="know-dot"></span>Collects client details before appointments</li>
-        </ul>
-        <div class="know-note">Your consultants walk in to pre-qualified clients with context.</div>
-      </div>
-      <div class="know-card reveal">
-        <div class="know-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
-        <h3>Multilingual — Your Client Demographics</h3>
-        <ul class="know-list">
-          <li><span class="know-dot"></span>Mandarin &amp; Cantonese</li>
-          <li><span class="know-dot"></span>Hindi &amp; Punjabi</li>
-          <li><span class="know-dot"></span>Tagalog (Filipino)</li>
-          <li><span class="know-dot"></span>Vietnamese</li>
-          <li><span class="know-dot"></span>Arabic</li>
-          <li><span class="know-dot"></span>English (Australian)</li>
-        </ul>
-        <div class="know-note">Emma detects language and responds naturally — no extra setup.</div>
-      </div>
+
+    <div class="hub-diagram reveal">
+      <svg class="hub-svg" viewBox="0 0 600 420" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="hub-glow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="rgba(0,207,255,.18)"/>
+            <stop offset="100%" stop-color="transparent"/>
+          </radialGradient>
+          <marker id="arrowhead" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6 Z" fill="rgba(0,207,255,.5)"/>
+          </marker>
+        </defs>
+
+        <!-- Glow behind centre -->
+        <circle cx="300" cy="210" r="90" fill="url(#hub-glow)"/>
+
+        <!-- Spoke lines -->
+        <line x1="300" y1="210" x2="105" y2="80"  stroke="rgba(0,207,255,.25)" stroke-width="1.2" stroke-dasharray="5 4" marker-end="url(#arrowhead)"/>
+        <line x1="300" y1="210" x2="300" y2="44"  stroke="rgba(0,207,255,.25)" stroke-width="1.2" stroke-dasharray="5 4" marker-end="url(#arrowhead)"/>
+        <line x1="300" y1="210" x2="495" y2="80"  stroke="rgba(0,207,255,.25)" stroke-width="1.2" stroke-dasharray="5 4" marker-end="url(#arrowhead)"/>
+        <line x1="300" y1="210" x2="535" y2="230" stroke="rgba(232,160,32,.3)"  stroke-width="1.2" stroke-dasharray="5 4" marker-end="url(#arrowhead)"/>
+        <line x1="300" y1="210" x2="495" y2="345" stroke="rgba(0,207,255,.25)" stroke-width="1.2" stroke-dasharray="5 4" marker-end="url(#arrowhead)"/>
+        <line x1="300" y1="210" x2="300" y2="385" stroke="rgba(0,207,255,.25)" stroke-width="1.2" stroke-dasharray="5 4" marker-end="url(#arrowhead)"/>
+        <line x1="300" y1="210" x2="105" y2="345" stroke="rgba(0,207,255,.25)" stroke-width="1.2" stroke-dasharray="5 4" marker-end="url(#arrowhead)"/>
+        <line x1="300" y1="210" x2="65"  y2="230" stroke="rgba(232,160,32,.3)"  stroke-width="1.2" stroke-dasharray="5 4" marker-end="url(#arrowhead)"/>
+
+        <!-- Centre node -->
+        <circle cx="300" cy="210" r="60" fill="#080d1a" stroke="rgba(0,207,255,.45)" stroke-width="1.8"/>
+        <circle cx="300" cy="210" r="52" fill="#0a1020" stroke="rgba(0,207,255,.15)" stroke-width="1"/>
+        <text x="300" y="204" text-anchor="middle" font-family="Space Grotesk,sans-serif" font-weight="700" font-size="22" fill="#fff">Emma</text>
+        <text x="300" y="222" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" fill="rgba(0,207,255,.8)">AI Receptionist</text>
+
+        <!-- Spoke nodes — top-left -->
+        <circle cx="105" cy="80"  r="42" fill="#0c1228" stroke="rgba(0,207,255,.3)" stroke-width="1.2"/>
+        <text x="105" y="74"  text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="#00cfff">Visa Types</text>
+        <text x="105" y="88"  text-anchor="middle" font-family="Inter,sans-serif" font-size="9"  fill="rgba(255,255,255,.45)">&amp; Services</text>
+
+        <!-- top-centre -->
+        <circle cx="300" cy="44"  r="38" fill="#0c1228" stroke="rgba(0,207,255,.3)" stroke-width="1.2"/>
+        <text x="300" y="38"  text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="#00cfff">Office Hours</text>
+        <text x="300" y="52"  text-anchor="middle" font-family="Inter,sans-serif" font-size="9"  fill="rgba(255,255,255,.45)">&amp; Location</text>
+
+        <!-- top-right -->
+        <circle cx="495" cy="80"  r="42" fill="#0c1228" stroke="rgba(0,207,255,.3)" stroke-width="1.2"/>
+        <text x="495" y="74"  text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="#00cfff">Advisor</text>
+        <text x="495" y="88"  text-anchor="middle" font-family="Inter,sans-serif" font-size="9"  fill="rgba(255,255,255,.45)">Names &amp; Roles</text>
+
+        <!-- mid-right -->
+        <circle cx="535" cy="230" r="42" fill="#101830" stroke="rgba(232,160,32,.4)" stroke-width="1.2"/>
+        <text x="535" y="224" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="#e8a020">Custom</text>
+        <text x="535" y="238" text-anchor="middle" font-family="Inter,sans-serif" font-size="9"  fill="rgba(255,255,255,.45)">FAQs &amp; Scripts</text>
+
+        <!-- bottom-right -->
+        <circle cx="495" cy="345" r="42" fill="#0c1228" stroke="rgba(0,207,255,.3)" stroke-width="1.2"/>
+        <text x="495" y="339" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="#00cfff">Booking</text>
+        <text x="495" y="353" text-anchor="middle" font-family="Inter,sans-serif" font-size="9"  fill="rgba(255,255,255,.45)">Flow &amp; Steps</text>
+
+        <!-- bottom-centre -->
+        <circle cx="300" cy="385" r="38" fill="#0c1228" stroke="rgba(0,207,255,.3)" stroke-width="1.2"/>
+        <text x="300" y="379" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="#00cfff">Consultation</text>
+        <text x="300" y="393" text-anchor="middle" font-family="Inter,sans-serif" font-size="9"  fill="rgba(255,255,255,.45)">Fee &amp; Format</text>
+
+        <!-- bottom-left -->
+        <circle cx="105" cy="345" r="42" fill="#0c1228" stroke="rgba(0,207,255,.3)" stroke-width="1.2"/>
+        <text x="105" y="339" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="#00cfff">Migration</text>
+        <text x="105" y="353" text-anchor="middle" font-family="Inter,sans-serif" font-size="9"  fill="rgba(255,255,255,.45)">Law Basics</text>
+
+        <!-- mid-left -->
+        <circle cx="65"  cy="230" r="42" fill="#101830" stroke="rgba(232,160,32,.4)" stroke-width="1.2"/>
+        <text x="65"  y="224" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="#e8a020">Your Client</text>
+        <text x="65"  y="238" text-anchor="middle" font-family="Inter,sans-serif" font-size="9"  fill="rgba(255,255,255,.45)">Language</text>
+
+      </svg>
     </div>
   </div>
 </section>
@@ -1170,6 +1771,80 @@
       <div class="prob-big">30–40%</div>
       <p>of inbound calls to migration firms go unanswered. At an average case value of <strong>$4,500 per client</strong>, that's revenue quietly walking out the door every day. <strong>Emma closes that gap.</strong></p>
     </div>
+  </div>
+</section>
+
+<!-- ── YOUR PRACTICE ── -->
+<section class="practice">
+  <div class="container">
+    <div class="practice-hd reveal">
+      <div class="tag">Meet Your New Team Member</div>
+      <h2>Emma — ready to join<br>your team today.</h2>
+      <p>Emma doesn't replace your advisors — she handles the front line so they can focus on what matters. First calls, booking enquiries, after-hours questions — Emma covers it all, 24/7, without a sick day.</p>
+    </div>
+
+    <div class="practice-grid">
+      <div class="practice-photo practice-photo--tall reveal">
+        <img src="https://wealthaustraliamigration.com.au/wp-content/uploads/2025/10/DSC09679-scaled.jpg"
+             alt="Wealth Australia Migration team" loading="lazy">
+        <div class="practice-photo-label">Your Team · Blair Athol, Adelaide</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div class="practice-photo reveal">
+          <img src="https://wealthaustraliamigration.com.au/wp-content/uploads/2025/10/DSC09597-scaled.jpg"
+               alt="Wealth Australia Migration staff" loading="lazy">
+          <div class="practice-photo-label">Client Consultations</div>
+        </div>
+        <div class="practice-photo reveal">
+          <img src="https://wealthaustraliamigration.com.au/wp-content/uploads/2025/10/DSC09624-scaled.jpg"
+               alt="Wealth Australia Migration office" loading="lazy">
+          <div class="practice-photo-label">420B Main North Road Office</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div class="practice-photo reveal">
+          <img src="https://wealthaustraliamigration.com.au/wp-content/uploads/2025/10/gwe0dlvd9e0.jpg"
+               alt="Wealth Australia Migration conference" loading="lazy">
+          <div class="practice-photo-label">Professional Development</div>
+        </div>
+        <div class="practice-photo reveal" style="background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:20px;display:flex;flex-direction:column;justify-content:center;gap:12px">
+          <img src="https://wealthaustraliamigration.com.au/wp-content/uploads/2020/03/pf12.jpg"
+               alt="Why choose Wealth Australia Migration" loading="lazy" style="height:110px;object-fit:cover;border-radius:8px">
+          <div class="practice-photo-label" style="position:static;background:none;padding:0;padding-top:4px">Why Choose WAM</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="practice-details">
+      <div class="practice-detail-card reveal">
+        <div class="practice-detail-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.39 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.9a16 16 0 0 0 6.09 6.09l.97-1.06a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        </div>
+        <div>
+          <h4>Answers every call</h4>
+          <p>No voicemail. No missed leads. Emma picks up 24/7 — weekends, public holidays, and after hours.</p>
+        </div>
+      </div>
+      <div class="practice-detail-card reveal">
+        <div class="practice-detail-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        </div>
+        <div>
+          <h4>Books consultations</h4>
+          <p>Emma collects client details, explains the $110 consultation fee, and locks in a time — all without a human in the loop.</p>
+        </div>
+      </div>
+      <div class="practice-detail-card reveal">
+        <div class="practice-detail-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div>
+          <h4>Frees your advisors</h4>
+          <p>Thushari and Tina focus on cases, not admin. Emma handles the front line — they step in only when it matters.</p>
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -1373,13 +2048,17 @@ document.querySelectorAll('[data-target]').forEach(el=>cObs.observe(el));
 
 /* ── ANIMATED TRANSCRIPT ── */
 const TX=[
-  {role:'emma',  delay:500,  text:'Thank you for calling Wealth Australia Migration, this is Emma! How can I help you with your visa enquiry today?'},
-  {role:'caller',delay:2400, text:"Hi, I'm on a 485 graduate visa and it expires in 4 months. I'm not sure what my options are..."},
-  {role:'emma',  delay:4600, text:"Of course — four months is plenty of time to explore your pathways. Based on your 485, you may be eligible for the Skilled Independent 189, State Nominated 190, or an Employer Sponsored 482. Could I ask what your occupation is?"},
-  {role:'caller',delay:7600, text:"I'm a registered nurse. I've been working at a hospital in Sydney."},
-  {role:'emma',  delay:9500, text:"Wonderful — nursing is on the skilled occupation list with a strong points profile. I'd love to connect you with one of our registered migration agents for a proper assessment. Would Thursday at 10 AM or Friday at 2 PM work for you?"},
-  {role:'caller',delay:12600,text:"Thursday at 10 works perfectly, thank you!"},
-  {role:'emma',  delay:14400,text:"Booked! You'll receive a confirmation SMS shortly. Is there anything else I can help you with today?"},
+  {role:'emma',  delay:500,  text:'Thank you for calling Wealth Australia Migration, this is Emma. How can I help you today?'},
+  {role:'caller',delay:2200, text:"Hi, I want to look into a partner visa for my spouse. Not sure where to start."},
+  {role:'emma',  delay:4000, text:"Of course! Our advisors can walk you through that. Can I get your full name please?"},
+  {role:'caller',delay:5800, text:"Sure — it's Sarah Thompson."},
+  {role:'emma',  delay:7200, text:"Thanks Sarah. And your best contact number?"},
+  {role:'caller',delay:8800, text:"It's 0412 345 678."},
+  {role:'emma',  delay:10200,text:"Got it. Just to note — it's a $110 consultation, one hour, at our Blair Athol office. Would Thursday at 10:30 AM or Friday at 2:00 PM suit you?"},
+  {role:'caller',delay:13000,text:"Thursday at 10:30 works great."},
+  {role:'emma',  delay:14600,text:"Perfect, you're booked with one of our migration advisors Thursday at 10:30 AM. You'll receive an SMS with the details shortly. Anything else I can help with?"},
+  {role:'caller',delay:17000,text:"No that's great, thank you!"},
+  {role:'emma',  delay:18400,text:"My pleasure Sarah. We'll see you Thursday. Have a lovely day!"},
 ];
 let txPlaying=false,txTimers=[];
 function clearTx(){txTimers.forEach(t=>clearTimeout(t));txTimers=[];document.getElementById('tx-log').innerHTML='';txPlaying=false;}
@@ -1613,8 +2292,8 @@ class ReceptionistAnimator {
     this.setState('idle');
   }
 }
-const rcpAnim = new ReceptionistAnimator();
-rcpAnim.start();
+// rcpAnim stubbed — avatar removed, phone UI used instead
+const rcpAnim = { start(){}, setState(){}, setVolume(){}, reset(){}, jawTarget:0 };
 
 /* ── ANIMATION TEST (no mic / VAPI needed) ── */
 (function(){
@@ -1669,18 +2348,33 @@ rcpAnim.start();
 
 /* ── VAPI LIVE DEMO ── */
 (function(){
-  const startBtn    = document.getElementById('demo-start-btn');
-  const cuiLog      = document.getElementById('cui-log');
-  const cuiEmpty    = document.getElementById('cui-empty');
-  const statusText  = document.getElementById('cui-status-text');
-  const statusSub   = document.getElementById('cui-status-sub');
-  const cuiWave     = document.getElementById('cui-wave');
-  const cuiTimer    = document.getElementById('cui-timer');
-  const muteBtn     = document.getElementById('cui-mute');
+  const startBtn  = document.getElementById('demo-start-btn');
+  const cuiLog    = document.getElementById('cui-log');
+  const cuiEmpty  = document.getElementById('cui-empty');
+  const statusText= document.getElementById('cui-status-text');
+  const cuiWave   = document.getElementById('cui-wave');
+  const cuiTimer  = document.getElementById('cui-timer');
+  const muteBtn   = document.getElementById('cui-mute');
+  const endBtn    = document.getElementById('phone-end-btn');
+  const phoneBtns = document.getElementById('phone-btns');
+  const statusDot = document.getElementById('phone-status-dot');
+  const phoneTime = document.getElementById('phone-time');
 
-  const LIMIT   = 90;
-  const CAP     = 3;
-  const SKEY    = 'emma-wam-demo';
+  function updateClock(){
+    if(!phoneTime)return;
+    const n=new Date();
+    phoneTime.textContent=String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0');
+  }
+  updateClock();
+  setInterval(updateClock,10000);
+
+  function setPhoneActive(active){
+    if(!phoneBtns)return;
+    phoneBtns.className=active?'phone-btns phone-btns-active':'phone-btns phone-btns-idle';
+    if(statusDot)statusDot.classList.toggle('active',active);
+  }
+
+  const LIMIT=90, CAP=3, SKEY='emma-wam-demo';
 
   function getUsage(){try{const r=localStorage.getItem(SKEY),d=r?JSON.parse(r):{};const today=new Date().toDateString();if(d.date!==today)return{date:today,count:0};return d;}catch{return{date:new Date().toDateString(),count:0};}}
   function incUsage(){const u=getUsage();u.count++;try{localStorage.setItem(SKEY,JSON.stringify(u));}catch{}}
@@ -1691,8 +2385,7 @@ rcpAnim.start();
   let curBubble=null,curRole=null;
 
   function fmt(s){return`${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;}
-
-  function setWave(on){cuiWave.className='cui-wave'+(on?' active':'');}
+  function setWave(on){if(cuiWave)cuiWave.classList.toggle('active',on);}
 
   function addBubble(role,text){
     if(cuiEmpty)cuiEmpty.style.display='none';
@@ -1706,52 +2399,51 @@ rcpAnim.start();
     clearInterval(timerIv);clearTimeout(limitTo);
     timerIv=null;timerSecs=0;
     cuiLog.innerHTML='';if(cuiEmpty){cuiEmpty.style.display='';cuiLog.appendChild(cuiEmpty);}
-    statusText.textContent='Ready — click below to begin';
-    statusSub.textContent='Emma is ready to answer';
-    cuiTimer.textContent='0:00';
+    if(statusText)statusText.textContent='Ready';
+    if(cuiTimer)cuiTimer.textContent='';
     setWave(false);callActive=false;muted=false;curBubble=null;curRole=null;
-    muteBtn.classList.remove('muted');muteBtn.style.display='none';
+    muteBtn.classList.remove('muted');
+    const iconOn=muteBtn.querySelector('.cui-mute-icon-on'),iconOff=muteBtn.querySelector('.cui-mute-icon-off');
+    if(iconOn)iconOn.style.display='';if(iconOff)iconOff.style.display='none';
+    setPhoneActive(false);
   }
 
   function endCall(msg){
     clearInterval(timerIv);clearTimeout(limitTo);
-    statusText.textContent=msg;statusSub.textContent='Call ended';
+    if(statusText)statusText.textContent=msg||'Call ended';
     setWave(false);callActive=false;curBubble=null;curRole=null;
-    startBtn.innerHTML=`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg> Try Again`;
-    startBtn.classList.remove('ending');startBtn.disabled=false;muteBtn.style.display='none';
+    startBtn.disabled=false;
+    setPhoneActive(false);
   }
 
   async function initVapi(){
     if(vapi)return true;
     if(!window.Vapi||!window.Vapi.default){
-      statusText.textContent='VAPI SDK not loaded — open via netlify dev, not file://';
+      if(statusText)statusText.textContent='VAPI SDK not loaded — open via netlify dev';
       startBtn.disabled=false;
       return false;
     }
     try{
       const res=await fetch('/.netlify/functions/vapi-emma-config');
-      if(!res.ok) throw new Error(`Config endpoint returned ${res.status} — run: npx netlify dev`);
+      if(!res.ok)throw new Error(`Config endpoint returned ${res.status} — run: npx netlify dev`);
       const data=await res.json();
-      if(!data.publicKey)  throw new Error('VAPI_PUBLIC_KEY missing from .env');
-      if(!data.assistantId)throw new Error('VAPI_EMMA_ASSISTANT_ID missing from .env');
+      if(!data.publicKey) throw new Error('VAPI_PUBLIC_KEY missing from .env');
+      if(!data.assistantId)throw new Error('VAPI_WAM_ASSISTANT_ID missing from .env');
       vapi=new window.Vapi.default(data.publicKey);
       assistantId=data.assistantId;
 
       vapi.on('call-start',()=>{
         callActive=true;incUsage();
         emmaAnim.setState('listening');
-        rcpAnim.setState('active');
-        statusText.textContent='Connected — say hello!';
-        statusSub.textContent='Emma is listening...';
-        muteBtn.style.display='flex';
-        timerIv=setInterval(()=>{timerSecs++;const rem=LIMIT-timerSecs;cuiTimer.textContent=rem>10?fmt(timerSecs):`0:${String(rem).padStart(2,'0')} ⏱`;},1000);
+        if(window.demoAvatar)window.demoAvatar.setState('listening');
+        if(statusText)statusText.textContent='Connected — say hello!';
+        timerIv=setInterval(()=>{timerSecs++;const rem=LIMIT-timerSecs;if(cuiTimer)cuiTimer.textContent=rem>10?fmt(timerSecs):`⏱ 0:${String(rem).padStart(2,'0')}`;},1000);
         limitTo=setTimeout(()=>{vapi.say("Thanks so much for trying Emma! That's our demo time for today — feel free to book a free consultation with Anupama to see the full experience. Have a great day!",true);},LIMIT*1000);
-        startBtn.innerHTML=`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> End Call`;
-        startBtn.classList.add('ending');startBtn.disabled=false;
+        setPhoneActive(true);
       });
-      vapi.on('speech-start',()=>{setWave(true);statusText.textContent='Emma is speaking...';emmaAnim.setState('speaking');rcpAnim.setState('speaking');});
-      vapi.on('speech-end', ()=>{setWave(false);statusText.textContent='Emma is listening...';emmaAnim.setState('listening');emmaAnim.jawTarget=0;rcpAnim.setState('listening');rcpAnim.jawTarget=0;});
-      vapi.on('volume-level',(level)=>{ if(callActive){emmaAnim.setVolume(level);rcpAnim.setVolume(level);} });
+      vapi.on('speech-start',()=>{setWave(true);if(statusText)statusText.textContent='Emma is speaking...';emmaAnim.setState('speaking');if(window.demoAvatar)window.demoAvatar.setState('speaking');});
+      vapi.on('speech-end', ()=>{setWave(false);if(statusText)statusText.textContent='Listening...';emmaAnim.setState('listening');emmaAnim.jawTarget=0;if(window.demoAvatar){window.demoAvatar.setState('listening');window.demoAvatar.jawTarget=0;}});
+      vapi.on('volume-level',(level)=>{if(callActive){emmaAnim.setVolume(level);if(window.demoAvatar)window.demoAvatar.setVolume(level);}});
       vapi.on('message',(msg)=>{
         if(msg.type!=='transcript')return;
         const role=msg.role==='assistant'?'emma':'caller';
@@ -1760,40 +2452,43 @@ rcpAnim.start();
         else{updateBubble(curBubble,text);}
         if(msg.transcriptType==='final'){curBubble=null;curRole=null;}
       });
-      vapi.on('call-end',()=>{emmaAnim.reset();rcpAnim.setState('ended');setTimeout(()=>rcpAnim.reset(),3000);endCall('Call ended — hope that was impressive!');});
-      vapi.on('error',()=>{emmaAnim.reset();rcpAnim.reset();endCall('Something went wrong — try again');});
+      vapi.on('call-end',()=>{emmaAnim.reset();if(window.demoAvatar)window.demoAvatar.reset();endCall('Call ended — hope that was impressive!');});
+      vapi.on('error',()=>{emmaAnim.reset();if(window.demoAvatar)window.demoAvatar.reset();endCall('Something went wrong — try again');});
       return true;
     }catch(err){
-      console.error('[Emma VAPI]', err);
-      statusText.textContent=err.message||'Could not connect — check console';
+      console.error('[Emma VAPI]',err);
+      if(statusText)statusText.textContent=err.message||'Could not connect — check console';
       startBtn.disabled=false;
-      startBtn.innerHTML=`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg> Retry`;
       return false;
     }
   }
 
-  if(isCapped()){startBtn.disabled=true;startBtn.innerHTML='Demo limit reached for today — come back tomorrow';statusText.textContent='Come back tomorrow to try again!';}
+  if(isCapped()){
+    startBtn.disabled=true;
+    if(statusText)statusText.textContent='Demo limit reached — come back tomorrow';
+  }
 
   startBtn.addEventListener('click',async()=>{
-    if(callActive){vapi.stop();return;}
-    if(isCapped()){statusText.textContent='Daily demo limit reached.';return;}
+    if(callActive||startBtn.disabled)return;
+    if(isCapped()){if(statusText)statusText.textContent='Daily demo limit reached.';return;}
     resetCall();
     startBtn.disabled=true;
-    startBtn.innerHTML=`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> Connecting...`;
-    rcpAnim.setState('ringing');
-    statusText.textContent='Connecting to Emma...';statusSub.textContent='Allow microphone access when prompted';
+    if(statusText)statusText.textContent='Connecting...';
     const ok=await initVapi();
-    if(ok) rcpAnim.setState('connecting');
-    if(ok) vapi.start(assistantId,{
-      assistantOverrides:{
-        firstMessage:"Thank you for calling Wealth Australia Migration, this is Emma speaking! How can I help you with your visa enquiry today?"
-      }
-    });
+    if(ok)vapi.start(assistantId);
+  });
+
+  endBtn.addEventListener('click',()=>{
+    if(callActive&&vapi)vapi.stop();
   });
 
   muteBtn.addEventListener('click',()=>{
-    if(!vapi)return;muted=!muted;vapi.setMuted(muted);
+    if(!vapi||!callActive)return;
+    muted=!muted;vapi.setMuted(muted);
     muteBtn.classList.toggle('muted',muted);
+    const iconOn=muteBtn.querySelector('.cui-mute-icon-on'),iconOff=muteBtn.querySelector('.cui-mute-icon-off');
+    if(iconOn)iconOn.style.display=muted?'none':'';
+    if(iconOff)iconOff.style.display=muted?'':'none';
   });
 })();
 
@@ -1806,6 +2501,288 @@ function handleSubmit(e){
   btn.style.boxShadow='0 0 22px rgba(34,197,94,.4)';
   btn.disabled=true;
 }
+</script>
+
+<!-- ── 3D AVATAR (Three.js + ReadyPlayerMe) ── -->
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+
+const AVATAR_URL =
+  'https://models.readyplayer.me/6409bc4a9b9e9d00138f3d5c.glb' +
+  '?morphTargets=ARKit&textureAtlas=1024';
+
+const frame   = document.getElementById('avatar-3d-frame');
+const glowEl  = document.getElementById('avatar-3d-glow');
+const loadEl  = document.getElementById('avatar-loading');
+if (!frame) { console.warn('[Emma3D] #avatar-3d-frame not found'); }
+
+/* ── CSS fallback (used when WebGL is unavailable) ── */
+function mountCSSFallback() {
+  if (loadEl) loadEl.style.display = 'none';
+  frame.insertAdjacentHTML('beforeend', `
+    <div class="av-fallback">
+      <div class="av-fb-ring av-fb-ring1"></div>
+      <div class="av-fb-ring av-fb-ring2"></div>
+      <div class="av-fb-portrait" id="av-fb-portrait">
+        <div class="av-fb-halo"></div>
+        <div class="av-fb-circle">
+          <svg viewBox="0 0 120 140" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="av-skin" cx="50%" cy="35%" r="60%"><stop offset="0%" stop-color="#fde3c2"/><stop offset="70%" stop-color="#f0b88a"/><stop offset="100%" stop-color="#d4956a"/></radialGradient>
+              <radialGradient id="av-hair" cx="50%" cy="20%" r="70%"><stop offset="0%" stop-color="#4a2c0a"/><stop offset="100%" stop-color="#1a0a00"/></radialGradient>
+              <radialGradient id="av-iris" cx="35%" cy="30%" r="65%"><stop offset="0%" stop-color="#80d8ff"/><stop offset="50%" stop-color="#0088bb"/><stop offset="100%" stop-color="#003a52"/></radialGradient>
+              <linearGradient id="av-suit" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1a2a4a"/><stop offset="100%" stop-color="#0d1628"/></linearGradient>
+            </defs>
+            <!-- Shoulders / suit -->
+            <ellipse cx="60" cy="148" rx="55" ry="30" fill="url(#av-suit)"/>
+            <path d="M20 148 Q60 118 100 148" fill="url(#av-suit)"/>
+            <!-- Neck -->
+            <rect x="50" y="102" width="20" height="18" rx="6" fill="url(#av-skin)"/>
+            <!-- Head -->
+            <ellipse cx="60" cy="72" rx="36" ry="40" fill="url(#av-skin)"/>
+            <!-- Hair -->
+            <path d="M24 66 Q22 28 60 24 Q98 28 96 66 Q90 38 60 36 Q30 38 24 66Z" fill="url(#av-hair)"/>
+            <path d="M24 66 Q18 80 22 90 Q25 60 30 58Z" fill="url(#av-hair)"/>
+            <path d="M96 66 Q102 80 98 90 Q95 60 90 58Z" fill="url(#av-hair)"/>
+            <!-- Eyes white -->
+            <ellipse cx="46" cy="74" rx="8" ry="6" fill="#fff"/>
+            <ellipse cx="74" cy="74" rx="8" ry="6" fill="#fff"/>
+            <!-- Iris -->
+            <circle cx="46" cy="74" r="5" fill="url(#av-iris)"/>
+            <circle cx="74" cy="74" r="5" fill="url(#av-iris)"/>
+            <!-- Pupils -->
+            <circle cx="47" cy="73" r="2.5" fill="#001a26"/>
+            <circle cx="75" cy="73" r="2.5" fill="#001a26"/>
+            <!-- Catchlight -->
+            <circle cx="48.5" cy="71.5" r="1" fill="rgba(255,255,255,.7)"/>
+            <circle cx="76.5" cy="71.5" r="1" fill="rgba(255,255,255,.7)"/>
+            <!-- Nose -->
+            <path d="M57 82 Q60 90 63 82" fill="none" stroke="rgba(0,0,0,.18)" stroke-width="1.2" stroke-linecap="round"/>
+            <!-- Mouth group -->
+            <g id="av-fb-jaw">
+              <path d="M50 95 Q60 100 70 95" fill="none" stroke="rgba(0,0,0,.25)" stroke-width="1.5" stroke-linecap="round" id="av-mouth-line"/>
+              <path d="M50 95 Q60 103 70 95" fill="none" stroke="rgba(0,0,0,.08)" stroke-width="1" id="av-mouth-open" opacity="0"/>
+            </g>
+            <!-- Blush -->
+            <ellipse cx="36" cy="85" rx="7" ry="4" fill="rgba(220,120,100,.12)"/>
+            <ellipse cx="84" cy="85" rx="7" ry="4" fill="rgba(220,120,100,.12)"/>
+            <!-- Collar / shirt -->
+            <path d="M40 130 L50 118 L60 125 L70 118 L80 130" fill="none" stroke="rgba(255,255,255,.12)" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <div class="av-fb-scan"></div>
+      </div>
+      <div class="av-fb-wave" id="av-fb-wave">
+        <span></span><span></span><span></span><span></span><span></span>
+      </div>
+    </div>
+  `);
+
+  const portrait = document.getElementById('av-fb-portrait');
+  const wave     = document.getElementById('av-fb-wave');
+  const mouthOpen= frame.querySelector('#av-mouth-open');
+  const mouthLine= frame.querySelector('#av-mouth-line');
+  let jawV = 0, jawTarget = 0, _state = 'idle', raf;
+
+  function glowState(s) {
+    if (!glowEl) return;
+    glowEl.className = 'avatar-3d-glow' + (s ? ' ' + s : '');
+  }
+  function tick() {
+    raf = requestAnimationFrame(tick);
+    jawV += (jawTarget - jawV) * 0.2;
+    if (mouthOpen)  mouthOpen.style.opacity  = jawV;
+    if (mouthLine)  mouthLine.style.opacity  = 1 - jawV * 0.6;
+    if (portrait)   portrait.style.transform = `translateY(${Math.sin(Date.now()*.0007)*3}px)`;
+  }
+  tick();
+
+  window.demoAvatar = {
+    setState(s) {
+      _state = s;
+      if (wave) wave.className = 'av-fb-wave' + (s === 'speaking' ? ' active' : '');
+      glowState(s === 'speaking' ? 'speaking' : s === 'listening' ? 'listening' : '');
+    },
+    setVolume(v) { jawTarget = Math.min(1, v * 2.2); },
+    reset()      { _state = 'idle'; jawTarget = 0; if (wave) wave.className = 'av-fb-wave'; glowState(''); },
+    get jawTarget() { return jawTarget; },
+    set jawTarget(v) { jawTarget = v; },
+  };
+}
+
+/* ── WebGL check ── */
+function webglAvailable() {
+  try {
+    const c = document.createElement('canvas');
+    return !!(c.getContext('webgl2') || c.getContext('webgl') || c.getContext('experimental-webgl'));
+  } catch { return false; }
+}
+
+if (!webglAvailable()) {
+  console.info('[Emma3D] WebGL unavailable — using CSS fallback');
+  mountCSSFallback();
+} else {
+
+/* ── Renderer ── */
+let renderer;
+try {
+  renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
+} catch {
+  console.info('[Emma3D] WebGL context failed — using CSS fallback');
+  mountCSSFallback();
+}
+if (!renderer) { /* fallback already mounted */ }
+else {
+
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.1;
+frame.appendChild(renderer.domElement);
+
+const W = frame.clientWidth, H = frame.clientHeight;
+renderer.setSize(W, H);
+
+/* ── Scene ── */
+const scene = new THREE.Scene();
+
+/* ── Camera — tight bust shot ── */
+const camera = new THREE.PerspectiveCamera(32, W / H, 0.01, 10);
+camera.position.set(0, 1.62, 0.72);
+camera.lookAt(0, 1.62, 0);
+
+/* ── Lighting ── */
+scene.add(new THREE.AmbientLight(0xffeedd, 0.35));
+
+const key = new THREE.DirectionalLight(0xfff5e8, 1.6);
+key.position.set(-1.2, 3.5, 2);
+key.castShadow = true;
+scene.add(key);
+
+const fill = new THREE.DirectionalLight(0xd0e8ff, 0.55);
+fill.position.set(2.5, 1.5, 1);
+scene.add(fill);
+
+const rim = new THREE.DirectionalLight(0x00cfff, 0.3);
+rim.position.set(0, 2.5, -1.8);
+scene.add(rim);
+
+/* ── Morph / bone refs ── */
+let mesh = null;
+let jawIdx = -1, blinkLIdx = -1, blinkRIdx = -1;
+let headBone = null;
+
+/* ── Animation state ── */
+let _state = 'idle';
+let jawTarget = 0, jaw = 0;
+let blinkClock = 3, blinkPhase = 0, blinkT = 0;
+let headTargX = 0, headTargY = 0, headX = 0, headY = 0, headClock = 0;
+let t = 0, raf = null;
+
+function setMorph(i, v) {
+  if (mesh && i >= 0) mesh.morphTargetInfluences[i] = Math.max(0, Math.min(1, v));
+}
+
+function glowState(s) {
+  if (!glowEl) return;
+  glowEl.className = 'avatar-3d-glow' + (s ? ' ' + s : '');
+}
+
+function tick() {
+  raf = requestAnimationFrame(tick);
+  const dt = 0.016;
+  t += dt;
+
+  /* jaw smooth */
+  jaw += (jawTarget - jaw) * 0.2;
+  setMorph(jawIdx, jaw * 0.72);
+
+  /* blink */
+  blinkClock -= dt;
+  if (blinkClock <= 0 && blinkPhase === 0) { blinkPhase = 1; blinkT = 0; }
+  if (blinkPhase === 1) {
+    blinkT += dt / 0.07;
+    const v = Math.min(1, blinkT);
+    setMorph(blinkLIdx, v); setMorph(blinkRIdx, v);
+    if (blinkT >= 1) { blinkPhase = 2; blinkT = 0; }
+  } else if (blinkPhase === 2) {
+    blinkT += dt / 0.09;
+    const v = Math.max(0, 1 - blinkT);
+    setMorph(blinkLIdx, v); setMorph(blinkRIdx, v);
+    if (blinkT >= 1) { blinkPhase = 0; blinkClock = 2.8 + Math.random() * 3; }
+  }
+
+  /* subtle head drift */
+  headClock -= dt;
+  if (headClock <= 0) {
+    const r = _state === 'speaking' ? 0.055 : 0.025;
+    headTargX = (Math.random() - 0.5) * r;
+    headTargY = (Math.random() - 0.5) * r * 0.5;
+    headClock = 1.4 + Math.random() * 1.8;
+  }
+  headX += (headTargX - headX) * 0.022;
+  headY += (headTargY - headY) * 0.022;
+  if (headBone) {
+    headBone.rotation.x = -0.04 + headX + Math.sin(t * 0.28) * 0.007;
+    headBone.rotation.y =          headY + Math.sin(t * 0.19) * 0.005;
+    headBone.rotation.z =                  Math.sin(t * 0.37) * 0.003;
+  }
+
+  renderer.render(scene, camera);
+}
+
+/* ── Load avatar ── */
+new GLTFLoader().load(
+  AVATAR_URL,
+  (gltf) => {
+    scene.add(gltf.scene);
+    gltf.scene.traverse((node) => {
+      if (node.isMesh && node.morphTargetDictionary) {
+        mesh = node;
+        const d = node.morphTargetDictionary;
+        jawIdx    = d['jawOpen']       ?? -1;
+        blinkLIdx = d['eyeBlinkLeft']  ?? -1;
+        blinkRIdx = d['eyeBlinkRight'] ?? -1;
+      }
+      if (node.isBone && /\bhead\b/i.test(node.name)) headBone = node;
+    });
+    if (loadEl) loadEl.style.display = 'none';
+    tick();
+  },
+  undefined,
+  (err) => {
+    console.error('[Emma3D] load failed:', err);
+    if (loadEl) {
+      loadEl.innerHTML = '<span style="color:var(--muted);font-size:.7rem;padding:20px;text-align:center;line-height:1.6">Avatar unavailable<br>Check connection</span>';
+    }
+  }
+);
+
+/* ── Resize ── */
+new ResizeObserver(() => {
+  const w = frame.clientWidth, h = frame.clientHeight;
+  renderer.setSize(w, h);
+  camera.aspect = w / h;
+  camera.updateProjectionMatrix();
+}).observe(frame);
+
+/* ── Public API ── */
+window.demoAvatar = {
+  setState(s) {
+    _state = s;
+    glowState(s === 'speaking' ? 'speaking' : s === 'listening' ? 'listening' : '');
+  },
+  setVolume(v) { jawTarget = Math.min(1, v * 2.4); },
+  reset() { _state = 'idle'; jawTarget = 0; glowState(''); },
+  get jawTarget() { return jawTarget; },
+  set jawTarget(v) { jawTarget = v; },
+};
+
+} // end if(renderer)
+} // end if(webglAvailable)
 </script>
 </body>
 </html>

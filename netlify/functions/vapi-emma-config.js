@@ -6,6 +6,6 @@ exports.handler = async () => ({
   },
   body: JSON.stringify({
     publicKey:   process.env.VAPI_PUBLIC_KEY,
-    assistantId: process.env.VAPI_EMMA_ASSISTANT_ID || process.env.VAPI_ASSISTANT_ID,
+    assistantId: process.env.VAPI_WAM_ASSISTANT_ID,
   }),
 });
