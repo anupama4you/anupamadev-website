@@ -199,7 +199,27 @@
     .e-clip::after { content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 58%,rgba(5,8,15,.5) 100%);pointer-events:none;z-index:1; }
     .e-scan { position:absolute;left:0;right:0;height:2px;z-index:3;pointer-events:none;background:linear-gradient(90deg,transparent,rgba(0,207,255,.6),transparent);animation:scan 5s ease-in-out infinite 1.2s; }
     @keyframes scan{0%{top:0;opacity:0}5%{opacity:1}95%{opacity:1}100%{top:100%;opacity:0}}
-    .e-svg{width:100%;height:100%;display:block;}
+    .e-photo {
+      position:absolute;inset:0;
+      width:100%;height:100%;display:block;
+      object-fit:cover;object-position:center top;
+      filter:saturate(1.06) contrast(1.03);
+      transform:scale(1.04);
+      transition:opacity .12s ease, filter .18s ease, transform .18s ease;
+    }
+    .e-photo-base{z-index:0;}
+    .e-photo-closed{z-index:1;opacity:0;animation:naturalBlink 7.2s infinite;pointer-events:none;}
+    .e-photo-talking {
+      z-index:2;opacity:0;pointer-events:none;
+    }
+    .e-clip.is-speaking .e-photo-base{opacity:calc(1 - var(--talk, .45) * .35);}
+    .e-clip.is-speaking .e-photo-talking{opacity:calc(.38 + var(--talk, .45) * .62);filter:saturate(1.1) contrast(1.05);}
+    .e-clip.is-speaking .e-photo-closed{opacity:0;animation:none;}
+    @keyframes naturalBlink {
+      0%, 8%, 13%, 62%, 67%, 100% { opacity: 0; }
+      9.2%, 11.6%, 63.2%, 65.6% { opacity: 1; }
+    }
+    .e-svg{display:none;}
     .lid-l{transform-origin:78px 110px;animation:blink-lid 6s ease-in-out infinite}
     .lid-r{transform-origin:122px 110px;animation:blink-lid 6s ease-in-out infinite .06s}
     @keyframes blink-lid{0%,88%,100%{transform:scaleY(0)}93%{transform:scaleY(1)}}
@@ -217,8 +237,28 @@
     @keyframes wave{0%,100%{transform:scaleY(.3)}50%{transform:scaleY(1)}}
 
     /* ── HUB DIAGRAM ── */
-    .hub-diagram { display: flex; justify-content: center; padding: 8px 0 32px; }
-    .hub-svg { width: 100%; max-width: 600px; height: auto; }
+    .hub-diagram {
+      position: relative;
+      display: flex; justify-content: center; align-items: center;
+      padding: 28px;
+      min-height: 460px;
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 20px;
+      background:
+        radial-gradient(ellipse at 50% 45%, rgba(0,207,255,.13), transparent 58%),
+        linear-gradient(180deg, rgba(12,18,40,.92), rgba(5,8,15,.78));
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.05), 0 28px 80px rgba(0,0,0,.28);
+      overflow: hidden;
+    }
+    .hub-diagram::before {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.02) 1px, transparent 1px);
+      background-size: 32px 32px;
+      mask-image: radial-gradient(ellipse at 50% 50%, black, transparent 78%);
+    }
+    .hub-svg { position: relative; z-index: 1; width: 100%; max-width: 620px; height: auto; }
     @media (max-width: 600px) {
       .hub-svg { max-width: 340px; }
     }
@@ -247,13 +287,16 @@
     .pdc-inner h2 { font-size: clamp(1.8rem, 3.5vw, 2.6rem); color: #fff; }
     .pdc-inner > p { font-size: .95rem; color: var(--muted); max-width: 520px; line-height: 1.72; }
     .pdc-steps {
-      display: flex; align-items: center; justify-content: center;
-      gap: 12px; flex-wrap: wrap; width: 100%; margin: 8px 0;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 24px minmax(0, 1fr) 24px minmax(0, 1fr);
+      align-items: stretch;
+      gap: 12px; width: 100%; margin: 8px 0;
     }
     .pdc-step {
       display: flex; align-items: flex-start; gap: 12px;
       background: var(--bg3); border: 1px solid var(--border);
-      border-radius: 12px; padding: 16px 18px; flex: 1; min-width: 160px; max-width: 200px;
+      border-radius: 12px; padding: 16px 18px;
+      width: 100%; min-height: 104px;
     }
     .pdc-step-num {
       width: 28px; height: 28px; border-radius: 50%;
@@ -263,11 +306,14 @@
     }
     .pdc-step-text { font-size: .8rem; color: var(--muted); line-height: 1.55; text-align: left; }
     .pdc-step-text strong { color: #fff; display: block; margin-bottom: 2px; }
-    .pdc-step-arrow { font-size: 1.1rem; color: var(--gold); opacity: .5; flex-shrink: 0; }
+    .pdc-step-arrow {
+      font-size: 1.1rem; color: var(--gold); opacity: .5;
+      display: flex; align-items: center; justify-content: center;
+    }
     .pdc-note { font-size: .72rem; color: rgba(255,255,255,.25); letter-spacing: .04em; margin-top: -8px; }
     @media (max-width: 640px) {
-      .pdc-steps { flex-direction: column; align-items: stretch; }
-      .pdc-step { max-width: 100%; }
+      .pdc-steps { grid-template-columns: 1fr; }
+      .pdc-step { min-height: 0; }
       .pdc-step-arrow { transform: rotate(90deg); align-self: center; }
     }
 
@@ -358,7 +404,7 @@
     }
     .phone-avatar img {
       width: 100%; height: 100%; object-fit: cover;
-      mix-blend-mode: screen;
+      object-position: center 16%;
     }
     .phone-contact-name {
       font-family: 'Space Grotesk', sans-serif;
@@ -721,10 +767,42 @@
     .replay-btn:hover { opacity: .7; }
 
     /* ── KNOWS ── */
-    .knows { background: var(--bg2); }
-    .knows-intro { max-width: 580px; margin-bottom: 2.8rem; }
-    .knows-intro h2 { font-size: clamp(1.75rem, 3vw, 2.4rem); color: #fff; margin-bottom: .8rem; }
-    .knows-intro p  { font-size: .95rem; color: var(--muted); line-height: 1.72; }
+    .knows {
+      background:
+        radial-gradient(ellipse 60% 60% at 18% 28%, rgba(232,160,32,.08), transparent 68%),
+        radial-gradient(ellipse 55% 55% at 86% 48%, rgba(0,207,255,.08), transparent 68%),
+        var(--bg2);
+      position: relative;
+      overflow: hidden;
+    }
+    .knows::before {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background: linear-gradient(180deg, rgba(255,255,255,.025), transparent 22%, transparent 78%, rgba(255,255,255,.018));
+    }
+    .knows-layout {
+      position: relative; z-index: 1;
+      display: grid; grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr);
+      gap: 48px; align-items: center;
+    }
+    .knows-intro { max-width: 470px; margin-bottom: 0; }
+    .knows-intro h2 { font-size: clamp(2rem, 4vw, 3rem); color: #fff; margin-bottom: 1rem; }
+    .knows-intro p  { font-size: .98rem; color: var(--muted); line-height: 1.75; }
+    .knowledge-points {
+      list-style: none;
+      display: grid; gap: 12px;
+      margin-top: 1.5rem;
+    }
+    .knowledge-points li {
+      display: grid; grid-template-columns: 34px 1fr; gap: 12px; align-items: start;
+      color: var(--muted); font-size: .84rem; line-height: 1.58;
+    }
+    .knowledge-points span {
+      width: 34px; height: 34px; border-radius: 9px;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(232,160,32,.1); border: 1px solid rgba(232,160,32,.22);
+      color: var(--gold); font-family: 'Space Grotesk', sans-serif; font-weight: 700;
+    }
+    .knowledge-points strong { display: block; color: #fff; font-size: .86rem; margin-bottom: 2px; }
     .knows-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
     .know-card {
       background: var(--bg3); border: 1px solid var(--border); border-radius: 15px;
@@ -942,6 +1020,10 @@
       .e-ring-2 { width: 215px; height: 215px; margin: -107.5px 0 0 -107.5px; }
       .e-ring-3 { width: 290px; height: 290px; margin: -145px 0 0 -145px; }
       .e-portrait-wrap { width: 182px; height: 212px; }
+      .knows-layout { grid-template-columns: 1fr; gap: 32px; }
+      .knows-intro { max-width: 640px; text-align: center; margin: 0 auto; }
+      .knowledge-points { max-width: 560px; margin-left: auto; margin-right: auto; text-align: left; }
+      .hub-diagram { min-height: 0; padding: 18px; }
       .demo-in, .transcript-in, .roi-grid { grid-template-columns: 1fr; }
       .knows-grid, .prob-grid, .plans, .steps { grid-template-columns: 1fr; }
       .steps::before { display: none; }
@@ -983,7 +1065,10 @@
       border: 1.5px solid rgba(255,255,255,.09);
       box-shadow: 0 32px 80px rgba(0,0,0,.6), 0 0 40px rgba(0,207,255,.05);
     }
-    .avatar-3d-frame canvas { width: 100% !important; height: 100% !important; display: block; }
+    .avatar-3d-frame canvas,
+    .avatar-3d-frame .av-fallback {
+      display: none !important;
+    }
     .avatar-3d-glow {
       position: absolute; inset: 0; border-radius: 32px;
       pointer-events: none; z-index: 2;
@@ -1018,6 +1103,75 @@
     .avatar-3d-role {
       font-size: .68rem; color: var(--muted); letter-spacing: .07em;
       text-transform: uppercase; font-weight: 500; margin-top: -8px;
+    }
+
+    .avatar-photo-scene {
+      position: absolute; inset: 0; z-index: 1;
+      overflow: hidden; background: radial-gradient(ellipse at 50% 18%, rgba(0,207,255,.12), transparent 58%);
+    }
+    .avatar-photo {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%; display: block;
+      object-fit: cover; object-position: center top;
+      transform: scale(1.02);
+      filter: saturate(1.06) contrast(1.03);
+      transition: opacity .12s ease, transform .45s ease, filter .45s ease;
+    }
+    .avatar-photo-base { z-index: 0; }
+    .avatar-photo-closed {
+      z-index: 1; opacity: 0; pointer-events: none;
+      animation: naturalBlink 7.2s infinite;
+    }
+    .avatar-photo-talking {
+      z-index: 2; opacity: 0; pointer-events: none;
+    }
+    .avatar-photo-vignette {
+      position: absolute; inset: 0; pointer-events: none;
+      background:
+        linear-gradient(180deg, transparent 48%, rgba(5,8,15,.38) 100%),
+        radial-gradient(ellipse at 50% 20%, transparent 42%, rgba(5,8,15,.38) 100%);
+      z-index: 2;
+    }
+    .avatar-photo-call-ring {
+      position: absolute; z-index: 3; right: 24px; top: 138px;
+      width: 54px; height: 54px; border-radius: 50%;
+      border: 1px solid rgba(232,160,32,.45);
+      opacity: 0; transform: scale(.7);
+      pointer-events: none;
+    }
+    .avatar-photo-wave {
+      position: absolute; z-index: 4; left: 50%; bottom: 22px;
+      transform: translateX(-50%);
+      display: flex; align-items: center; gap: 4px; height: 24px;
+      padding: 6px 12px; border-radius: 999px;
+      background: rgba(5,8,15,.66); border: 1px solid rgba(0,207,255,.16);
+      backdrop-filter: blur(10px);
+    }
+    .avatar-photo-wave span {
+      display: block; width: 3px; height: 5px; border-radius: 99px;
+      background: var(--cyan); opacity: .55;
+    }
+    .avatar-photo-wave.active span { animation: wave 1.2s ease-in-out infinite; opacity: 1; }
+    .avatar-photo-wave.active span:nth-child(1){animation-delay:0s}
+    .avatar-photo-wave.active span:nth-child(2){animation-delay:.12s}
+    .avatar-photo-wave.active span:nth-child(3){animation-delay:.24s}
+    .avatar-photo-wave.active span:nth-child(4){animation-delay:.36s}
+    .avatar-photo-wave.active span:nth-child(5){animation-delay:.24s}
+    .avatar-photo-wave.active span:nth-child(6){animation-delay:.12s}
+    .avatar-3d-frame.photo-state-speaking .avatar-photo {
+      transform: scale(1.035) translateY(-2px);
+      filter: saturate(1.12) contrast(1.06);
+    }
+    .avatar-3d-frame.photo-state-speaking .avatar-photo-base { opacity: calc(1 - var(--talk, .45) * .35); }
+    .avatar-3d-frame.photo-state-speaking .avatar-photo-talking { opacity: calc(.38 + var(--talk, .45) * .62); }
+    .avatar-3d-frame.photo-state-speaking .avatar-photo-closed { opacity: 0; animation: none; }
+    .avatar-3d-frame.photo-state-listening .avatar-photo-call-ring,
+    .avatar-3d-frame.photo-state-calling .avatar-photo-call-ring {
+      animation: avatarCallRing 1.5s ease-out infinite;
+    }
+    @keyframes avatarCallRing {
+      0% { opacity: .8; transform: scale(.72); }
+      100% { opacity: 0; transform: scale(1.55); }
     }
 
     /* CSS fallback avatar */
@@ -1143,6 +1297,9 @@
         <div class="e-halo"></div>
         <div class="e-clip">
           <div class="e-scan"></div>
+          <img class="e-photo e-photo-base" src="assets/emma/mouth_closed.png" alt="Emma">
+          <img class="e-photo e-photo-closed" src="assets/emma/eyes_closed.png" alt="">
+          <img class="e-photo e-photo-talking" src="assets/emma/talking.png" alt="">
           <svg class="e-svg" viewBox="0 0 200 250" xmlns="http://www.w3.org/2000/svg">
             <defs>
               <radialGradient id="skin" cx="50%" cy="38%" r="58%"><stop offset="0%" stop-color="#fde3c2"/><stop offset="65%" stop-color="#f5c8a0"/><stop offset="100%" stop-color="#e0a878"/></radialGradient>
@@ -1237,23 +1394,6 @@
   </div>
 </section>
 
-<!-- ── WAM TRUST STRIP ── -->
-<div class="trust-strip">
-  <div class="trust-strip-in">
-    <div class="trust-strip-left">
-      <img src="https://wealthaustraliamigration.com.au/wp-content/uploads/2023/01/logo.jpg"
-           alt="Wealth Australia Migration" class="trust-strip-logo">
-    </div>
-    <div class="trust-badges">
-      <img src="https://wealthaustraliamigration.com.au/wp-content/uploads/2025/10/MARN-Charcoal-150x150.jpg" alt="MARN" class="trust-badge-img" title="MARA Registered">
-      <img src="https://wealthaustraliamigration.com.au/wp-content/uploads/2025/10/MIA_Logo_Blue-e1761368037812-150x150.jpg" alt="MIA" class="trust-badge-img" title="Migration Institute of Australia">
-      <img src="https://wealthaustraliamigration.com.au/wp-content/uploads/2025/10/ME-logo_member-150x150.png" alt="ME Member" class="trust-badge-img" title="Member">
-      <img src="https://wealthaustraliamigration.com.au/wp-content/uploads/2025/10/NZ-imm-trademark-150x150.jpg" alt="NZ Immigration" class="trust-badge-img" title="New Zealand Immigration">
-      <img src="https://wealthaustraliamigration.com.au/wp-content/uploads/2025/10/MA-logo-e1761368003762-150x150.png" alt="MA" class="trust-badge-img" title="Migration Alliance">
-    </div>
-  </div>
-</div>
-
 <!-- ── LIVE DEMO ── -->
 <section class="demo-sec" id="live-demo">
   <div class="container">
@@ -1267,14 +1407,20 @@
 
       <div class="demo-row">
 
-        <!-- 3D AVATAR -->
+        <!-- EMMA AVATAR -->
         <div class="avatar-3d-panel">
           <div class="avatar-3d-frame" id="avatar-3d-frame">
-            <div id="avatar-3d-glow" class="avatar-3d-glow"></div>
-            <div id="avatar-loading" class="avatar-loading">
-              <div class="avatar-loading-spinner"></div>
-              Loading Emma…
+            <div class="avatar-photo-scene" id="avatar-photo-scene">
+              <img class="avatar-photo avatar-photo-base" src="assets/emma/mouth_closed.png" alt="Emma AI Receptionist">
+              <img class="avatar-photo avatar-photo-closed" src="assets/emma/eyes_closed.png" alt="">
+              <img class="avatar-photo avatar-photo-talking" src="assets/emma/talking.png" alt="">
+              <span class="avatar-photo-call-ring"></span>
+              <div class="avatar-photo-wave" id="avatar-photo-wave" aria-hidden="true">
+                <span></span><span></span><span></span><span></span><span></span><span></span>
+              </div>
+              <div class="avatar-photo-vignette"></div>
             </div>
+            <div id="avatar-3d-glow" class="avatar-3d-glow"></div>
           </div>
           <div class="avatar-3d-name">Emma</div>
           <div class="avatar-3d-role">AI Receptionist</div>
@@ -1297,7 +1443,7 @@
 
           <div class="phone-contact">
             <div class="phone-avatar">
-              <img src="https://wealthaustraliamigration.com.au/wp-content/uploads/2023/01/logo.jpg" alt="WAM">
+              <img src="assets/emma/mouth_closed.png" alt="Emma">
             </div>
             <div class="phone-contact-name">Wealth Australia Migration</div>
             <div class="phone-contact-label">Emma · AI Receptionist</div>
@@ -1346,6 +1492,7 @@
           </div>
 
           <p class="phone-note">Microphone required · 90 seconds max · Free demo</p>
+          <button class="anim-test-btn" id="anim-test-btn">Preview talking animation</button>
 
         </div>
       </div><!-- /phone-shell -->
@@ -1562,7 +1709,7 @@
           Start Demo — Talk to Emma
         </button>
         <p class="demo-note">Microphone required &nbsp;·&nbsp; Free &nbsp;·&nbsp; 90 seconds max</p>
-        <button class="anim-test-btn" id="anim-test-btn">Preview animation — no mic needed</button>
+        <button class="anim-test-btn" id="anim-test-btn-legacy">Preview animation — no mic needed</button>
         </div><!-- end demo-call-col -->
       </div><!-- end demo-right-wrap -->
 
@@ -1657,13 +1804,19 @@
 <!-- ── KNOWS ── -->
 <section class="knows">
   <div class="container">
-    <div class="knows-intro reveal">
-      <div class="tag">Pre-Configured &amp; Trainable</div>
-      <h2>Emma learns everything<br>about your practice.</h2>
-      <p>We configure Emma with your practice details from day one — and you can keep training her with new FAQs, services, and scripts as your business grows.</p>
-    </div>
+    <div class="knows-layout">
+      <div class="knows-intro reveal">
+        <div class="tag">Pre-Configured &amp; Trainable</div>
+        <h2>Emma learns everything<br>about your practice.</h2>
+        <p>Emma is configured around the way Wealth Australia Migration actually works: your services, advisor availability, consultation flow, client language, and the boundaries she should never cross.</p>
+        <ul class="knowledge-points">
+          <li><span>01</span><div><strong>Practice-specific answers</strong>Visa categories, fees, office details, advisor names, and approved FAQs stay consistent.</div></li>
+          <li><span>02</span><div><strong>Controlled conversation flow</strong>Emma collects the right details without giving migration advice or drifting off script.</div></li>
+          <li><span>03</span><div><strong>Easy to keep current</strong>Update scripts, services, and FAQs as your practice changes.</div></li>
+        </ul>
+      </div>
 
-    <div class="hub-diagram reveal">
+      <div class="hub-diagram reveal">
       <svg class="hub-svg" viewBox="0 0 600 420" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <radialGradient id="hub-glow" cx="50%" cy="50%" r="50%">
@@ -1735,6 +1888,7 @@
         <text x="65"  y="238" text-anchor="middle" font-family="Inter,sans-serif" font-size="9"  fill="rgba(255,255,255,.45)">Language</text>
 
       </svg>
+      </div>
     </div>
   </div>
 </section>
@@ -2100,6 +2254,7 @@ class EmmaAnimator {
     this.pupilL     = document.getElementById('emma-pupil-l');
     this.pupilR     = document.getElementById('emma-pupil-r');
     this.portrait   = document.querySelector('.e-portrait-wrap');
+    this.clip       = document.querySelector('.e-clip');
     this.halo       = document.querySelector('.e-halo');
 
     this._tick = this._tick.bind(this);
@@ -2167,10 +2322,12 @@ class EmmaAnimator {
   setVolume(v) {
     // VAPI volume-level is 0–1 but usually quiet — amplify
     this.jawTarget = Math.min(1, v * 3.2);
+    if (this.clip) this.clip.style.setProperty('--talk', Math.max(0, Math.min(1, v * 2.6)).toFixed(2));
   }
 
   setState(s) {
     this.state = s;
+    if (this.clip) this.clip.classList.toggle('is-speaking', s === 'speaking');
     if (s === 'listening') {
       this.gazeTargetX = 0; this.gazeTargetY = -0.4;
       if (this.halo) this.halo.style.background =
@@ -2190,6 +2347,8 @@ class EmmaAnimator {
   reset() {
     this.jawTarget = 0;
     this.setState('idle');
+    if (this.clip) this.clip.classList.remove('is-speaking');
+    if (this.clip) this.clip.style.setProperty('--talk', '0');
     if (this.portrait) this.portrait.style.transform = '';
   }
 }
@@ -2321,6 +2480,10 @@ const rcpAnim = { start(){}, setState(){}, setVolume(){}, reset(){}, jawTarget:0
     const s = vol > 0.12 ? 'speaking' : 'listening';
     emmaAnim.setState(s);
     rcpAnim.setState(s);
+    if (window.demoAvatar) {
+      window.demoAvatar.setVolume(vol);
+      window.demoAvatar.setState(s);
+    }
     testRaf = requestAnimationFrame(tick);
   }
 
@@ -2330,7 +2493,8 @@ const rcpAnim = { start(){}, setState(){}, setVolume(){}, reset(){}, jawTarget:0
     running = false;
     emmaAnim.reset();
     rcpAnim.reset();
-    btn.textContent = 'Preview animation — no mic needed';
+    if (window.demoAvatar) window.demoAvatar.reset();
+    btn.textContent = 'Preview talking animation';
     btn.classList.remove('running');
   }
 
@@ -2474,6 +2638,7 @@ const rcpAnim = { start(){}, setState(){}, setVolume(){}, reset(){}, jawTarget:0
     resetCall();
     startBtn.disabled=true;
     if(statusText)statusText.textContent='Connecting...';
+    if(window.demoAvatar)window.demoAvatar.setState('calling');
     const ok=await initVapi();
     if(ok)vapi.start(assistantId);
   });
@@ -2598,7 +2763,7 @@ function mountCSSFallback() {
   }
   tick();
 
-  window.demoAvatar = {
+  window.legacyDemoAvatar = {
     setState(s) {
       _state = s;
       if (wave) wave.className = 'av-fb-wave' + (s === 'speaking' ? ' active' : '');
@@ -2770,7 +2935,7 @@ new ResizeObserver(() => {
 }).observe(frame);
 
 /* ── Public API ── */
-window.demoAvatar = {
+window.legacyDemoAvatar = {
   setState(s) {
     _state = s;
     glowState(s === 'speaking' ? 'speaking' : s === 'listening' ? 'listening' : '');
@@ -2783,6 +2948,47 @@ window.demoAvatar = {
 
 } // end if(renderer)
 } // end if(webglAvailable)
+</script>
+<script>
+(function(){
+  const frame = document.getElementById('avatar-3d-frame');
+  const wave = document.getElementById('avatar-photo-wave');
+  const photoScene = document.getElementById('avatar-photo-scene');
+  const glowEl = document.getElementById('avatar-3d-glow');
+  if (!frame || !photoScene) return;
+
+  function setGlow(state) {
+    if (!glowEl) return;
+    glowEl.className = 'avatar-3d-glow' + (state === 'speaking' ? ' speaking' : state === 'listening' || state === 'calling' ? ' listening' : '');
+  }
+
+  window.demoAvatar = {
+    setState(state) {
+      frame.classList.remove('photo-state-speaking', 'photo-state-listening', 'photo-state-calling');
+      if (state === 'speaking') frame.classList.add('photo-state-speaking');
+      if (state === 'listening') frame.classList.add('photo-state-listening');
+      if (state === 'calling' || state === 'connecting') frame.classList.add('photo-state-calling');
+      if (wave) wave.classList.toggle('active', state === 'speaking');
+      setGlow(state);
+    },
+    setVolume(level) {
+      const talk = Math.max(0, Math.min(1, level * 2.6));
+      frame.style.setProperty('--talk', talk.toFixed(2));
+    },
+    reset() {
+      frame.classList.remove('photo-state-speaking', 'photo-state-listening', 'photo-state-calling');
+      frame.style.setProperty('--talk', '0');
+      if (wave) wave.classList.remove('active');
+      setGlow('idle');
+    },
+    get jawTarget() {
+      return parseFloat(frame.style.getPropertyValue('--talk')) || 0;
+    },
+    set jawTarget(value) {
+      frame.style.setProperty('--talk', Math.max(0, Math.min(1, value)).toFixed(2));
+    }
+  };
+})();
 </script>
 </body>
 </html>
