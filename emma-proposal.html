@@ -3394,12 +3394,6 @@ const rcpAnim = { start(){}, setState(){}, setVolume(){}, reset(){}, jawTarget:0
     if(statusDot)statusDot.classList.toggle('active',active);
   }
 
-  const CAP=3, SKEY='emma-wam-demo';
-
-  function getUsage(){try{const r=localStorage.getItem(SKEY),d=r?JSON.parse(r):{};const today=new Date().toDateString();if(d.date!==today)return{date:today,count:0};return d;}catch{return{date:new Date().toDateString(),count:0};}}
-  function incUsage(){const u=getUsage();u.count++;try{localStorage.setItem(SKEY,JSON.stringify(u));}catch{}}
-  function isCapped(){return getUsage().count>=CAP;}
-
   let vapi=null,assistantId=null,callActive=false,muted=false;
   let timerSecs=0,timerIv=null;
   let curBubble=null,curRole=null;
@@ -3453,7 +3447,7 @@ const rcpAnim = { start(){}, setState(){}, setVolume(){}, reset(){}, jawTarget:0
       assistantId=data.assistantId;
 
       vapi.on('call-start',()=>{
-        callActive=true;incUsage();
+        callActive=true;
         emmaAnim.setState('listening');
         if(window.demoAvatar)window.demoAvatar.setState('listening');
         if(statusText)statusText.textContent='Connected — say hello!';
@@ -3482,14 +3476,8 @@ const rcpAnim = { start(){}, setState(){}, setVolume(){}, reset(){}, jawTarget:0
     }
   }
 
-  if(isCapped()){
-    startBtn.disabled=true;
-    if(statusText)statusText.textContent='Demo limit reached — come back tomorrow';
-  }
-
   startBtn.addEventListener('click',async()=>{
     if(callActive||startBtn.disabled)return;
-    if(isCapped()){if(statusText)statusText.textContent='Daily demo limit reached.';return;}
     resetCall();
     startBtn.disabled=true;
     if(statusText)statusText.textContent='Connecting...';
