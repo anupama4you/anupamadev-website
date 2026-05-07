@@ -2170,6 +2170,229 @@ body,
   .nova-promo__visual { display: none; }
 }
 
+/* ============================================================
+   ELLIE NAV BADGE
+   ============================================================ */
+
+.nav__ellie-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #a78bfa !important;
+  font-weight: 600;
+}
+
+.nav__ellie-badge {
+  display: inline-block;
+  padding: 2px 7px;
+  border-radius: 100px;
+  background: linear-gradient(135deg, #a78bfa, #f472b6);
+  color: #fff;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1.6;
+}
+
+/* ============================================================
+   AI PRODUCTS DUAL LAYOUT (replaces nova-promo on index.html)
+   ============================================================ */
+
+.ai-products__hd {
+  text-align: center;
+  max-width: 580px;
+  margin: 0 auto 2.5rem;
+}
+
+.ai-products__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--primary-light);
+  margin-bottom: 0.9rem;
+}
+
+.ai-products__grid {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.ai-products__card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 32px 28px;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+
+.ai-products__card:hover { transform: translateY(-4px); }
+
+.ai-products__card--nova {
+  border-color: rgba(99, 102, 241, 0.25);
+  box-shadow: 0 16px 48px rgba(0,0,0,.2), 0 0 40px rgba(99,102,241,.06);
+}
+
+.ai-products__card--ellie {
+  border-color: rgba(167, 139, 250, 0.25);
+  box-shadow: 0 16px 48px rgba(0,0,0,.2), 0 0 40px rgba(167,139,250,.07);
+}
+
+.ai-products__card-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 12px;
+  border-radius: 100px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin-bottom: 1rem;
+  width: fit-content;
+}
+
+.ai-products__card--nova .ai-products__card-badge {
+  background: rgba(99, 102, 241, 0.1);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  color: var(--primary-light);
+}
+
+.ai-products__card--ellie .ai-products__card-badge {
+  background: rgba(167, 139, 250, 0.1);
+  border: 1px solid rgba(167, 139, 250, 0.22);
+  color: #a78bfa;
+}
+
+.ai-products__card-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  animation: badgePulse 2.4s ease-in-out infinite;
+}
+
+.ai-products__card--nova  .ai-products__card-dot { background: var(--green); }
+.ai-products__card--ellie .ai-products__card-dot { background: #a78bfa; }
+
+.ai-products__card-name {
+  font-size: clamp(1.6rem, 2.5vw, 2.1rem);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+  color: var(--text);
+  margin-bottom: 0.75rem;
+}
+
+.ai-products__card--ellie .ai-products__card-name {
+  background: linear-gradient(130deg, #a78bfa, #f472b6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.ai-products__card-desc {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.65;
+  margin-bottom: 1.5rem;
+  flex: 1;
+}
+
+.ai-products__card-btns {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+.btn--ellie {
+  background: linear-gradient(135deg, #a78bfa, #f472b6);
+  color: #fff !important;
+  border: none;
+  box-shadow: 0 0 20px rgba(167,139,250,.3);
+}
+
+.btn--ellie:hover {
+  box-shadow: 0 0 30px rgba(167,139,250,.55);
+  transform: translateY(-1px);
+  color: #fff !important;
+}
+
+.ai-products__card-status {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+
+.ai-products__card-status-hdr {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.ai-products__card--nova  .ai-products__card-status-hdr { color: var(--green); }
+.ai-products__card--ellie .ai-products__card-status-hdr { color: #a78bfa; }
+
+.ai-products__card-status-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  padding: 5px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.ai-products__card-status-row:last-child { border-bottom: none; }
+
+.ai-products__card--nova  .ai-products__card-status-row svg { color: var(--green); flex-shrink: 0; }
+.ai-products__card--ellie .ai-products__card-status-row svg { color: #a78bfa; flex-shrink: 0; }
+
+.ai-products__card-stat {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 8px;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.ai-products__card-stat strong { color: var(--text); }
+
+.ai-products__card-stat-badge {
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  padding: 2px 8px;
+  border-radius: 100px;
+}
+
+.ai-products__card--nova  .ai-products__card-stat-badge { color: var(--primary-light); background: rgba(99,102,241,.1); border: 1px solid rgba(99,102,241,.2); }
+.ai-products__card--ellie .ai-products__card-stat-badge { color: #a78bfa; background: rgba(167,139,250,.1); border: 1px solid rgba(167,139,250,.2); }
+
+[data-theme="light"] .ai-products__card { background: #ffffff; box-shadow: 0 4px 24px rgba(0,0,0,.07); }
+[data-theme="light"] .ai-products__card-status { background: #f8f9ff; }
+
+@media (max-width: 768px) {
+  .ai-products__grid { grid-template-columns: 1fr; }
+}
+
 @media (max-width: 480px) {
   .hero { padding: 80px 1rem 60px; }
   .hero__headline { font-size: clamp(1.75rem, 8.5vw, 2.5rem); }
