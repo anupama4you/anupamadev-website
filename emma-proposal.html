@@ -3401,6 +3401,50 @@ const rcpAnim = { start(){}, setState(){}, setVolume(){}, reset(){}, jawTarget:0
   function fmt(s){return`${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;}
   function setWave(on){if(cuiWave)cuiWave.classList.toggle('active',on);}
 
+  /* ── RINGTONE (Web Audio API — no external file needed) ── */
+  let ringCtx=null,ringStop=false,ringLoopId=null;
+
+  function startRing(){
+    stopRing();
+    ringStop=false;
+    try{
+      const Ctx=window.AudioContext||window.webkitAudioContext;
+      if(!Ctx)return;
+      ringCtx=new Ctx();
+
+      function doRing(){
+        if(ringStop||!ringCtx)return;
+        const t=ringCtx.currentTime;
+        const master=ringCtx.createGain();
+        master.gain.setValueAtTime(0,t);
+        master.gain.linearRampToValueAtTime(0.09,t+0.04);   // fast attack
+        master.gain.setValueAtTime(0.09,t+1.5);
+        master.gain.linearRampToValueAtTime(0,t+1.7);        // soft release
+        master.connect(ringCtx.destination);
+
+        // Classic two-tone phone ring (440 Hz + 480 Hz)
+        [440,480].forEach(freq=>{
+          const osc=ringCtx.createOscillator();
+          osc.type='sine';
+          osc.frequency.value=freq;
+          osc.connect(master);
+          osc.start(t);
+          osc.stop(t+1.7);
+        });
+
+        // Repeat: 1.7 s ring + 1.8 s silence = 3.5 s cycle
+        ringLoopId=setTimeout(doRing,3500);
+      }
+      doRing();
+    }catch(e){console.warn('[ring]',e);}
+  }
+
+  function stopRing(){
+    ringStop=true;
+    clearTimeout(ringLoopId);
+    if(ringCtx){try{ringCtx.close();}catch(e){}ringCtx=null;}
+  }
+
   function addBubble(role,text){
     if(cuiEmpty)cuiEmpty.style.display='none';
     const el=document.createElement('div');el.className='log-msg '+role;
@@ -3423,6 +3467,7 @@ const rcpAnim = { start(){}, setState(){}, setVolume(){}, reset(){}, jawTarget:0
   }
 
   function endCall(msg){
+    stopRing();
     clearInterval(timerIv);
     if(statusText)statusText.textContent=msg||'Call ended';
     setWave(false);callActive=false;curBubble=null;curRole=null;
@@ -3447,6 +3492,7 @@ const rcpAnim = { start(){}, setState(){}, setVolume(){}, reset(){}, jawTarget:0
       assistantId=data.assistantId;
 
       vapi.on('call-start',()=>{
+        stopRing();
         callActive=true;
         emmaAnim.setState('listening');
         if(window.demoAvatar)window.demoAvatar.setState('listening');
@@ -3465,8 +3511,9 @@ const rcpAnim = { start(){}, setState(){}, setVolume(){}, reset(){}, jawTarget:0
         else{updateBubble(curBubble,text);}
         if(msg.transcriptType==='final'){curBubble=null;curRole=null;}
       });
-      vapi.on('call-end',()=>{emmaAnim.reset();if(window.demoAvatar)window.demoAvatar.reset();endCall('Call ended — hope that was impressive!');});
+      vapi.on('call-end',()=>{stopRing();emmaAnim.reset();if(window.demoAvatar)window.demoAvatar.reset();endCall('Call ended — hope that was impressive!');});
       vapi.on('error',(e)=>{
+        stopRing();
         console.error('[VAPI error]',e);
         emmaAnim.reset();if(window.demoAvatar)window.demoAvatar.reset();
         const msg=e&&e.message?e.message:'Something went wrong — try again';
@@ -3499,17 +3546,14 @@ const rcpAnim = { start(){}, setState(){}, setVolume(){}, reset(){}, jawTarget:0
     startBtn.disabled=true;
     if(statusText)statusText.textContent='Connecting...';
 
-    // iOS Safari: must resume AudioContext synchronously inside the user gesture
-    try{
-      const Ctx=window.AudioContext||window.webkitAudioContext;
-      if(Ctx){const ctx=new Ctx();ctx.resume();}
-    }catch(e){}
+    // iOS Safari: unlock AudioContext synchronously within user gesture, then start ring
+    startRing();
 
     // If pre-init already ran, vapi is ready and start() fires immediately.
     // If not (e.g. user tapped before scrolling past the section), init now.
     if(!vapi){
       const ok=await initVapi();
-      if(!ok)return;
+      if(!ok){stopRing();return;}
     }
 
     if(window.demoAvatar)window.demoAvatar.setState('calling');
