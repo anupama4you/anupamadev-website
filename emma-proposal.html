@@ -3433,16 +3433,16 @@ const rcpAnim = { start(){}, setState(){}, setVolume(){}, reset(){}, jawTarget:0
   async function initVapi(){
     if(vapi)return true;
     if(!window.Vapi||!window.Vapi.default){
-      if(statusText)statusText.textContent='VAPI SDK not loaded — open via netlify dev';
+      if(statusText)statusText.textContent='VAPI SDK not loaded';
       startBtn.disabled=false;
       return false;
     }
     try{
       const res=await fetch('/.netlify/functions/vapi-emma-config');
-      if(!res.ok)throw new Error(`Config endpoint returned ${res.status} — run: npx netlify dev`);
+      if(!res.ok)throw new Error(`Config fetch failed (${res.status})`);
       const data=await res.json();
-      if(!data.publicKey) throw new Error('VAPI_PUBLIC_KEY missing from .env');
-      if(!data.assistantId)throw new Error('VAPI_WAM_ASSISTANT_ID missing from .env');
+      if(!data.publicKey) throw new Error('VAPI_PUBLIC_KEY missing');
+      if(!data.assistantId)throw new Error('VAPI_WAM_ASSISTANT_ID missing');
       vapi=new window.Vapi.default(data.publicKey);
       assistantId=data.assistantId;
 
@@ -3466,24 +3466,54 @@ const rcpAnim = { start(){}, setState(){}, setVolume(){}, reset(){}, jawTarget:0
         if(msg.transcriptType==='final'){curBubble=null;curRole=null;}
       });
       vapi.on('call-end',()=>{emmaAnim.reset();if(window.demoAvatar)window.demoAvatar.reset();endCall('Call ended — hope that was impressive!');});
-      vapi.on('error',()=>{emmaAnim.reset();if(window.demoAvatar)window.demoAvatar.reset();endCall('Something went wrong — try again');});
+      vapi.on('error',(e)=>{
+        console.error('[VAPI error]',e);
+        emmaAnim.reset();if(window.demoAvatar)window.demoAvatar.reset();
+        const msg=e&&e.message?e.message:'Something went wrong — try again';
+        endCall(msg);
+      });
       return true;
     }catch(err){
       console.error('[Emma VAPI]',err);
-      if(statusText)statusText.textContent=err.message||'Could not connect — check console';
+      if(statusText)statusText.textContent=err.message||'Could not connect';
       startBtn.disabled=false;
       return false;
     }
   }
+
+  // Pre-load VAPI as soon as the demo section enters the viewport so
+  // the click handler can call vapi.start() with no awaits before it.
+  // iOS Safari requires vapi.start() to fire within the user-gesture tick.
+  (function(){
+    const sec=document.getElementById('live-demo');
+    if(!sec)return;
+    const obs=new IntersectionObserver(entries=>{
+      if(entries[0].isIntersecting){initVapi();obs.disconnect();}
+    },{threshold:0.1});
+    obs.observe(sec);
+  })();
 
   startBtn.addEventListener('click',async()=>{
     if(callActive||startBtn.disabled)return;
     resetCall();
     startBtn.disabled=true;
     if(statusText)statusText.textContent='Connecting...';
+
+    // iOS Safari: must resume AudioContext synchronously inside the user gesture
+    try{
+      const Ctx=window.AudioContext||window.webkitAudioContext;
+      if(Ctx){const ctx=new Ctx();ctx.resume();}
+    }catch(e){}
+
+    // If pre-init already ran, vapi is ready and start() fires immediately.
+    // If not (e.g. user tapped before scrolling past the section), init now.
+    if(!vapi){
+      const ok=await initVapi();
+      if(!ok)return;
+    }
+
     if(window.demoAvatar)window.demoAvatar.setState('calling');
-    const ok=await initVapi();
-    if(ok)vapi.start(assistantId);
+    vapi.start(assistantId);
   });
 
   endBtn.addEventListener('click',()=>{
