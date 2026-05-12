@@ -56,17 +56,78 @@
   setInterval(updateClock, 30000);
 
   // ── Phone demo simulation ─────────────────────────────────
-  const DEMO_SCRIPT = [
-    { role: 'ellie',  text: "Hi, thanks for calling Luxe Hair Studio on Rundle Street! This is Ellie — how can I help you today?", delay: 800 },
-    { role: 'caller', text: "Hi, I'd like to book a haircut for Saturday if possible?", delay: 3200 },
-    { role: 'ellie',  text: "Of course! We have availability on Saturday — would 9:30 AM or 2:00 PM work better for you?", delay: 2800 },
-    { role: 'caller', text: "9:30 sounds perfect.", delay: 3000 },
-    { role: 'ellie',  text: "Wonderful! Can I get your name and a mobile number for the confirmation SMS?", delay: 2600 },
-    { role: 'caller', text: "Sarah Mitchell, 0412 345 678.", delay: 3400 },
-    { role: 'ellie',  text: "Perfect! I've booked you in for Saturday at 9:30 AM. You'll receive an SMS confirmation shortly. Is there anything else I can help with?", delay: 2800 },
-    { role: 'caller', text: "No that's great, thank you!", delay: 3000 },
-    { role: 'ellie',  text: "You're welcome, Sarah! We look forward to seeing you Saturday. Have a wonderful day!", delay: 2600 },
+  const DEFAULT_DEMO_SCRIPT = [
+    { role: 'ellie',  text: "Hi there! I'm Ellie, your AI receptionist. I answer calls, book appointments and send SMS confirmations 24/7. How can I help?", delay: 800 },
+    { role: 'caller', text: "How do you handle bookings after hours?", delay: 3200 },
+    { role: 'ellie',  text: "I never sleep! I answer every call within 2 rings — evenings, weekends, public holidays. I collect the customer's details and book straight into your calendar.", delay: 2600 },
+    { role: 'caller', text: "What if someone asks something you don't know?", delay: 3200 },
+    { role: 'ellie',  text: "I let them know I'll pass the message on, take their details, and notify you instantly. No caller ever gets an empty voicemail.", delay: 2600 },
+    { role: 'caller', text: "How quickly can we get set up?", delay: 3000 },
+    { role: 'ellie',  text: "Most businesses go live in under 20 minutes. Enter your website URL on the left and I'll learn your business right now!", delay: 2400 },
   ];
+
+  let DEMO_SCRIPT = DEFAULT_DEMO_SCRIPT;
+
+  const demoBizUrlInput  = document.getElementById('demo-biz-url');
+  const demoBizBtn       = document.getElementById('demo-biz-btn');
+  const demoUrlStatus    = document.getElementById('demo-url-status');
+  const demoContactName  = document.getElementById('demo-contact-name');
+  const demoContactLabel = document.getElementById('demo-contact-label');
+  const demoPhoneNote    = document.getElementById('demo-phone-note');
+
+  let briefedUrl = null;
+
+  function setDemoUrlStatus(type, msg) {
+    if (!demoUrlStatus) return;
+    demoUrlStatus.className = 'demo-url-status' + (type ? ' ' + type : '');
+    demoUrlStatus.textContent = msg;
+  }
+
+  function setBtnLoading(loading) {
+    if (!demoBizBtn) return;
+    demoBizBtn.classList.toggle('loading', loading);
+    demoBizBtn.disabled = loading;
+  }
+
+  async function briefEllie() {
+    const val = demoBizUrlInput ? demoBizUrlInput.value.trim() : '';
+    if (!val) {
+      setDemoUrlStatus('', '');
+      briefedUrl = null;
+      if (demoContactName)  demoContactName.textContent  = 'Ellie AI Receptionist';
+      if (demoContactLabel) demoContactLabel.textContent = 'Your AI receptionist demo';
+      if (demoPhoneNote)    demoPhoneNote.textContent    = 'Enter your website above — Ellie will demo as your receptionist';
+      return;
+    }
+
+    setBtnLoading(true);
+    setDemoUrlStatus('briefing', 'Reading your website…');
+
+    try {
+      const res  = await fetch('/.netlify/functions/demo-vapi-config', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ businessWebsite: val }),
+      });
+      const data = await res.json();
+      const name = data.businessName || val;
+      briefedUrl = val;
+      if (demoContactName)  demoContactName.textContent  = name;
+      if (demoContactLabel) demoContactLabel.textContent = 'Ellie · AI Receptionist';
+      if (demoPhoneNote)    demoPhoneNote.textContent    = 'Ellie is briefed on ' + name;
+      setDemoUrlStatus('ready', '✓ Ellie is ready as ' + name);
+    } catch (_) {
+      briefedUrl = null;
+      setDemoUrlStatus('error', 'Could not read website — Ellie will demo as herself');
+    } finally {
+      setBtnLoading(false);
+    }
+  }
+
+  if (demoBizBtn)     demoBizBtn.addEventListener('click', briefEllie);
+  if (demoBizUrlInput) demoBizUrlInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') briefEllie();
+  });
 
   const callBtn    = document.getElementById('demo-call-btn');
   const endBtn     = document.getElementById('demo-end-btn');
@@ -150,14 +211,17 @@
     return msg;
   }
 
+  let vapiInstance = null;
+
   function resetDemo() {
     clearAllTimeouts();
     clearInterval(timerInterval);
     timerSecs = 0;
     demoActive = false;
+    if (vapiInstance) { try { vapiInstance.stop(); } catch(_) {} vapiInstance = null; }
     transcript.innerHTML = '';
     if (emptyEl) { transcript.appendChild(emptyEl); emptyEl.style.display = ''; }
-    setStatus('Ready to play', false);
+    setStatus('Ready to call', false);
     setWave(false);
     setAvatarState('idle');
     timerEl.textContent = '';
@@ -166,80 +230,308 @@
     endBtn.style.display  = 'none';
   }
 
-  function startDemo() {
+  async function startDemo() {
     if (demoActive) return;
     demoActive = true;
     btns.className = 'phone-btns phone-btns-active';
     callBtn.style.display = 'none';
     endBtn.style.display  = '';
+    setStatus('Connecting…', false);
 
-    timerSecs = 0;
-    timerEl.textContent = '0:00';
-    timerInterval = setInterval(() => {
-      timerSecs++;
-      timerEl.textContent = `${Math.floor(timerSecs / 60)}:${String(timerSecs % 60).padStart(2,'0')}`;
-    }, 1000);
+    try {
+      const cfgRes = await fetch('/.netlify/functions/demo-vapi-config', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ businessWebsite: briefedUrl || null }),
+      });
+      const { publicKey, assistantId, assistantOverrides } = await cfgRes.json();
 
-    setStatus('Connecting...', false);
-    setWave(false);
+      const VapiClass = (typeof Vapi === 'function') ? Vapi : Vapi.default;
+      const vapi = new VapiClass(publicKey);
+      vapiInstance = vapi;
 
-    scheduleTimeout(() => {
-      setStatus('Connected', true);
-      setWave(true);
-      setAvatarState('speaking');
+      // ── UI events ──────────────────────────────────────────
+      vapi.on('call-start', () => {
+        setStatus('Connected', true);
+        timerSecs = 0;
+        timerEl.textContent = '0:00';
+        timerInterval = setInterval(() => {
+          timerSecs++;
+          timerEl.textContent = `${Math.floor(timerSecs/60)}:${String(timerSecs%60).padStart(2,'0')}`;
+        }, 1000);
+      });
 
-      let cursor = 0;
-      let cumulativeDelay = 400;
+      vapi.on('call-end', () => {
+        clearInterval(timerInterval);
+        setStatus('Call ended', false);
+        setWave(false);
+        setAvatarState('idle');
+        demoActive = false;
+        btns.className = 'phone-btns phone-btns-idle';
+        callBtn.style.display = '';
+        endBtn.style.display  = 'none';
+        vapiInstance = null;
+      });
 
-      function playNext() {
-        if (cursor >= DEMO_SCRIPT.length) {
-          scheduleTimeout(() => {
-            setStatus('Call ended', false);
-            setWave(false);
-            setAvatarState('idle');
-            clearInterval(timerInterval);
-            demoActive = false;
-            btns.className = 'phone-btns phone-btns-idle';
-            callBtn.style.display = '';
-            endBtn.style.display  = 'none';
-          }, 800);
-          return;
+      vapi.on('speech-start', () => {
+        setWave(true);
+        setAvatarState('speaking');
+        setStatus('Ellie is speaking…', true);
+      });
+
+      vapi.on('speech-end', () => {
+        setWave(false);
+        setAvatarState('idle');
+        setStatus('Listening…', true);
+      });
+
+      vapi.on('message', (msg) => {
+        if (msg.type === 'transcript' && msg.transcriptType === 'final' && msg.transcript?.trim()) {
+          addBubble(msg.role === 'assistant' ? 'ellie' : 'caller', msg.transcript.trim());
         }
+      });
 
-        const line = DEMO_SCRIPT[cursor];
-        cursor++;
+      vapi.on('error', (err) => {
+        console.error('VAPI error', err);
+        setStatus('Could not connect', false);
+        resetDemo();
+      });
 
-        if (line.role === 'ellie') {
-          setStatus('Ellie is speaking...', true);
-          setWave(true);
-          setAvatarState('speaking');
-          const typingEl = addTyping();
-          scheduleTimeout(() => {
-            typingEl.remove();
-            addBubble('ellie', line.text);
-            setStatus('Listening...', true);
-            setWave(false);
-            setAvatarState('idle');
-            scheduleTimeout(playNext, line.delay);
-          }, 1200);
-        } else {
-          setStatus('Caller is speaking...', true);
-          setWave(false);
-          setAvatarState('idle');
-          scheduleTimeout(() => {
-            addBubble('caller', line.text);
-            setStatus('Ellie is speaking...', true);
-            scheduleTimeout(playNext, 600);
-          }, line.delay);
-        }
-      }
+      // ── Start the call with dynamic overrides ─────────────
+      vapi.start(assistantId, assistantOverrides);
 
-      playNext();
-    }, 1200);
+    } catch (err) {
+      console.error('Demo start error', err);
+      setStatus('Connection failed', false);
+      resetDemo();
+    }
   }
 
   if (callBtn) callBtn.addEventListener('click', startDemo);
   if (endBtn)  endBtn.addEventListener('click',  resetDemo);
+
+  // ── Hero Google Review Carousel ────────────────────────────
+  const HERO_REVIEWS = [
+    { initials:'MC', color:'a', name:'Mia C.', biz:'Glamour & Co. Hair Studio, Norwood SA', time:'2 days ago',
+      text:'We were missing 8–10 calls a day. Now Ellie books them all. Revenue up 35% in the first month. Absolute game changer.' },
+    { initials:'DH', color:'b', name:'Daniel H.', biz:'D&H Auto Mechanics, Prospect SA', time:'5 days ago',
+      text:"Can't answer when I'm under a car. Ellie answers every single time. Three new regulars in week one from calls I'd normally miss." },
+    { initials:'KT', color:'c', name:'Karen T.', biz:'Spotless Cleaning Co., Glenelg SA', time:'1 week ago',
+      text:'Set it up Sunday afternoon. By Monday morning Ellie had booked 3 new cleaning jobs. Paid for the whole month in one day.' },
+    { initials:'RP', color:'d', name:'Ryan P.', biz:'Prestige Plumbing & Gas, Unley SA', time:'3 days ago',
+      text:"Ellie handles all our after-hours emergency call intake. Customers get an immediate response instead of voicemail. Haven't lost a single urgent job." },
+    { initials:'SN', color:'e', name:'Sophie N.', biz:'North Adelaide Dental Clinic, SA', time:'6 days ago',
+      text:'Our front desk was overwhelmed. Ellie handles the overflow perfectly. Patients love getting an instant answer. Setup took under an hour.' },
+    { initials:'JW', color:'f', name:'Jake W.', biz:'Wattle Park Electrical, Burnside SA', time:'4 days ago',
+      text:"Customers don't even realise it's AI. Picked up 4 jobs this week alone that came through after 5pm. Game changer for sole traders." },
+    { initials:'LB', color:'a', name:'Lisa B.', biz:'Belair Beauty & Spa, Belair SA', time:'1 week ago',
+      text:'I run a one-woman spa and used to dread missing calls during treatments. Ellie books clients seamlessly. Bookings up 40%.' },
+    { initials:'TM', color:'d', name:'Tom M.', biz:'Modbury Landscaping & Turf, SA', time:'2 weeks ago',
+      text:'Landscaping is seasonal and calls flood in during spring. Ellie handled 60+ enquiries in one week without missing a beat. Unreal.' },
+    { initials:'AK', color:'e', name:'Anika K.', biz:'Kurralta Park Physio, SA', time:'3 days ago',
+      text:'We were losing patients to competitors simply because phones went to voicemail at lunch. Ellie fixed that overnight.' },
+  ];
+
+  (function initHeroCarousel() {
+    const wrap    = document.getElementById('heroRevWrap');
+    const dotsEl  = document.getElementById('heroRevDots');
+    const countEl = document.getElementById('heroRevCount');
+    const progEl  = document.getElementById('heroRevProgress');
+    if (!wrap) return;
+
+    let current = 0, timer = null, progTimer = null;
+
+    function buildCard(r, idx) {
+      const div = document.createElement('div');
+      div.className = 'hero-rev-card';
+      div.dataset.idx = idx;
+      div.innerHTML = `
+        <div class="hero-rev-top">
+          <div class="hero-rev-av hero-rev-av--${r.color}">${r.initials}</div>
+          <div>
+            <div class="hero-rev-name">${r.name}</div>
+            <div class="hero-rev-biz">${r.biz}</div>
+          </div>
+          <div class="hero-rev-time">${r.time}</div>
+        </div>
+        <div class="hero-rev-stars">★★★★★</div>
+        <p class="hero-rev-text">${r.text}</p>`;
+      return div;
+    }
+
+    // Build all cards
+    HERO_REVIEWS.forEach((r, i) => wrap.appendChild(buildCard(r, i)));
+
+    // Build dots
+    HERO_REVIEWS.forEach((_, i) => {
+      const d = document.createElement('button');
+      d.className = 'hero-rev-dot' + (i === 0 ? ' active' : '');
+      d.setAttribute('aria-label', 'Review ' + (i + 1));
+      d.addEventListener('click', () => goTo(i));
+      dotsEl.appendChild(d);
+    });
+
+    function resetProgress() {
+      if (progEl) { progEl.style.animation = 'none'; void progEl.offsetWidth; progEl.style.animation = 'revProgress 5s linear forwards'; }
+    }
+
+    function goTo(idx) {
+      const cards   = wrap.querySelectorAll('.hero-rev-card');
+      const dots    = dotsEl.querySelectorAll('.hero-rev-dot');
+      const next    = (idx + HERO_REVIEWS.length) % HERO_REVIEWS.length;
+      const forward = next > current || (current === HERO_REVIEWS.length - 1 && next === 0);
+
+      // Slide out current
+      const cur = wrap.querySelector('.hero-rev-card.active');
+      if (cur) {
+        cur.classList.remove('active');
+        if (!forward) cur.classList.add('to-right');
+        cur.classList.add('leaving');
+        setTimeout(() => { cur.classList.remove('leaving', 'to-right'); }, 340);
+      }
+
+      // Slide in next
+      current = next;
+      if (!forward) cards[current].classList.add('from-left');
+      cards[current].classList.add('active');
+      setTimeout(() => cards[current].classList.remove('from-left'), 450);
+
+      dots.forEach((d, i) => d.classList.toggle('active', i === current));
+      if (countEl) countEl.textContent = (current + 1) + ' / ' + HERO_REVIEWS.length;
+      resetProgress();
+    }
+
+    function autoAdvance() { goTo(current + 1); }
+
+    function startAuto() { clearInterval(timer); timer = setInterval(autoAdvance, 5000); }
+
+    goTo(0);
+    startAuto();
+    wrap.addEventListener('mouseenter', () => { clearInterval(timer); if (progEl) progEl.style.animationPlayState = 'paused'; });
+    wrap.addEventListener('mouseleave', () => { startAuto(); if (progEl) progEl.style.animationPlayState = 'running'; });
+  })();
+
+  // ── Hero headline rotator ─────────────────────────────────
+  (function initHeadlineRotator() {
+    const h1    = document.getElementById('heroH1');
+    const line1 = document.getElementById('heroLine1');
+    const line2 = document.getElementById('heroLine2');
+    if (!h1 || !line1 || !line2) return;
+
+    const HEADLINES = [
+      { l1: 'Every missed call',       l2: 'is money walking out.'          },
+      { l1: 'Most human-like',         l2: 'AI receptionist.'               },
+      { l1: 'Never miss',              l2: 'another booking.'               },
+      { l1: 'Your callers deserve',    l2: 'better than voicemail.'         },
+      { l1: '24/7 availability,',      l2: 'zero missed calls.'             },
+      { l1: 'Your business answers',   l2: 'every single call.'             },
+    ];
+
+    let idx = 0;
+
+    setInterval(() => {
+      idx = (idx + 1) % HEADLINES.length;
+      // Exit: line1 slides up, line2 follows 70ms later
+      h1.classList.remove('hl-in');
+      h1.classList.add('hl-out');
+      // After exit completes (~400ms), swap text and enter
+      setTimeout(() => {
+        line1.textContent = HEADLINES[idx].l1;
+        line2.textContent = HEADLINES[idx].l2;
+        h1.classList.remove('hl-out');
+        h1.classList.add('hl-in');
+        // Clean up so next cycle starts fresh
+        setTimeout(() => h1.classList.remove('hl-in'), 680);
+      }, 400);
+    }, 4000);
+  })();
+
+  // ── Hero URL bar → Try Live ────────────────────────────────
+  const heroBizUrl   = document.getElementById('hero-biz-url');
+  const heroUrlBtn   = document.getElementById('hero-url-btn');
+  const heroDomBadge = document.getElementById('hero-domain-badge');
+  const heroDomText  = document.getElementById('hero-domain-text');
+
+  function extractDomain(url) {
+    try {
+      const s = url.includes('://') ? url : 'https://' + url;
+      return new URL(s).hostname.replace(/^www\./, '');
+    } catch { return url.trim(); }
+  }
+
+  function applyHeroUrl(raw) {
+    if (!raw) return;
+    const domain = extractDomain(raw);
+    if (heroDomText) heroDomText.textContent = domain;
+    if (heroDomBadge) heroDomBadge.classList.add('visible');
+    // Pre-fill Try Live website field
+    const liveUrl = document.getElementById('live-website-url');
+    if (liveUrl) liveUrl.value = raw;
+    applyLiveBriefing(raw);
+  }
+
+  if (heroBizUrl) {
+    heroBizUrl.addEventListener('input', () => {
+      const v = heroBizUrl.value.trim();
+      if (heroDomBadge) heroDomBadge.classList.toggle('visible', v.length > 4);
+      if (v.length > 4 && heroDomText) heroDomText.textContent = extractDomain(v);
+    });
+  }
+
+  if (heroUrlBtn) {
+    heroUrlBtn.addEventListener('click', () => {
+      const url = heroBizUrl ? heroBizUrl.value.trim() : '';
+      applyHeroUrl(url);
+      const target = document.getElementById('try-live');
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  }
+
+  // ── Try Live: website URL briefing ────────────────────────
+  const liveWebsiteUrl    = document.getElementById('live-website-url');
+  const liveBriefingBadge = document.getElementById('live-briefing-badge');
+  const liveBriefingText  = document.getElementById('live-briefing-text');
+  const liveDescDefault   = document.getElementById('live-desc-default');
+  const liveDescBriefed   = document.getElementById('live-desc-briefed');
+  const liveBriefedDomain = document.getElementById('live-briefed-domain');
+
+  function applyLiveBriefing(url) {
+    if (!url) return;
+    const domain = extractDomain(url);
+    if (liveBriefingBadge) liveBriefingBadge.classList.add('visible');
+    if (liveBriefingText) liveBriefingText.textContent = 'Ellie is studying ' + domain + '…';
+    if (liveBriefedDomain) liveBriefedDomain.textContent = domain;
+    if (liveDescDefault) liveDescDefault.classList.add('hidden');
+    if (liveDescBriefed) liveDescBriefed.classList.add('visible');
+    // After 2s, change to "ready" state
+    setTimeout(() => {
+      if (liveBriefingText) liveBriefingText.textContent = '✓ Ellie is ready to represent ' + domain;
+      if (liveBriefingBadge) liveBriefingBadge.style.background = 'rgba(34,197,94,.07)';
+      if (liveBriefingBadge) liveBriefingBadge.style.borderColor = 'rgba(34,197,94,.25)';
+      if (liveBriefingBadge) liveBriefingBadge.style.color = '#4ade80';
+      const dots = liveBriefingBadge ? liveBriefingBadge.querySelector('.live-briefing-dots') : null;
+      if (dots) dots.style.display = 'none';
+    }, 2200);
+  }
+
+  if (liveWebsiteUrl) {
+    let briefDebounce = null;
+    liveWebsiteUrl.addEventListener('input', () => {
+      clearTimeout(briefDebounce);
+      const v = liveWebsiteUrl.value.trim();
+      if (!v || v.length < 5) {
+        if (liveBriefingBadge) liveBriefingBadge.classList.remove('visible');
+        if (liveDescDefault) liveDescDefault.classList.remove('hidden');
+        if (liveDescBriefed) liveDescBriefed.classList.remove('visible');
+        return;
+      }
+      // Reset state
+      if (liveBriefingBadge) { liveBriefingBadge.style.background = ''; liveBriefingBadge.style.borderColor = ''; liveBriefingBadge.style.color = ''; }
+      const dots = liveBriefingBadge ? liveBriefingBadge.querySelector('.live-briefing-dots') : null;
+      if (dots) dots.style.display = '';
+      briefDebounce = setTimeout(() => applyLiveBriefing(v), 600);
+    });
+  }
 
   // ── Live call (outbound via Netlify function) ─────────────
   const liveBiz     = document.getElementById('live-biz');
@@ -255,27 +547,36 @@
 
   if (liveCallBtn) {
     liveCallBtn.addEventListener('click', async () => {
-      const biz   = liveBiz   ? liveBiz.value.trim()   : '';
-      const phone = livePhone ? livePhone.value.trim() : '';
-      if (!biz)   { flashInvalid(liveBiz);   return; }
+      const biz     = liveBiz   ? liveBiz.value.trim()   : '';
+      const phone   = livePhone ? livePhone.value.trim() : '';
+      const website = liveWebsiteUrl ? liveWebsiteUrl.value.trim() : '';
       if (!phone) { flashInvalid(livePhone); return; }
 
       liveCallBtn.disabled = true;
       liveStatus.hidden = false;
+
+      if (website) {
+        liveStatus.className = 'live-status live-status--calling';
+        liveStatus.textContent = 'Briefing Ellie on ' + extractDomain(website) + '…';
+        await new Promise(r => setTimeout(r, 1600));
+      }
+
       liveStatus.className = 'live-status live-status--calling';
-      liveStatus.textContent = 'Calling your number now...';
+      liveStatus.textContent = 'Calling your number now…';
 
       try {
         const res  = await fetch('/.netlify/functions/call-initiate', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ phone, businessType: biz }),
+          body: JSON.stringify({ phone, businessType: biz || 'General', businessWebsite: website }),
         });
         const data = await res.json();
         if (!res.ok || data.error) throw new Error(data.error || 'Could not start call');
 
         liveStatus.className = 'live-status live-status--success';
-        liveStatus.textContent = 'Ellie is calling you now! Pick up and start talking.';
+        liveStatus.textContent = website
+          ? 'Ellie is calling you now — she knows your business. Pick up and start talking!'
+          : 'Ellie is calling you now! Pick up and start talking.';
         setTimeout(() => { liveCallBtn.disabled = false; liveStatus.hidden = true; }, 35000);
       } catch (err) {
         liveStatus.className = 'live-status live-status--error';
@@ -349,6 +650,39 @@
       else el.textContent = prefix + target.toLocaleString();
     };
     requestAnimationFrame(step);
+  }
+
+  // ── Problem section loss counter ─────────────────────────
+  // ── Revenue chart draw animation ─────────────────────────
+  const pcLineBad  = document.getElementById('pcLineBad');
+  const pcLineGood = document.getElementById('pcLineGood');
+  const pcDots     = document.querySelectorAll('.pc-dot, .pc-ellie-marker');
+  if (pcLineBad) {
+    let drawn = false;
+    new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting && !drawn) {
+        drawn = true;
+        pcLineBad.classList.add('pc-drawn');
+        pcLineGood.classList.add('pc-drawn');
+        setTimeout(() => pcDots.forEach(d => d.classList.add('pc-shown')), 1800);
+      }
+    }, { threshold: 0.3 }).observe(pcLineBad);
+  }
+
+  const probLossEl = document.getElementById('prob-loss-num');
+  if (probLossEl) {
+    let counted = false;
+    new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting && !counted) {
+        counted = true;
+        let n = 0; const target = 2400;
+        const iv = setInterval(() => {
+          n = Math.min(n + 48, target);
+          probLossEl.textContent = '$' + n.toLocaleString();
+          if (n >= target) clearInterval(iv);
+        }, 18);
+      }
+    }, { threshold: 0.5 }).observe(probLossEl);
   }
 
   const dashStatsEl = document.querySelector('.dash-stats');

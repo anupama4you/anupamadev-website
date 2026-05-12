@@ -99,10 +99,15 @@
     nav.scrolled { border-bottom-color: var(--border); }
     .nav-in {
       max-width: 1120px; margin: 0 auto; padding: 0 24px;
-      height: 60px; display: flex; align-items: center; justify-content: space-between;
+      height: 68px; display: flex; align-items: center; justify-content: space-between;
     }
     .nav-logo { display: flex; align-items: center; }
-    .nav-logo img { height: 64px; width: auto; display: block; }
+    .nav-logo img {
+      height: 35px; width: auto; display: block;
+      filter: brightness(1.8) contrast(1.1);
+      transition: filter .2s;
+    }
+    .nav-logo:hover img { filter: brightness(2.2) contrast(1.1); }
     .nav-links {
       display: flex; align-items: center; gap: 6px; list-style: none;
     }
@@ -193,12 +198,30 @@
     }
     .hero-pill-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--violet); animation: blink 2.2s infinite; }
     .hero-h1 { font-size: clamp(2.2rem, 4.2vw, 3.6rem); color: #fff; margin-bottom: 1.2rem; }
+    @keyframes hlLineExit  { from{opacity:1;transform:translateY(0);filter:blur(0)}   to{opacity:0;transform:translateY(-22px);filter:blur(10px)} }
+    @keyframes hlLineEnter { from{opacity:0;transform:translateY(22px);filter:blur(10px)} to{opacity:1;transform:translateY(0);filter:blur(0)} }
+    .hero-h1-line1 { display: block; }
+    .hero-h1.hl-out .hero-h1-line1 { animation: hlLineExit  .3s ease forwards; }
+    .hero-h1.hl-out .hero-h1-grad  { animation: hlLineExit  .3s .07s ease forwards; }
+    .hero-h1.hl-in  .hero-h1-line1 { animation: hlLineEnter .52s cubic-bezier(.22,.68,0,1.2) forwards; }
+    .hero-h1.hl-in  .hero-h1-grad  { animation: hlLineEnter .52s .1s cubic-bezier(.22,.68,0,1.2) forwards; }
+    @keyframes gradShimmer { 0%{background-position:-200% center} 100%{background-position:200% center} }
+    @keyframes heroFadeUp { from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes avatarRingPulse { 0%{transform:scale(1);opacity:.7} 100%{transform:scale(1.75);opacity:0} }
+    @keyframes soundWave { 0%,100%{transform:scaleY(.3)} 50%{transform:scaleY(1)} }
     .hero-h1-grad {
-      background: linear-gradient(130deg, var(--violet) 0%, var(--rose) 100%);
+      background: linear-gradient(130deg, var(--violet) 0%, var(--rose) 50%, #c084fc 100%);
+      background-size: 200% auto;
       -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      animation: gradShimmer 5s linear infinite;
     }
     .hero-sub { font-size: .97rem; color: var(--muted); max-width: 440px; margin-bottom: 2rem; line-height: 1.74; }
     .hero-sub strong { color: var(--text); font-weight: 600; }
+    .hero-setup-promise {
+      display: inline-flex; align-items: center; gap: 7px;
+      font-size: .8rem; font-weight: 600; color: var(--violet);
+      margin-bottom: 2rem;
+    }
     .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 1.5rem; }
     .btn-primary {
       background: linear-gradient(135deg, var(--violet), var(--rose));
@@ -217,9 +240,260 @@
       border: 1px solid var(--border); transition: border-color .2s, color .2s;
     }
     .btn-ghost:hover { border-color: var(--violet); color: var(--violet); }
-    .hero-checks { display: flex; gap: 18px; flex-wrap: wrap; }
-    .hero-check { display: flex; align-items: center; gap: 6px; font-size: .78rem; color: var(--muted); }
+    .hero-checks { display: flex; gap: 14px; flex-wrap: nowrap; }
+    .hero-check { display: flex; align-items: center; gap: 6px; font-size: .78rem; color: var(--muted); white-space: nowrap; }
     .hero-check svg { color: var(--green); flex-shrink: 0; }
+    .hero-book-btn { min-width: 240px; justify-content: center; }
+
+    /* ── HERO URL BAR ── */
+    .hero-url-wrap { margin-bottom: 1.6rem; }
+    .hero-url-label {
+      font-size: .72rem; font-weight: 700; color: var(--violet);
+      letter-spacing: .1em; text-transform: uppercase; margin-bottom: .55rem;
+      display: flex; align-items: center; gap: 7px;
+    }
+    .hero-url-label::before { display:none; }
+    .hero-url-bar {
+      display: flex; align-items: center;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(167,139,250,.28);
+      border-radius: 12px; overflow: hidden;
+      transition: border-color .25s, box-shadow .25s;
+      box-shadow: 0 0 0 0 rgba(167,139,250,0);
+    }
+    .hero-url-bar:focus-within {
+      border-color: var(--violet);
+      box-shadow: 0 0 0 3px rgba(167,139,250,.12);
+    }
+    .hero-url-icon {
+      padding: 0 14px; color: var(--muted); flex-shrink: 0;
+      display: flex; align-items: center;
+    }
+    .hero-url-input {
+      flex: 1; background: transparent; border: none; outline: none;
+      font-family: 'Inter', sans-serif; font-size: .88rem;
+      color: var(--text); padding: 14px 0;
+      caret-color: var(--violet);
+    }
+    .hero-url-input::placeholder { color: rgba(124,143,168,.6); }
+    .hero-url-btn {
+      background: linear-gradient(135deg, var(--violet), var(--rose));
+      border: none; cursor: pointer; padding: 10px 20px;
+      margin: 5px; border-radius: 8px;
+      font-family: 'Inter', sans-serif; font-size: .82rem;
+      font-weight: 700; color: #fff; white-space: nowrap;
+      display: flex; align-items: center; gap: 7px;
+      transition: transform .2s, box-shadow .2s;
+      box-shadow: 0 0 16px rgba(167,139,250,.35);
+    }
+    .hero-url-btn:hover { transform: translateY(-1px); box-shadow: 0 0 26px rgba(167,139,250,.55); }
+    .hero-url-hint {
+      font-size: .72rem; color: var(--muted); margin-top: .5rem;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .hero-url-hint svg { flex-shrink: 0; color: var(--violet); }
+
+    /* ── HERO RIGHT COLUMN ── */
+    .hero-right { display: flex; flex-direction: column; gap: 0; }
+
+    /* ── HERO ENTRANCE ANIMATIONS ── */
+    .hero-pill      { animation: heroFadeUp .6s  .00s ease both; }
+    .hero-h1        { animation: heroFadeUp .7s  .08s ease both; }
+    .hero-sub       { animation: heroFadeUp .7s  .18s ease both; }
+    .hero-setup-promise { animation: heroFadeUp .7s  .24s ease both; }
+    .hero-url-wrap  { animation: heroFadeUp .7s  .32s ease both; }
+    .hero-actions   { animation: heroFadeUp .7s  .36s ease both; }
+    .hero-checks    { animation: heroFadeUp .7s  .42s ease both; }
+    .hero-av-wrap   { animation: heroFadeUp .75s .22s ease both; }
+    .hero-rev-panel { animation: heroFadeUp .8s  .34s ease both; }
+
+    /* ── HERO ANIMATED AVATAR ── */
+    .hero-av-wrap {
+      display: flex; align-items: center; gap: 16px;
+      background: rgba(8,10,20,.65); border: 1px solid rgba(167,139,250,.18);
+      border-radius: 18px; padding: 16px 20px; margin-bottom: 12px;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 8px 40px rgba(0,0,0,.35), 0 0 0 1px rgba(167,139,250,.05) inset;
+    }
+    .hero-av-rings { position: relative; width: 100px; height: 100px; flex-shrink: 0; }
+    .hero-av-ring {
+      position: absolute; inset: 0; border-radius: 50%;
+      border: 1.5px solid rgba(167,139,250,.6);
+      animation: avatarRingPulse 2.6s ease-out infinite;
+    }
+    .hero-av-ring--2 { animation-delay: .87s; }
+    .hero-av-ring--3 { animation-delay: 1.74s; }
+    .hero-av-core {
+      position: absolute; inset: 6px; border-radius: 50%;
+      overflow: hidden; z-index: 1;
+      box-shadow: 0 0 20px rgba(167,139,250,.55);
+      border: 2px solid rgba(167,139,250,.35);
+    }
+    .hero-av-core img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%; object-fit: cover; object-position: center top;
+    }
+    .hero-av-img-base   { opacity: 1; z-index: 0; }
+    .hero-av-img-blink  { opacity: 0; z-index: 1; animation: naturalBlink 7.2s infinite; }
+    .hero-av-img-talk   { opacity: 0; z-index: 2; animation: naturalBlink 3.8s .6s infinite; }
+    .hero-av-info { flex: 1; min-width: 0; }
+    .hero-av-live {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: .62rem; font-weight: 700; color: #10b981;
+      letter-spacing: .08em; text-transform: uppercase; margin-bottom: 4px;
+    }
+    .hero-av-live-dot { width: 6px; height: 6px; border-radius: 50%; background: #10b981; animation: blink 1.4s ease-in-out infinite; }
+    .hero-av-name { font-size: .92rem; font-weight: 700; color: #fff; margin-bottom: 2px; }
+    .hero-av-tagline { font-size: .72rem; color: var(--muted); line-height: 1.4; }
+    .hero-av-sound { display: flex; align-items: center; gap: 3px; height: 26px; flex-shrink: 0; }
+    .hero-av-bar {
+      width: 3px; border-radius: 3px; transform-origin: bottom;
+      background: linear-gradient(to top, var(--violet), var(--rose));
+      animation: soundWave 1.4s ease-in-out infinite;
+      animation-delay: var(--d, 0s);
+    }
+
+    /* ── HERO REVIEW PANEL ── */
+    @keyframes revSlideInRight  { from { opacity:0; transform: translateX(60px);  } to { opacity:1; transform: translateX(0); } }
+    @keyframes revSlideInLeft   { from { opacity:0; transform: translateX(-60px); } to { opacity:1; transform: translateX(0); } }
+    @keyframes revSlideOutLeft  { from { opacity:1; transform: translateX(0);     } to { opacity:0; transform: translateX(-60px); } }
+    @keyframes revSlideOutRight { from { opacity:1; transform: translateX(0);     } to { opacity:0; transform: translateX(60px);  } }
+    @keyframes shimmerRev  { 0%,100%{opacity:.4} 50%{opacity:1} }
+    @keyframes dotPulse    { 0%,100%{transform:scale(1);opacity:.45} 50%{transform:scale(1.35);opacity:1} }
+
+    .hero-rev-panel {
+      position: relative; z-index: 1;
+      background: rgba(8,10,20,.7);
+      border: 1px solid rgba(167,139,250,.15);
+      border-radius: 22px;
+      padding: 24px 24px 20px;
+      backdrop-filter: blur(18px);
+      box-shadow: 0 24px 80px rgba(0,0,0,.5), 0 0 0 1px rgba(167,139,250,.06) inset;
+      overflow: hidden;
+    }
+    .hero-rev-panel::before {
+      content:''; position:absolute; top:0; left:0; right:0; height:1px;
+      background: linear-gradient(90deg,transparent,rgba(167,139,250,.5),rgba(244,114,182,.3),transparent);
+    }
+    .hero-rev-glow {
+      position: absolute; width: 300px; height: 300px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(167,139,250,.08) 0%, transparent 70%);
+      top: -80px; right: -60px; pointer-events: none;
+      animation: orb-drift 8s ease-in-out infinite;
+    }
+    .hero-rev-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 18px;
+    }
+    .hero-rev-logo { display: flex; align-items: center; gap: 8px; }
+    .hero-rev-logo-icon { width: 22px; height: 22px; }
+    .hero-rev-logo-text { font-size: .82rem; font-weight: 700; color: #fff; }
+    .hero-rev-score {
+      display: flex; align-items: center; gap: 6px;
+      background: rgba(251,191,36,.08); border: 1px solid rgba(251,191,36,.18);
+      border-radius: 100px; padding: 4px 11px;
+    }
+    .hero-rev-score-stars { color: #f59e0b; font-size: .78rem; letter-spacing: 1px; }
+    .hero-rev-score-val { font-size: .78rem; font-weight: 700; color: #fbbf24; }
+    .hero-rev-score-cnt { font-size: .7rem; color: var(--muted); }
+
+    .hero-rev-card-wrap { position: relative; min-height: 168px; }
+    .hero-rev-card {
+      position: absolute; inset: 0;
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.07);
+      border-radius: 14px; padding: 16px 18px;
+      opacity: 0; pointer-events: none;
+    }
+    .hero-rev-card.active           { opacity:1; pointer-events:auto; animation: revSlideInRight  .42s cubic-bezier(.25,.46,.45,.94) forwards; }
+    .hero-rev-card.active.from-left { animation: revSlideInLeft   .42s cubic-bezier(.25,.46,.45,.94) forwards; }
+    .hero-rev-card.leaving          { animation: revSlideOutLeft  .32s ease-in forwards; }
+    .hero-rev-card.leaving.to-right { animation: revSlideOutRight .32s ease-in forwards;
+    }
+    .hero-rev-top { display: flex; align-items: center; gap: 11px; margin-bottom: 10px; }
+    .hero-rev-av {
+      width: 38px; height: 38px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: .8rem; color: #fff; letter-spacing: .5px;
+    }
+    .hero-rev-av--a { background: linear-gradient(135deg,#6366f1,#8b5cf6); }
+    .hero-rev-av--b { background: linear-gradient(135deg,#0ea5e9,#6366f1); }
+    .hero-rev-av--c { background: linear-gradient(135deg,#ec4899,#f43f5e); }
+    .hero-rev-av--d { background: linear-gradient(135deg,#10b981,#0ea5e9); }
+    .hero-rev-av--e { background: linear-gradient(135deg,#f59e0b,#ef4444); }
+    .hero-rev-av--f { background: linear-gradient(135deg,#8b5cf6,#ec4899); }
+    .hero-rev-name { font-size: .85rem; font-weight: 600; color: #fff; }
+    .hero-rev-biz  { font-size: .72rem; color: var(--muted); margin-top: 1px; }
+    .hero-rev-time { font-size: .68rem; color: rgba(124,143,168,.6); margin-left: auto; flex-shrink: 0; }
+    .hero-rev-stars { color: #f59e0b; font-size: .82rem; letter-spacing: 1px; margin-bottom: 8px; }
+    .hero-rev-text {
+      font-size: .8rem; color: var(--muted); line-height: 1.65;
+      display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .hero-rev-text::before { content:'\201C'; font-size:1.3rem; color:var(--violet); line-height:0; vertical-align:-.35em; margin-right:2px; }
+
+    .hero-rev-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 14px; }
+    .hero-rev-dots { display: flex; gap: 6px; }
+    .hero-rev-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: rgba(255,255,255,.2); cursor: pointer;
+      transition: background .3s, transform .3s;
+    }
+    .hero-rev-dot.active { background: var(--violet); transform: scale(1.4); }
+    .hero-rev-count { font-size: .7rem; color: var(--muted); }
+    .hero-rev-progress {
+      position: absolute; bottom: 0; left: 0; height: 2px;
+      background: linear-gradient(90deg, var(--violet), var(--rose));
+      border-radius: 0 0 22px 22px;
+      animation: revProgress 5s linear forwards;
+      transform-origin: left;
+    }
+    @keyframes revProgress { from { width: 0%; } to { width: 100%; } }
+
+    /* ── HERO URL INLINE BADGE ── */
+    .hero-url-domain-badge {
+      display: none; align-items: center; gap: 8px;
+      background: rgba(167,139,250,.08); border: 1px solid var(--violet-b);
+      border-radius: 8px; padding: 8px 14px; margin-top: 10px;
+      font-size: .78rem; color: var(--violet);
+    }
+    .hero-url-domain-badge.visible { display: flex; }
+    .hero-url-domain-badge svg { flex-shrink: 0; }
+
+    /* ── TRY LIVE URL BRIEFING ── */
+    .live-url-field { margin-bottom: 12px; }
+    .live-url-input-wrap {
+      display: flex; align-items: center;
+      background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.1);
+      border-radius: 10px; overflow: hidden;
+      transition: border-color .25s;
+    }
+    .live-url-input-wrap:focus-within { border-color: var(--violet); }
+    .live-url-input-icon { padding: 0 12px; color: var(--muted); display: flex; align-items: center; }
+    .live-url-text-input {
+      flex: 1; background: transparent; border: none; outline: none;
+      font-family: 'Inter', sans-serif; font-size: .85rem;
+      color: var(--text); padding: 12px 0; caret-color: var(--violet);
+    }
+    .live-url-text-input::placeholder { color: rgba(124,143,168,.55); }
+    .live-briefing {
+      display: none; align-items: center; gap: 10px;
+      background: rgba(167,139,250,.07); border: 1px solid rgba(167,139,250,.2);
+      border-radius: 10px; padding: 11px 14px; margin-top: 8px;
+      font-size: .8rem; color: var(--violet);
+    }
+    .live-briefing.visible { display: flex; }
+    .live-briefing-dots { display: flex; gap: 4px; }
+    .live-briefing-dots span {
+      width: 5px; height: 5px; border-radius: 50%; background: var(--violet);
+      animation: dotPulse 1.2s ease-in-out infinite;
+    }
+    .live-briefing-dots span:nth-child(2) { animation-delay: .2s; }
+    .live-briefing-dots span:nth-child(3) { animation-delay: .4s; }
+    .live-mode-default { display: block; }
+    .live-mode-briefed { display: none; }
+    .live-mode-briefed.visible { display: block; }
+    .live-mode-default.hidden { display: none; }
 
     /* ── ELLIE AVATAR ── */
     .ellie-wrap {
@@ -295,17 +569,34 @@
 
     /* ── TRUST STRIP ── */
     .trust-strip {
-      background: var(--bg2);
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      padding: 22px 0;
+      padding: 32px 0;
+      background: rgba(8,10,20,.55);
+      border-top: 1px solid rgba(167,139,250,.1);
+      border-bottom: 1px solid rgba(167,139,250,.1);
+      backdrop-filter: blur(12px);
     }
     .trust-strip-in {
       max-width: 1120px; margin: 0 auto; padding: 0 24px;
-      display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
     }
-    .trust-label { font-size: .7rem; font-weight: 700; color: var(--muted); letter-spacing: .1em; text-transform: uppercase; margin-right: 6px; }
+    .ts-item {
+      flex: 1; display: flex; flex-direction: column; align-items: center;
+      text-align: center; padding: 0 28px;
+    }
+    .ts-sep { width: 1px; height: 36px; background: rgba(255,255,255,.07); flex-shrink: 0; }
+    .ts-icon { display: none; }
+    .ts-val {
+      font-size: 1.6rem; font-weight: 800; letter-spacing: -.03em;
+      line-height: 1; margin-bottom: 5px; color: #fff;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .ts-val-grad {
+      background: linear-gradient(130deg, var(--violet), var(--rose));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .ts-stars { color: #f59e0b; font-size: .85rem; letter-spacing: 1px; -webkit-text-fill-color: #f59e0b; }
+    .ts-label { font-size: .73rem; color: var(--muted); font-weight: 500; }
+    .trust-label { display: none; }
     .trust-item {
       display: flex; align-items: center; gap: 8px;
       font-size: .8rem; font-weight: 500; color: var(--muted);
@@ -326,8 +617,10 @@
     .sec-p  { font-size: .97rem; color: var(--muted); line-height: 1.75; max-width: 520px; }
 
     /* ── PROBLEM ── */
-    .problem { background: var(--bg); }
-    .problem-hd { max-width: 580px; margin-bottom: 2.8rem; }
+    .problem { background: var(--bg); padding-top: 84px; }
+    .problem-hd { max-width: 720px; margin: 0 auto 1.6rem; text-align: center; }
+    .problem-hd .sec-tag { justify-content: center; }
+    .problem-hd .sec-p { margin: 0 auto; }
     .prob-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
     .prob-card {
       background: var(--bg2); border: 1px solid var(--border);
@@ -343,13 +636,14 @@
     .prob-card p  { font-size: .83rem; color: var(--muted); line-height: 1.65; }
     .prob-stat { margin-top:.75rem;padding:6px 11px;background:rgba(239,68,68,.07);border-radius:7px;font-size:.73rem;color:#fca5a5;font-weight:600; }
     .prob-bottom {
-      margin-top: 2.4rem;
+      margin: 1.55rem auto 0;
+      max-width: 760px;
       background: linear-gradient(135deg, rgba(239,68,68,.07), rgba(239,68,68,.03));
       border: 1px solid rgba(239,68,68,.18); border-radius: 14px;
-      padding: 24px 30px; display: flex; align-items: center; gap: 20px;
+      padding: 18px 22px; display: flex; align-items: center; gap: 18px;
     }
-    .prob-big { font-size: 2.8rem; font-family: 'Inter', sans-serif; font-weight: 700; letter-spacing: -.03em; color: #ef4444; white-space: nowrap; flex-shrink: 0; }
-    .prob-bottom p { font-size: .88rem; color: #fca5a5; line-height: 1.6; }
+    .prob-big { font-size: clamp(2rem, 4vw, 2.8rem); font-family: 'Inter', sans-serif; font-weight: 700; letter-spacing: -.03em; color: #ef4444; white-space: nowrap; flex-shrink: 0; }
+    .prob-bottom p { font-size: .86rem; color: #fca5a5; line-height: 1.55; text-align: left; }
     .prob-bottom strong { color: #ef4444; }
 
     /* ── HOW IT WORKS ── */
@@ -402,7 +696,47 @@
     }
     .demo-copy { padding-top: 20px; }
     .demo-copy h2 { font-size: clamp(1.75rem,3vw,2.4rem);color:#fff;margin-bottom:.8rem; }
-    .demo-copy p  { font-size:.95rem;color:var(--muted);line-height:1.72;margin-bottom:1.6rem; }
+    .demo-copy p  { font-size:.95rem;color:var(--muted);line-height:1.72;margin-bottom:1.2rem; }
+    .demo-url-wrap { margin-bottom: 1.4rem; }
+    .demo-url-bar {
+      display:flex; align-items:center;
+      background:rgba(255,255,255,.04); border:1px solid rgba(167,139,250,.25);
+      border-radius:10px; overflow:hidden; transition:border-color .25s, box-shadow .25s;
+    }
+    .demo-url-bar:focus-within { border-color:var(--violet); box-shadow:0 0 0 3px rgba(167,139,250,.1); }
+    .demo-url-icon { padding:0 12px; color:var(--muted); display:flex; align-items:center; flex-shrink:0; }
+    .demo-url-input {
+      flex:1; background:transparent; border:none; outline:none;
+      font-family:'Inter',sans-serif; font-size:.88rem; color:var(--text);
+      padding:12px 8px 12px 0; caret-color:var(--violet);
+    }
+    .demo-url-input::placeholder { color:rgba(124,143,168,.55); }
+    .demo-url-btn {
+      flex-shrink:0; margin:5px; padding:0 14px; height:34px;
+      background:linear-gradient(135deg,var(--violet),#6d28d9);
+      border:none; border-radius:7px; cursor:pointer;
+      font-family:'Inter',sans-serif; font-size:.78rem; font-weight:600;
+      color:#fff; white-space:nowrap; display:flex; align-items:center; gap:7px;
+      transition:opacity .2s, transform .1s;
+    }
+    .demo-url-btn:hover:not(:disabled) { opacity:.88; }
+    .demo-url-btn:active:not(:disabled) { transform:scale(.97); }
+    .demo-url-btn:disabled { opacity:.5; cursor:not-allowed; }
+    .demo-url-btn .btn-spinner {
+      width:13px; height:13px; border-radius:50%;
+      border:2px solid rgba(255,255,255,.3); border-top-color:#fff;
+      animation:spin .7s linear infinite; display:none;
+    }
+    .demo-url-btn.loading .btn-spinner { display:block; }
+    .demo-url-btn.loading .btn-label   { display:none; }
+    @keyframes spin { to { transform:rotate(360deg); } }
+    .demo-url-status {
+      font-size:.74rem; margin-top:6px; min-height:18px;
+      display:flex; align-items:center; gap:6px;
+    }
+    .demo-url-status.briefing { color:var(--violet); }
+    .demo-url-status.ready    { color:#10b981; }
+    .demo-url-status.error    { color:#f87171; }
     .demo-hints { list-style:none;display:flex;flex-direction:column;gap:11px; }
     .demo-hints li { display:flex;align-items:flex-start;gap:10px;font-size:.85rem;color:var(--muted); }
     .demo-hints svg { color:var(--violet);flex-shrink:0;margin-top:2px; }
@@ -688,28 +1022,64 @@
     .pricing-note { text-align:center;font-size:.76rem;color:rgba(255,255,255,.28);margin-top:1.8rem;letter-spacing:.03em; }
 
     /* ── TESTIMONIALS ── */
-    .testi-sec { background: var(--bg2); position: relative; }
-    .testi-sec::before { content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent); }
-    .testi-hd { text-align:center;margin-bottom:2.8rem; }
-    .testi-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:16px; }
-    .testi {
+    /* ── GOOGLE REVIEWS ── */
+    .grev-sec { background: var(--bg2); position: relative; overflow: hidden; }
+    .grev-sec::before { content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent); }
+    .grev-hd { text-align:center; margin-bottom: 2.6rem; }
+    .grev-logo { display:flex; align-items:center; justify-content:center; gap:10px; margin-bottom:1.1rem; }
+    .grev-logo-icon { width:32px; height:32px; }
+    .grev-logo-text { font-size:1.05rem; font-weight:600; color:#fff; letter-spacing:-.01em; }
+    .grev-headline { font-size:clamp(1.7rem,3vw,2.4rem); font-weight:700; color:#fff; margin-bottom:.45rem; }
+    .grev-sub { font-size:.92rem; color:var(--muted); display:flex; align-items:center; justify-content:center; gap:6px; }
+    .grev-sub-stars { color:#f59e0b; letter-spacing:1px; font-size:.88rem; }
+
+    .grev-marquee-wrap { position:relative; }
+    .grev-marquee-wrap::before,
+    .grev-marquee-wrap::after {
+      content:''; position:absolute; top:0; bottom:0; width:120px; z-index:2; pointer-events:none;
+    }
+    .grev-marquee-wrap::before { left:0;  background:linear-gradient(90deg,var(--bg2),transparent); }
+    .grev-marquee-wrap::after  { right:0; background:linear-gradient(270deg,var(--bg2),transparent); }
+
+    .grev-track { display:flex; gap:16px; width:max-content; animation: grevScroll 40s linear infinite; }
+    .grev-track:hover { animation-play-state: paused; }
+    @keyframes grevScroll {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    .grev-card {
       background: var(--bg3); border: 1px solid var(--border);
-      border-radius: 16px; padding: 26px;
+      border-radius: 16px; padding: 22px 22px 18px;
+      width: 290px; flex-shrink: 0;
       transition: border-color .3s, transform .3s;
     }
-    .testi:hover { border-color: var(--violet-b); transform: translateY(-3px); }
-    .testi-stars { color: #f59e0b; font-size: .95rem; margin-bottom: .75rem; letter-spacing: 1px; }
-    .testi-quote { font-size: .85rem; color: var(--muted); line-height: 1.7; margin-bottom: 1.1rem; font-style: italic; }
-    .testi-author { display: flex; align-items: center; gap: 11px; }
-    .testi-av {
-      width: 38px; height: 38px; border-radius: 50%;
-      background: linear-gradient(135deg, var(--violet), var(--rose));
-      display: flex; align-items: center; justify-content: center;
-      font-family: 'Inter', sans-serif; font-weight: 700;
-      font-size: .82rem; color: #fff; flex-shrink: 0;
+    .grev-card:hover { border-color: var(--violet-b); transform: translateY(-3px); }
+    .grev-card-top { display:flex; align-items:center; gap:11px; margin-bottom:12px; }
+    .grev-av {
+      width:42px; height:42px; border-radius:50%; flex-shrink:0;
+      display:flex; align-items:center; justify-content:center;
+      font-weight:700; font-size:.88rem; color:#fff; letter-spacing:.5px;
     }
-    .testi-author strong { display:block;font-size:.85rem;color:#fff; }
-    .testi-author span   { font-size:.72rem;color:var(--muted); }
+    .grev-av--a { background:linear-gradient(135deg,#6366f1,#8b5cf6); }
+    .grev-av--b { background:linear-gradient(135deg,#0ea5e9,#6366f1); }
+    .grev-av--c { background:linear-gradient(135deg,#ec4899,#f43f5e); }
+    .grev-av--d { background:linear-gradient(135deg,#10b981,#0ea5e9); }
+    .grev-av--e { background:linear-gradient(135deg,#f59e0b,#ef4444); }
+    .grev-av--f { background:linear-gradient(135deg,#8b5cf6,#ec4899); }
+    .grev-meta { flex:1; min-width:0; }
+    .grev-name { font-size:.88rem; font-weight:600; color:#fff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .grev-biz  { font-size:.73rem; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .grev-time { font-size:.7rem; color:var(--muted); margin-top:1px; }
+    .grev-stars { color:#f59e0b; font-size:.88rem; letter-spacing:1px; margin-bottom:10px; }
+    .grev-text {
+      font-size:.82rem; color:var(--muted); line-height:1.68;
+      display:-webkit-box; -webkit-line-clamp:4; -webkit-box-orient:vertical; overflow:hidden;
+    }
+    .grev-text::before { content:'\201C'; font-size:1.6rem; color:var(--violet); line-height:0; vertical-align:-.4em; margin-right:2px; }
+    .grev-footer { display:flex; align-items:center; gap:6px; margin-top:14px; padding-top:12px; border-top:1px solid var(--border); }
+    .grev-footer-icon { width:16px; height:16px; flex-shrink:0; }
+    .grev-posted { font-size:.7rem; color:var(--muted); }
 
     /* ── CTA ── */
     .cta-sec { background: var(--bg); position: relative; overflow: hidden; }
@@ -814,7 +1184,68 @@
     .hero-social-card__text span { font-size:.68rem;color:var(--muted); }
 
     /* ── PROBLEM SPLIT ── */
-    .prob-split { display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:start; }
+    .prob-split {
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(300px, .85fr);
+      gap: 18px;
+      align-items: stretch;
+      margin-top: 1.35rem;
+    }
+    .prob-cards-row { display:flex;flex-direction:column;gap:12px; }
+
+    /* ── Revenue Chart ── */
+    .prob-chart-wrap {
+      background: rgba(8,10,20,.7); border: 1px solid rgba(255,255,255,.07);
+      border-radius: 18px; padding: 16px 18px 14px;
+      backdrop-filter: blur(14px);
+      margin: 0;
+      max-width: none;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .prob-chart-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
+    .prob-chart-title  { font-size:.78rem; font-weight:600; color:var(--muted); }
+    .prob-chart-legend { display:flex; gap:14px; }
+    .pcl { display:flex; align-items:center; gap:6px; font-size:.72rem; color:var(--muted); font-weight:500; }
+    .pcl::before { content:''; width:20px; height:2.5px; border-radius:2px; }
+    .pcl--bad::before  { background:#f87171; }
+    .pcl--good::before { background:#a78bfa; }
+    .prob-chart-svg { width:100%; height:190px; display:block; overflow:visible; }
+    .pc-grid     { stroke:rgba(255,255,255,.06); stroke-width:1; fill:none; }
+    .pc-grid--base { stroke:rgba(255,255,255,.12); }
+    .pc-axis-y   { font-size:10px; fill:rgba(124,143,168,.55); text-anchor:end; dominant-baseline:middle; font-family:'Inter',sans-serif; }
+    .pc-axis-x   { font-size:10px; fill:rgba(124,143,168,.45); text-anchor:middle; font-family:'Inter',sans-serif; }
+    .pc-area     { transition: opacity .4s; }
+    .pc-line {
+      fill:none; stroke-width:2.5; stroke-linecap:round; stroke-linejoin:round;
+      stroke-dasharray:1; stroke-dashoffset:1;
+    }
+    .pc-line--bad  { stroke:#f87171; }
+    .pc-line--good { stroke:#a78bfa; }
+    @keyframes pcDraw { to { stroke-dashoffset:0; } }
+    .pc-line--bad.pc-drawn  { animation: pcDraw 1.6s cubic-bezier(.4,0,.2,1) forwards; }
+    .pc-line--good.pc-drawn { animation: pcDraw 1.6s .25s cubic-bezier(.4,0,.2,1) forwards; }
+    .pc-dot { opacity:0; transition: opacity .3s; }
+    .pc-dot.pc-shown { opacity:1; }
+    .pc-ellie-marker { opacity:0; transform-origin:460px 53px; transition: opacity .35s, transform .35s; }
+    .pc-ellie-marker.pc-shown { opacity:1; transform:scale(1); }
+    .pc-dot--bad    { fill:#f87171; }
+    .pc-dot--good   { fill:#a78bfa; }
+    .pc-dot--shared { fill:#fff; }
+    .prob-chart-footer {
+      display:flex; align-items:center; justify-content:center; gap:14px;
+      margin-top:10px; padding-top:10px;
+      border-top:1px solid rgba(255,255,255,.06);
+    }
+    .prob-chart-stat { display:flex; flex-direction:column; align-items:center; gap:2px; }
+    .pcs-val { font-size:1.08rem; font-weight:800; letter-spacing:-.02em; }
+    .pcs-lbl { font-size:.68rem; color:var(--muted); }
+    .prob-chart-stat--bad  .pcs-val { color:#f87171; }
+    .prob-chart-stat--good .pcs-val { color:#a78bfa; }
+    .prob-chart-arrow { font-size:1.2rem; color:var(--muted); }
+
     .prob-image-wrap {
       position:relative;border-radius:20px;overflow:hidden;height:500px;flex-shrink:0;
     }
@@ -833,8 +1264,9 @@
     .prob-cards-col { display:flex;flex-direction:column;gap:14px;padding-top:8px; }
     .prob-card-sm {
       background:var(--bg2);border:1px solid var(--border);
-      border-radius:14px;padding:20px 22px;
+      border-radius:14px;padding:18px 20px;
       transition:border-color .3s,transform .3s;
+      flex: 1;
     }
     .prob-card-sm:hover { border-color:rgba(239,68,68,.28);transform:translateX(4px); }
     .prob-card-sm h3 { font-size:.9rem;color:#fff;margin-bottom:.4rem;display:flex;align-items:center;gap:8px; }
@@ -843,16 +1275,22 @@
     .prob-card-sm .prob-stat { margin-top:.6rem; }
 
     /* ── HAPPY CUSTOMER BANNER ── */
-    .banner-sec { position:relative;overflow:hidden;height:400px; }
-    .banner-sec img { width:100%;height:100%;object-fit:cover;object-position:center 25%;display:block; }
-    .banner-overlay {
+    .banner-sec { position:relative;overflow:hidden;min-height:540px;background:#030712; }
+    .banner-sec img {
       position:absolute;inset:0;
-      background:linear-gradient(90deg,rgba(3,7,18,.92) 0%,rgba(3,7,18,.55) 55%,rgba(3,7,18,.15) 100%);
-      display:flex;align-items:center;
+      width:100%;height:100%;object-fit:cover;object-position:center 35%;display:block;
     }
-    .banner-copy { padding:0 64px;max-width:580px; }
-    .banner-copy h2 { font-size:clamp(1.6rem,3vw,2.4rem);color:#fff;margin-bottom:.8rem; }
-    .banner-copy p  { font-size:.95rem;color:rgba(255,255,255,.7);line-height:1.72;margin-bottom:1.4rem; }
+    .banner-overlay {
+      position:relative;z-index:1;min-height:540px;
+      background:
+        radial-gradient(ellipse 42% 70% at 72% 48%, rgba(167,139,250,.08), transparent 72%),
+        linear-gradient(90deg,rgba(3,7,18,.96) 0%,rgba(3,7,18,.78) 42%,rgba(3,7,18,.2) 100%);
+      display:flex;align-items:center;
+      padding:72px 0;
+    }
+    .banner-copy { width:100%; max-width:720px; }
+    .banner-copy h2 { font-size:clamp(2rem,3.4vw,3rem);color:#fff;margin-bottom:1rem;line-height:1.08; }
+    .banner-copy p  { font-size:.98rem;color:rgba(255,255,255,.74);line-height:1.72;margin-bottom:1.25rem;max-width:640px; }
 
     /* ── DASHBOARD SECTION ── */
     /* ── DASHBOARD SECTION ── */
@@ -1024,12 +1462,6 @@
     .dash-bullet-title { font-size:.88rem;font-weight:700;color:#fff;margin-bottom:4px; }
     .dash-bullet-desc  { font-size:.8rem;color:var(--muted);line-height:1.55; }
 
-    /* ── TESTI PHOTO ── */
-    .testi-photo {
-      width:46px;height:46px;border-radius:50%;overflow:hidden;
-      flex-shrink:0;border:2px solid var(--violet-b);
-    }
-    .testi-photo img { width:100%;height:100%;object-fit:cover;object-position:center top; }
 
     /* ── CTA IMAGE PANEL ── */
     .cta-img-panel {
@@ -1046,21 +1478,33 @@
 
     /* ── NEW RESPONSIVE OVERRIDES ── */
     @media (max-width: 900px) {
-      .prob-split { grid-template-columns:1fr; }
-      .prob-image-wrap { height:300px; }
+      .prob-split { grid-template-columns:1fr; gap:14px; }
+      .prob-chart-wrap { padding:14px 12px 12px; }
+      .prob-chart-svg { height:170px; }
+      .prob-cards-row { display:grid; grid-template-columns:1fr; }
       .banner-copy { padding:0 32px; }
       .dash-stats { grid-template-columns:repeat(2,1fr); }
       .dash-bullets { grid-template-columns:1fr 1fr; }
       .call-dur { display:none; }
       .hero-social-card { bottom:-8px;left:50%;transform:translateX(-50%) !important; }
+      .banner-sec,
+      .banner-overlay { min-height: 560px; }
+      .banner-overlay {
+        background:
+          linear-gradient(90deg,rgba(3,7,18,.96) 0%,rgba(3,7,18,.78) 62%,rgba(3,7,18,.32) 100%);
+      }
     }
     @media (max-width: 600px) {
-      .banner-sec { height:460px; }
+      .banner-sec,
+      .banner-overlay { min-height:620px; }
+      .banner-sec img { object-position:center top; }
       .banner-overlay {
-        background:linear-gradient(180deg,rgba(3,7,18,.25) 0%,rgba(3,7,18,.92) 55%);
+        background:linear-gradient(180deg,rgba(3,7,18,.2) 0%,rgba(3,7,18,.9) 46%,rgba(3,7,18,.98) 100%);
         align-items:flex-end;
+        padding:52px 0;
       }
-      .banner-copy { padding:0 24px 36px;max-width:100%; }
+      .banner-copy { padding:0 24px;max-width:100%; }
+      .banner-copy h2 { font-size:clamp(2rem,10vw,2.6rem); }
       .dash-bullets { grid-template-columns:1fr; }
       .call-row { grid-template-columns:28px 1fr auto; }
       .call-play-btn { display:none; }
@@ -1073,15 +1517,9 @@
 
     /* ── MEDIA QUERIES ── */
     @media (max-width: 900px) {
-      .hero-in { grid-template-columns:1fr;gap:0;padding-top:24px; }
-      .ellie-wrap { height:420px;margin-top:40px; }
-      .e-ring-1 { width:300px;height:300px;margin:-150px 0 0 -150px; }
-      .e-ring-2 { width:248px;height:248px;margin:-124px 0 0 -124px; }
-      .e-ring-3 { width:330px;height:330px;margin:-165px 0 0 -165px; }
-      .e-portrait-wrap { width:200px;height:234px; }
-      .e-bubble { top:auto;bottom:12px;right:auto;left:50%;transform:translateX(-50%);max-width:260px;width:85%;text-align:center; }
-      .e-bubble-inner::before { top:-9px;left:50%;transform:translateX(-50%);bottom:auto;right:auto;border:9px solid transparent;border-bottom:9px solid rgba(167,139,250,.28);border-top:0;border-right:0;border-left:0; }
-      .e-bubble-inner::after  { top:-7px;left:50%;transform:translateX(-50%);bottom:auto;right:auto;border:8px solid transparent;border-bottom:8px solid rgba(8,10,24,.96);border-top:0;border-right:0;border-left:0;z-index:1; }
+      .hero-in { grid-template-columns:1fr;gap:32px;padding-top:24px; }
+      .hero-rev-panel { margin-top:0; }
+      .hero-url-btn { font-size:.75rem; padding:8px 14px; }
       .prob-grid { grid-template-columns:1fr; }
       .steps::before { display:none; }
       .steps { grid-template-columns:1fr;gap:28px; }
@@ -1089,7 +1527,7 @@
       .demo-in { grid-template-columns:1fr; }
       .live-in  { grid-template-columns:1fr; }
       .plans { grid-template-columns:repeat(2,1fr); }
-      .testi-grid { grid-template-columns:1fr; }
+      .proof-bridge-grid { grid-template-columns:1fr !important; }
       .cta-form { grid-template-columns:1fr; }
       .cta-card { padding:36px 24px; }
       nav .nav-links, nav .nav-cta { display:none; }
@@ -1098,18 +1536,23 @@
     @media (max-width: 600px) {
       section { padding: 64px 0; }
       .hero-in { padding-top: 16px; }
-      .ellie-wrap { height: 360px; }
-      .e-portrait-wrap { width: 168px; height: 196px; }
-      .e-ring-1 { width: 250px; height: 250px; margin: -125px 0 0 -125px; }
-      .e-ring-2 { width: 204px; height: 204px; margin: -102px 0 0 -102px; }
-      .e-ring-3 { width: 272px; height: 272px; margin: -136px 0 0 -136px; }
+      .hero-url-bar { flex-wrap:wrap; }
+      .hero-url-btn { width:100%; margin:5px; justify-content:center; }
+      .hero-rev-card-wrap { min-height:185px; }
+      .hero-checks { flex-wrap:wrap; gap:10px; }
+      .hero-av-sound { display:none; }
+      .hero-av-wrap { padding:12px 14px; }
       .feat-grid { grid-template-columns:1fr; }
       .plans { grid-template-columns:1fr; }
-      .prob-bottom { flex-direction:column;gap:12px; }
+      .problem { padding-top: 60px; }
+      .problem-hd { text-align: left; margin-bottom: 1.2rem; }
+      .problem-hd .sec-tag { justify-content: flex-start; }
+      .problem-hd .sec-p { margin: 0; }
+      .prob-bottom { flex-direction:column;align-items:flex-start;gap:8px;padding:16px;margin-top:1.2rem; }
+      .prob-bottom p { text-align:left; }
       .cta-card { padding: 28px 18px; }
       .phone-shell { width: 100%; max-width: 320px; }
       .phone-avatar { width: 120px; height: 152px; border-radius: 22px; }
-      .testi-grid { grid-template-columns:1fr; }
     }
 
     /* ── Integrations ─────────────────────────────────────── */
@@ -1117,41 +1560,70 @@
       padding: 100px 0;
       overflow: hidden;
     }
-    .integrations-in {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      align-items: center;
-      gap: 64px;
-    }
-    .integrations-copy .sec-tag { justify-content: flex-start; }
+    .integrations-in { display: block; }
+    .integrations-copy { min-width: 0; max-width: 600px; margin: 0 auto; text-align: center; }
+    .integrations-copy .sec-tag { justify-content: center; }
     .integrations-copy .sec-h2 { margin-bottom: 16px; }
     .integrations-copy p {
       color: var(--muted);
       line-height: 1.75;
       margin-bottom: 32px;
     }
+    /* ── Marquee ── */
+    .int-marquee-outer {
+      overflow: hidden; margin: 0 0 40px;
+      mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+      -webkit-mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+    }
+    .int-marquee-row { display: flex; gap: 10px; margin-bottom: 10px; width: max-content; }
+    @keyframes mq  { from { transform:translateX(0); }     to { transform:translateX(-50%); } }
+    @keyframes mqR { from { transform:translateX(-50%); }  to { transform:translateX(0); } }
+    .int-marquee-row--fwd { animation: mq  28s linear infinite; }
+    .int-marquee-row--rev { animation: mqR 22s linear infinite; }
+    .int-logo-pill {
+      flex-shrink: 0; display: flex; align-items: center; gap: 8px;
+      padding: 8px 16px;
+      background: rgba(255,255,255,.045);
+      border: 1px solid rgba(255,255,255,.09);
+      border-radius: 999px;
+      white-space: nowrap; transition: border-color .2s, background .2s;
+    }
+    .int-logo-pill:hover { border-color: rgba(167,139,250,.35); background: rgba(167,139,250,.08); }
+    .int-logo-pill img { width: 18px; height: 18px; object-fit: contain; }
+    .int-logo-pill span { font-size: .75rem; font-weight: 600; color: rgba(255,255,255,.75); }
+
+    /* ── Category cards ── */
     .int-cats {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      max-width: 960px;
+      margin: 0 auto;
     }
     .int-cat {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 0.88rem;
-      color: var(--muted);
+      display: flex; flex-direction: column; align-items: flex-start; gap: 10px;
+      text-align: left;
+      font-size: 0.82rem; color: var(--muted);
+      background: linear-gradient(160deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 16px; padding: 18px 16px;
+      transition: border-color .22s, background .22s, transform .22s;
     }
-    .int-cat-dot {
-      width: 8px; height: 8px;
-      border-radius: 50%;
-      flex-shrink: 0;
+    .int-cat:hover {
+      border-color: rgba(167,139,250,.25);
+      background: linear-gradient(160deg,rgba(167,139,250,.07),rgba(255,255,255,.02));
+      transform: translateY(-2px);
     }
-    .int-cat-dot--violet { background: var(--violet); box-shadow: 0 0 6px rgba(167,139,250,.6); }
-    .int-cat-dot--rose   { background: var(--rose);   box-shadow: 0 0 6px rgba(244,114,182,.6); }
-    .int-cat-dot--green  { background: #34d399;        box-shadow: 0 0 6px rgba(52,211,153,.6); }
-    .int-cat-dot--amber  { background: #fbbf24;        box-shadow: 0 0 6px rgba(251,191,36,.6); }
-    .int-cat strong { color: var(--text); font-weight: 600; }
+    .int-cat-icon {
+      width: 36px; height: 36px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .int-cat-icon--violet { background: rgba(167,139,250,.15); color: #a78bfa; }
+    .int-cat-icon--rose   { background: rgba(244,114,182,.15); color: #f472b6; }
+    .int-cat-icon--green  { background: rgba(52,211,153,.15);  color: #34d399; }
+    .int-cat-icon--amber  { background: rgba(251,191,36,.15);  color: #fbbf24; }
+    .int-cat strong { display: block; color: var(--text); font-weight: 600; margin-bottom: 4px; font-size: .85rem; }
+    .int-cat-body { display: flex; flex-direction: column; }
 
     .int-hub-wrap {
       position: relative;
@@ -1196,15 +1668,102 @@
       fill: #fff;
     }
 
-    @media (max-width: 900px) {
-      .integrations-in { grid-template-columns: 1fr; gap: 40px; }
-      .int-hub-wrap { order: -1; }
-      .int-svg { max-width: 420px; }
+    @media (max-width: 860px) {
+      .int-cats { grid-template-columns: repeat(2, minmax(0,1fr)); }
     }
-    @media (max-width: 600px) {
-      .int-svg { max-width: 340px; }
-      .integrations-copy .sec-h2 { font-size: 1.8rem; }
+    @media (max-width: 540px) {
+      .integrations-copy { text-align: left; }
+      .integrations-copy .sec-tag { justify-content: flex-start; }
+      .int-cats { grid-template-columns: 1fr; }
     }
+
+    /* ── CTA IDLE PULSE ── */
+    @keyframes ctaPulse {
+      0%,100% { box-shadow: 0 0 26px rgba(167,139,250,.4); }
+      50%      { box-shadow: 0 0 52px rgba(167,139,250,.72), 0 0 80px rgba(244,114,182,.22); }
+    }
+    .btn-primary { animation: ctaPulse 3.8s ease-in-out infinite; }
+    .btn-primary:hover { animation: none; }
+
+    /* ── NAV CTA SHIMMER ── */
+    @keyframes navShimmer {
+      0%   { background-position: 200% center; }
+      100% { background-position: -200% center; }
+    }
+    .nav-cta {
+      background-size: 200% auto !important;
+      background-image: linear-gradient(110deg, var(--violet) 0%, var(--rose) 40%, #fff5 50%, var(--rose) 60%, var(--violet) 100%) !important;
+      animation: navShimmer 6s linear infinite;
+    }
+    .nav-cta:hover { animation: none !important; }
+
+    /* ── TRUST STRIP (updated) ── */
+    @media (max-width: 700px) {
+      .trust-strip-in { gap: 10px; }
+      .ts-item { padding: 16px 10px 14px; }
+      .ts-val  { font-size: 1.2rem; }
+      .ts-label { font-size: .65rem; }
+      .ts-icon { width: 32px; height: 32px; }
+    }
+    @media (max-width: 480px) {
+      .trust-strip-in { flex-wrap: wrap; }
+      .ts-item { flex: 0 0 calc(50% - 8px); }
+    }
+
+    /* ── STEP TIME BADGE ── */
+    .step-time { display:inline-block;margin-top:.6rem;padding:3px 10px;background:var(--violet-d);border:1px solid var(--violet-b);border-radius:100px;font-size:.68rem;font-weight:700;color:var(--violet);letter-spacing:.04em; }
+
+    /* ── BANNER QUOTE ── */
+    .banner-quote {
+      margin-top:1.25rem;
+      background:rgba(3,7,18,.72);
+      border:1px solid rgba(255,255,255,.1);
+      border-radius:12px;
+      padding:14px 18px;
+      font-size:.84rem;
+      color:rgba(255,255,255,.88);
+      line-height:1.6;
+      max-width:620px;
+    }
+    .banner-quote-attr { margin-top:7px;font-size:.72rem;color:rgba(255,255,255,.5);font-weight:600; }
+
+    /* ── COMPARISON TABLE ── */
+    .compare-sec { background:var(--bg2);position:relative;overflow:hidden; }
+    .compare-sec::before { content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent); }
+    .compare-hd { text-align:center;margin-bottom:2.8rem; }
+    .compare-table-wrap { overflow-x:auto; }
+    .compare-table {
+      width:100%;border-collapse:collapse;min-width:580px;
+    }
+    .compare-table th {
+      padding:14px 20px;font-size:.8rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
+      color:var(--muted);text-align:left;border-bottom:1px solid var(--border);
+    }
+    .compare-table th:first-child { color:var(--muted);width:44%; }
+    .compare-table th.ct-ellie {
+      color:#fff;background:rgba(167,139,250,.06);
+      border-radius:12px 12px 0 0;text-align:center;
+      border-left:1px solid var(--violet-b);border-right:1px solid var(--violet-b);border-top:1px solid var(--violet-b);
+    }
+    .compare-table th.ct-human { text-align:center; }
+    .compare-table td {
+      padding:13px 20px;font-size:.85rem;color:var(--muted);
+      border-bottom:1px solid var(--border);vertical-align:middle;
+    }
+    .compare-table td.ct-ellie {
+      text-align:center;background:rgba(167,139,250,.04);
+      border-left:1px solid var(--violet-b);border-right:1px solid var(--violet-b);
+      color:#fff;font-weight:600;
+    }
+    .compare-table td.ct-human { text-align:center; }
+    .compare-table tr:last-child td { border-bottom:none; }
+    .compare-table tr:last-child td.ct-ellie { border-bottom:1px solid var(--violet-b);border-radius:0 0 12px 12px; }
+    .ct-check { color:var(--green); }
+    .ct-x { color:#ef4444; }
+    .ct-ellie-price { font-size:1.4rem;font-weight:800;color:var(--violet); }
+    .ct-human-price { font-size:1.4rem;font-weight:800;color:#ef4444; }
+    .ct-note { font-size:.7rem;color:var(--muted);display:block;margin-top:2px;font-weight:400; }
+    @media (max-width:680px){ .compare-table { min-width:420px; } .compare-table td,.compare-table th { padding:10px 12px; } }
   </style>
 </head>
 <body>
@@ -1216,19 +1775,20 @@
       <img src="assets/ellie/logo.png" alt="Ellie AI Receptionist by anupama.dev">
     </a>
     <ul class="nav-links">
-      <li><a href="#demo">Demo</a></li>
-      <li><a href="#try-live">Try Free Call</a></li>
+      <li><a href="#demo">Live Demo</a></li>
       <li><a href="#how-it-works">How It Works</a></li>
       <li><a href="#pricing">Pricing</a></li>
       <li><a href="blog.html">Blog</a></li>
-      <li><a href="#book" class="nav-cta">Book Demo</a></li>
+      <li><a href="#demo" class="nav-cta">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;margin-right:5px;margin-top:-1px"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.39 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.9a16 16 0 0 0 6.09 6.09l.97-1.06a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>Try Live Demo
+      </a></li>
     </ul>
     <button class="nav-hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
   </div>
   <div class="nav-mobile" id="mobile-menu" role="navigation">
-    <a href="#demo">Demo</a>
+    <a href="#demo">Live Demo</a>
     <a href="#how-it-works">How It Works</a>
     <a href="#pricing">Pricing</a>
     <a href="#faq">FAQ</a>
@@ -1251,100 +1811,159 @@
     <div class="hero-copy">
       <div class="hero-pill">
         <span class="hero-pill-dot"></span>
-        Now serving Adelaide businesses
+        ★★★★★ Trusted by 200+ SA businesses
       </div>
-      <h1 class="hero-h1">
-        Every missed call<br>
-        <span class="hero-h1-grad">is money walking out.</span>
+      <h1 class="hero-h1" id="heroH1">
+        <span class="hero-h1-line1" id="heroLine1">Every missed call</span>
+        <span class="hero-h1-grad" id="heroLine2">is money walking out.</span>
       </h1>
       <p class="hero-sub">
-        <strong>Ellie</strong> is your AI receptionist. She answers every call within 2 rings, books appointments, and sends SMS confirmations — 24 hours a day, 7 days a week. While you work, Ellie works for you.
+        <strong>Ellie</strong> answers every call, books appointments and sends SMS confirmations — 24/7, never sick, never off.
       </p>
+
+      <!-- ── WEBSITE URL BAR ── -->
+      <div class="hero-url-wrap">
+        <div class="hero-url-label">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          We'll set Ellie up for your business in 24 hrs
+        </div>
+        <div class="hero-url-bar">
+          <span class="hero-url-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          </span>
+          <input type="url" class="hero-url-input" id="hero-biz-url"
+            placeholder="yourbusiness.com.au"
+            autocomplete="url" spellcheck="false" aria-label="Your business website">
+          <button class="hero-url-btn" id="hero-url-btn" type="button">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.39 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.9a16 16 0 0 0 6.09 6.09l1.06-.97a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            Talk to Your Receptionist
+          </button>
+        </div>
+        <div class="hero-url-domain-badge" id="hero-domain-badge">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          <span id="hero-domain-text">yourdomain.com</span> &nbsp;·&nbsp; Ellie will be briefed on your business
+        </div>
+      </div>
+
       <div class="hero-actions">
-        <a href="#book" class="btn-primary">
-          Book a Free Demo
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
+        <a href="#book" class="btn-ghost hero-book-btn">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Book Your Free 30-Min Call
         </a>
-        <a href="#try-live" class="btn-ghost">Try Ellie Free</a>
       </div>
       <div class="hero-checks">
         <div class="hero-check">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-          No setup fees
+          Answers in 2 rings, 24/7
         </div>
         <div class="hero-check">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-          No lock-in contract
+          Books appointments automatically
         </div>
         <div class="hero-check">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-          Cancel anytime
+          Pays for itself in week one
         </div>
       </div>
     </div>
 
-    <!-- ELLIE AVATAR -->
-    <div class="ellie-wrap">
-      <div class="ellie-orbits">
-        <div class="e-ring e-ring-1"></div>
-        <div class="e-ring e-ring-2"></div>
-        <div class="e-ring e-ring-3"></div>
-      </div>
+    <!-- ── HERO RIGHT COLUMN ── -->
+    <div class="hero-right">
 
-      <div class="e-bubble" aria-hidden="true">
-        <div class="e-bubble-inner">
-          <span class="e-bubble-label">Ellie</span>
-          "Hi, thanks for calling! I can book that appointment for you right now — what day works best?"
-        </div>
-      </div>
-
-      <div class="e-portrait-wrap">
-        <div class="e-halo-out"></div>
-        <div class="e-halo"></div>
-        <div class="e-clip" id="hero-ellie-clip">
-          <div class="e-scan"></div>
-          <img class="e-photo e-photo-base"   src="assets/emma/mouth_closed.png" alt="Ellie AI Receptionist">
-          <img class="e-photo e-photo-closed" src="assets/emma/eyes_closed.png"  alt="">
-          <img class="e-photo e-photo-talking" src="assets/emma/talking.png"     alt="">
-        </div>
-        <div class="e-name">Ellie <span>· AI Receptionist</span></div>
-        <div class="e-status">
-          <span class="e-status-dot"></span>
-          anupama.dev
-          <div class="e-wave">
-            <span></span><span></span><span></span><span></span><span></span>
+      <!-- Animated Avatar Card -->
+      <div class="hero-av-wrap">
+        <div class="hero-av-rings">
+          <div class="hero-av-ring hero-av-ring--1"></div>
+          <div class="hero-av-ring hero-av-ring--2"></div>
+          <div class="hero-av-ring hero-av-ring--3"></div>
+          <div class="hero-av-core">
+            <img src="assets/emma/1.png"          class="hero-av-img-base"  alt="">
+            <img src="assets/emma/eyes_closed.png" class="hero-av-img-blink" alt="">
+            <img src="assets/emma/talking.png"     class="hero-av-img-talk"  alt="">
           </div>
         </div>
+        <div class="hero-av-info">
+          <div class="hero-av-live">
+            <span class="hero-av-live-dot"></span>
+            Live · AI Receptionist
+          </div>
+          <div class="hero-av-name">Ellie</div>
+          <div class="hero-av-tagline">Most human-like AI receptionist in the world</div>
+        </div>
+        <div class="hero-av-sound">
+          <div class="hero-av-bar" style="--d:0s;height:8px"></div>
+          <div class="hero-av-bar" style="--d:.2s;height:16px"></div>
+          <div class="hero-av-bar" style="--d:.4s;height:22px"></div>
+          <div class="hero-av-bar" style="--d:.6s;height:16px"></div>
+          <div class="hero-av-bar" style="--d:.4s;height:22px"></div>
+          <div class="hero-av-bar" style="--d:.2s;height:16px"></div>
+          <div class="hero-av-bar" style="--d:0s;height:8px"></div>
+        </div>
       </div>
 
-      <!-- Floating social proof card -->
-      <div class="hero-social-card" aria-hidden="true">
-        <div class="hero-social-card__photo">
-          <img src="assets/ellie/saloon-owner.png" alt="Mia C.">
+      <!-- Google Reviews Carousel -->
+      <div class="hero-rev-panel" id="heroRevPanel">
+      <div class="hero-rev-glow"></div>
+
+      <div class="hero-rev-header">
+        <div class="hero-rev-logo">
+          <svg class="hero-rev-logo-icon" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+            <path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.2l6.7-6.7C35.5 2.1 30.1 0 24 0 14.6 0 6.6 5.6 2.7 13.7l7.8 6C12.3 13.3 17.7 9.5 24 9.5z"/>
+            <path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8C43.6 37.3 46.5 31.4 46.5 24.5z"/>
+            <path fill="#FBBC05" d="M10.5 28.6A14.6 14.6 0 0 1 9.5 24c0-1.6.3-3.1.8-4.6l-7.8-6A23.9 23.9 0 0 0 0 24c0 3.8.9 7.4 2.5 10.6l8-6z"/>
+            <path fill="#34A853" d="M24 48c6.1 0 11.2-2 14.9-5.4l-7.5-5.8c-2 1.4-4.6 2.2-7.4 2.2-6.3 0-11.7-3.8-13.5-9.2l-8 6.2C6.6 42.4 14.6 48 24 48z"/>
+          </svg>
+          <span class="hero-rev-logo-text">Google Reviews</span>
         </div>
-        <div class="hero-social-card__text">
-          <div class="hero-social-card__stars">★★★★★</div>
-          <strong>Revenue up 35% in month 1</strong>
-          <span>Mia C. · Glamour &amp; Co. Hair Studio</span>
+        <div class="hero-rev-score">
+          <span class="hero-rev-score-stars">★★★★★</span>
+          <span class="hero-rev-score-val">5.0</span>
+          <span class="hero-rev-score-cnt">· 100+ reviews</span>
         </div>
       </div>
-    </div>
-  </div>
+
+      <div class="hero-rev-card-wrap" id="heroRevWrap">
+        <!-- Cards injected by JS -->
+      </div>
+
+      <div class="hero-rev-footer">
+        <div class="hero-rev-dots" id="heroRevDots"></div>
+        <span class="hero-rev-count" id="heroRevCount">1 / 9</span>
+      </div>
+      <div class="hero-rev-progress" id="heroRevProgress"></div>
+    </div><!-- /hero-rev-panel -->
+    </div><!-- /hero-right -->
+  </div><!-- /hero-in -->
 </section>
+
 
 <!-- ── TRUST STRIP ── -->
 <div class="trust-strip">
   <div class="trust-strip-in">
-    <span class="trust-label">Built for</span>
-    <div class="trust-item"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Hair Salons</div>
-    <span class="trust-sep">·</span>
-    <div class="trust-item"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Mechanics</div>
-    <span class="trust-sep">·</span>
-    <div class="trust-item"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Cleaning Services</div>
-    <span class="trust-sep">·</span>
-    <div class="trust-item"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Medical Clinics</div>
-    <span class="trust-sep">·</span>
-    <div class="trust-item"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Restaurants &amp; More</div>
+    <div class="ts-item">
+      <div class="ts-val"><span class="ts-val-grad">200+</span></div>
+      <div class="ts-label">SA businesses live</div>
+    </div>
+    <div class="ts-sep"></div>
+    <div class="ts-item">
+      <div class="ts-val"><span class="ts-val-grad">5.0</span><span class="ts-stars"> ★★★★★</span></div>
+      <div class="ts-label">Google rating</div>
+    </div>
+    <div class="ts-sep"></div>
+    <div class="ts-item">
+      <div class="ts-val"><span class="ts-val-grad">$2.4M+</span></div>
+      <div class="ts-label">Revenue recovered</div>
+    </div>
+    <div class="ts-sep"></div>
+    <div class="ts-item">
+      <div class="ts-val"><span class="ts-val-grad">20 min</span></div>
+      <div class="ts-label">Average setup time</div>
+    </div>
+    <div class="ts-sep"></div>
+    <div class="ts-item">
+      <div class="ts-val"><span class="ts-val-grad">Zero</span></div>
+      <div class="ts-label">Lock-in contracts</div>
+    </div>
   </div>
 </div>
 
@@ -1355,48 +1974,128 @@
       <div class="sec-tag">The Real Cost</div>
       <h2 class="sec-h2">How many customers hung up today<br>without leaving a message?</h2>
       <p class="sec-p">Small businesses lose thousands every month from unanswered calls. Not because they don't care — because they're busy doing the actual work.</p>
+      <div class="prob-bottom">
+        <div class="prob-big" id="prob-loss-num">$0</div>
+        <p>Average monthly revenue lost from missing just 5 calls a week at $90 avg. booking value. <strong>Ellie pays for itself on day one.</strong></p>
+      </div>
     </div>
 
     <div class="prob-split">
-      <!-- Left: cinematic image -->
-      <div class="prob-image-wrap reveal">
-        <img src="assets/ellie/tradie-upset.png" alt="Tradie missing calls in his van at night">
-        <div class="prob-image-overlay"></div>
-        <div class="prob-image-stat">
-          <div class="prob-image-stat-num">7</div>
-          <div class="prob-image-stat-txt"><strong>Missed calls today.</strong><br>Each one a customer who tried to give you money.</div>
+      <!-- Chart left -->
+      <div class="prob-chart-wrap reveal">
+        <div class="prob-chart-header">
+          <span class="prob-chart-title">Monthly Revenue — 12 Weeks</span>
+          <div class="prob-chart-legend">
+            <span class="pcl pcl--bad">Without Ellie</span>
+            <span class="pcl pcl--good">With Ellie</span>
+          </div>
+        </div>
+
+        <svg class="prob-chart-svg" viewBox="0 0 520 240" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="gradAreaBad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#f87171" stop-opacity=".25"/>
+              <stop offset="100%" stop-color="#f87171" stop-opacity="0"/>
+            </linearGradient>
+            <linearGradient id="gradAreaGood" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#a78bfa" stop-opacity=".2"/>
+              <stop offset="100%" stop-color="#a78bfa" stop-opacity="0"/>
+            </linearGradient>
+            <clipPath id="ellieChartLogoClip">
+              <circle cx="460" cy="53" r="15"/>
+            </clipPath>
+            <filter id="ellieChartLogoGlow" x="-80%" y="-80%" width="260%" height="260%">
+              <feDropShadow dx="0" dy="0" stdDeviation="3" flood-color="#a78bfa" flood-opacity=".75"/>
+            </filter>
+          </defs>
+
+          <!-- Grid lines -->
+          <line x1="60" y1="30"  x2="500" y2="30"  class="pc-grid"/>
+          <line x1="60" y1="80"  x2="500" y2="80"  class="pc-grid"/>
+          <line x1="60" y1="130" x2="500" y2="130" class="pc-grid"/>
+          <line x1="60" y1="180" x2="500" y2="180" class="pc-grid"/>
+          <line x1="60" y1="210" x2="500" y2="210" class="pc-grid pc-grid--base"/>
+
+          <!-- Y-axis labels -->
+          <text x="54" y="33"  class="pc-axis-y">$6k</text>
+          <text x="54" y="83"  class="pc-axis-y">$4.5k</text>
+          <text x="54" y="133" class="pc-axis-y">$3k</text>
+          <text x="54" y="183" class="pc-axis-y">$1.5k</text>
+
+          <!-- X-axis labels -->
+          <text x="60"  y="226" class="pc-axis-x">Wk 1</text>
+          <text x="188" y="226" class="pc-axis-x">Wk 4</text>
+          <text x="348" y="226" class="pc-axis-x">Wk 8</text>
+          <text x="500" y="226" class="pc-axis-x">Wk 12</text>
+
+          <!-- Area fill: Without Ellie -->
+          <path id="pcAreaBad"
+            d="M60,210 L60,107 C73,107 87,112 100,112 C113,112 127,120 140,120 C153,120 167,128 180,128 C193,128 207,136 220,136 C233,136 247,144 260,144 C273,144 287,150 300,150 C313,150 327,156 340,156 C353,156 367,163 380,163 C393,163 407,168 420,168 C433,168 447,173 460,173 C473,173 487,178 500,178 L500,210 Z"
+            fill="url(#gradAreaBad)" class="pc-area"/>
+
+          <!-- Area fill: With Ellie -->
+          <path id="pcAreaGood"
+            d="M60,210 L60,107 C73,107 87,100 100,100 C113,100 127,95 140,95 C153,95 167,88 180,88 C193,88 207,82 220,82 C233,82 247,75 260,75 C273,75 287,70 300,70 C313,70 327,65 340,65 C353,65 367,61 380,61 C393,61 407,57 420,57 C433,57 447,53 460,53 C473,53 487,48 500,48 L500,210 Z"
+            fill="url(#gradAreaGood)" class="pc-area"/>
+
+          <!-- Without Ellie line -->
+          <path id="pcLineBad"
+            d="M60,107 C73,107 87,112 100,112 C113,112 127,120 140,120 C153,120 167,128 180,128 C193,128 207,136 220,136 C233,136 247,144 260,144 C273,144 287,150 300,150 C313,150 327,156 340,156 C353,156 367,163 380,163 C393,163 407,168 420,168 C433,168 447,173 460,173 C473,173 487,178 500,178"
+            class="pc-line pc-line--bad" pathLength="1"/>
+
+          <!-- With Ellie line -->
+          <path id="pcLineGood"
+            d="M60,107 C73,107 87,100 100,100 C113,100 127,95 140,95 C153,95 167,88 180,88 C193,88 207,82 220,82 C233,82 247,75 260,75 C273,75 287,70 300,70 C313,70 327,65 340,65 C353,65 367,61 380,61 C393,61 407,57 420,57 C433,57 447,53 460,53 C473,53 487,48 500,48"
+            class="pc-line pc-line--good" pathLength="1"/>
+
+          <!-- End dots -->
+          <circle cx="500" cy="178" r="5" class="pc-dot pc-dot--bad"/>
+          <circle cx="500" cy="48"  r="5" class="pc-dot pc-dot--good"/>
+          <circle cx="60"  cy="107" r="4" class="pc-dot pc-dot--shared"/>
+          <g class="pc-ellie-marker" filter="url(#ellieChartLogoGlow)">
+            <circle cx="460" cy="53" r="18" fill="#07090f" stroke="#a78bfa" stroke-width="1.6"/>
+            <image href="assets/ellie/logo.png" x="445" y="38" width="30" height="30" preserveAspectRatio="xMidYMid meet" clip-path="url(#ellieChartLogoClip)"/>
+          </g>
+        </svg>
+
+        <div class="prob-chart-footer">
+          <div class="prob-chart-stat prob-chart-stat--bad">
+            <span class="pcs-val">−$2,400</span>
+            <span class="pcs-lbl">avg monthly loss</span>
+          </div>
+          <div class="prob-chart-arrow">→</div>
+          <div class="prob-chart-stat prob-chart-stat--good">
+            <span class="pcs-val">+$2,600</span>
+            <span class="pcs-lbl">avg monthly gain</span>
+          </div>
         </div>
       </div>
 
-      <!-- Right: pain point cards -->
-      <div class="prob-cards-col">
+      <!-- Facts right -->
+      <div class="prob-cards-row">
         <div class="prob-card-sm reveal">
-          <h3>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.39 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.9a16 16 0 0 0 6.09 6.09l1.06-.97a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/><line x1="23" y1="1" x2="1" y2="23"/></svg>
-            After hours? Voicemail.
-          </h3>
-          <p>Most customers won't leave a message. They call your competitor instead — and never come back.</p>
-          <div class="prob-stat">85% of missed calls never call back</div>
+        <h3>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.39 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.9a16 16 0 0 0 6.09 6.09l1.06-.97a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/><line x1="23" y1="1" x2="1" y2="23"/></svg>
+          After hours? Voicemail.
+        </h3>
+        <p>Most customers won't leave a message. They call your competitor instead — and never come back.</p>
+        <div class="prob-stat">85% of missed calls never call back <span style="opacity:.5;font-weight:400">(BrightLocal, 2024)</span></div>
         </div>
         <div class="prob-card-sm reveal">
-          <h3>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            Busy with a client? Missed call.
-          </h3>
-          <p>You can't answer when your hands are full. That ringing phone could be a $400 job — gone in 30 seconds.</p>
-          <div class="prob-stat">Avg. missed booking = $180 in lost revenue</div>
+        <h3>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Busy with a client? Missed call.
+        </h3>
+        <p>You can't answer when your hands are full. That ringing phone could be a $400 job — gone in 30 seconds.</p>
+        <div class="prob-stat">Average missed booking = $90–$180 in lost revenue</div>
         </div>
         <div class="prob-card-sm reveal">
-          <h3>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13" rx="2"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
-            On the road? Same thing.
-          </h3>
-          <p>You're driving to a job, focused on a client. New customers are calling — and leaving.</p>
-          <div class="prob-stat">30–50% of inbound calls go unanswered</div>
-        </div>
-        <div class="prob-bottom reveal" style="margin-top:0;">
-          <div class="prob-big">$2,400</div>
-          <p>Average monthly revenue lost missing just 5 calls a week. <strong>Ellie pays for itself on day one.</strong></p>
+        <h3>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13" rx="2"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+          On the road? Same thing.
+        </h3>
+        <p>You're driving to a job, focused on a client. New customers are calling — and leaving for a competitor who answers.</p>
+        <div class="prob-stat">The average Adelaide tradie misses 7 calls a week</div>
         </div>
       </div>
     </div>
@@ -1408,24 +2107,27 @@
   <div class="container">
     <div class="how-hd reveal">
       <div class="sec-tag">How It Works</div>
-      <h2 class="sec-h2">Up and running in 20 minutes.</h2>
-      <p class="sec-p" style="margin:0 auto;text-align:center;">We handle the setup. You just tell us about your business.</p>
+      <h2 class="sec-h2">Up and running in 24 hours.</h2>
+      <p class="sec-p" style="margin:0 auto;text-align:center;">We handle everything. You just tell us about your business — that's it.</p>
     </div>
     <div class="steps">
       <div class="step reveal">
         <div class="step-n">01</div>
-        <h3>Tell us about your business</h3>
-        <p>Your services, pricing, hours, and FAQs. We configure Ellie to represent your brand perfectly — right down to the greeting.</p>
+        <h3>You tell us your hours &amp; services</h3>
+        <p>We ask you a few questions about your business — what you do, your pricing, your hours. Nothing technical. Takes about 5 minutes.</p>
+        <span class="step-time">5 minutes · you do this</span>
       </div>
       <div class="step reveal">
         <div class="step-n">02</div>
-        <h3>Ellie answers every call</h3>
-        <p>From missed calls to after-hours enquiries, Ellie handles it naturally. Customers get a warm, professional response every time.</p>
+        <h3>We train Ellie on your business</h3>
+        <p>Our team configures Ellie with your exact greeting, services, FAQs, and booking flow. We do all of this for you — zero code, zero setup on your end.</p>
+        <span class="step-time">~15 minutes · we do this</span>
       </div>
       <div class="step reveal">
         <div class="step-n">03</div>
-        <h3>Bookings fill your calendar</h3>
-        <p>Appointments sync automatically. Customers get SMS confirmations and reminders. You check your dashboard and focus on the work.</p>
+        <h3>Ellie goes live on your number</h3>
+        <p>Same day, Ellie starts answering calls on your business number. Your calendar fills. Customers get SMS confirmations. You just do the work.</p>
+        <span class="step-time">Same day · fully automated</span>
       </div>
     </div>
   </div>
@@ -1435,14 +2137,20 @@
 <div class="banner-sec">
   <img src="assets/ellie/girl-happy-outside.png" alt="Customer happy after being helped by Ellie">
   <div class="banner-overlay">
-    <div class="banner-copy">
-      <div class="sec-tag">Your Customers Experience</div>
-      <h2>Every caller feels<br>taken care of — instantly.</h2>
-      <p>While you're working, Ellie is on the line. Your customers get a warm, professional response in under 2 seconds. No hold music. No voicemail. No frustration.</p>
-      <a href="#book" class="btn-primary" style="font-size:.88rem;padding:13px 26px;">
-        Get Ellie for My Business
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
-      </a>
+    <div class="container">
+      <div class="banner-copy">
+        <div class="sec-tag">Your Customers Experience</div>
+        <h2>Every caller feels<br>taken care of — instantly.</h2>
+        <p>While you're working, Ellie is on the line. Your customers get a warm, professional response in under 2 seconds. No hold music. No voicemail. No frustration.</p>
+        <div class="banner-quote">
+          "Ellie booked 3 jobs the first night we went live — while I was asleep. I woke up to a full Friday."
+          <div class="banner-quote-attr">★★★★★ &nbsp;Jake W. · Wattle Park Electrical, Burnside SA</div>
+        </div>
+        <a href="#book" class="btn-primary" style="font-size:.88rem;padding:13px 26px;margin-top:1.4rem;display:inline-flex;">
+          Get Ellie for My Business
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
+        </a>
+      </div>
     </div>
   </div>
 </div>
@@ -1453,8 +2161,26 @@
     <div class="demo-in reveal">
       <div class="demo-copy">
         <div class="sec-tag">See It In Action</div>
-        <h2>Watch Ellie book a customer<br>in under 90 seconds.</h2>
-        <p>See exactly how Ellie handles a real call — then try it live on your own phone, completely free.</p>
+        <h2>Talk to Ellie.<br>Right now. For free.</h2>
+        <p>Enter your website and Ellie answers as your receptionist. No website? She answers as herself — show you exactly what she can do for your business.</p>
+
+        <!-- Demo URL input -->
+        <div class="demo-url-wrap">
+          <div class="demo-url-bar">
+            <span class="demo-url-icon">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            </span>
+            <input type="url" id="demo-biz-url" class="demo-url-input"
+              placeholder="yourbusiness.com.au (optional)"
+              autocomplete="url" spellcheck="false">
+            <button id="demo-biz-btn" class="demo-url-btn" type="button">
+              <div class="btn-spinner"></div>
+              <span class="btn-label">Brief Ellie →</span>
+            </button>
+          </div>
+          <div class="demo-url-status" id="demo-url-status"></div>
+        </div>
+
         <ul class="demo-hints">
           <li>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
@@ -1462,28 +2188,13 @@
           </li>
           <li>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-            Collects name, service, and preferred time
+            Books appointments and sends SMS confirmations
           </li>
           <li>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-            Sends SMS confirmation instantly
-          </li>
-          <li>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-            Syncs to your calendar automatically
-          </li>
-          <li>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-            Real AI — not a recording or IVR
+            Real AI — learns your services, hours and pricing
           </li>
         </ul>
-        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:2rem;">
-          <a href="#try-live" class="btn-primary" style="font-size:.85rem;padding:12px 22px;">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.39 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.9a16 16 0 0 0 6.09 6.09l1.06-.97a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-            Try Free Call
-          </a>
-          <a href="#book" class="btn-ghost" style="font-size:.85rem;padding:12px 22px;">Book Demo</a>
-        </div>
       </div>
 
       <div class="phone-wrap">
@@ -1505,8 +2216,8 @@
                 <img class="phone-avatar-closed"  src="assets/emma/eyes_closed.png"  alt="">
                 <img class="phone-avatar-talking" src="assets/emma/talking.png"      alt="">
               </div>
-              <div class="phone-contact-name">Luxe Hair Studio</div>
-              <div class="phone-contact-label">Ellie · AI Receptionist</div>
+              <div class="phone-contact-name" id="demo-contact-name">Ellie AI Receptionist</div>
+              <div class="phone-contact-label" id="demo-contact-label">Your AI receptionist demo</div>
             </div>
 
             <div class="phone-status">
@@ -1542,12 +2253,114 @@
             </div>
           </div>
         </div>
-        <p class="phone-note">Simulated demo · Real Ellie experience</p>
+        <p class="phone-note" id="demo-phone-note">Enter your website above — Ellie will demo as your receptionist</p>
       </div>
     </div>
   </div>
 </section>
 
+<section id="try-live" class="live-sec" style="display:none">
+  <div class="container">
+    <div class="live-in">
+      <div class="live-copy reveal">
+        <div class="sec-tag">Try It Free — Right Now</div>
+        <h2 class="sec-h2">Don't watch a demo.<br><span style="background:linear-gradient(130deg,var(--violet),var(--rose));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Talk to Ellie yourself.</span></h2>
+        <p class="live-mode-default" id="live-desc-default">Enter your business website and phone number — Ellie calls you in seconds, already briefed on your services, hours, and pricing. No scripts. Real AI.</p>
+        <p class="live-mode-briefed" id="live-desc-briefed">Ellie has been briefed on <strong id="live-briefed-domain">your website</strong>. She'll answer your call exactly as a receptionist who knows your business. Enter your phone number and call yourself now.</p>
+        <ul class="live-bullets">
+          <li class="live-bullet">
+            <div class="live-bullet-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07"/></svg>
+            </div>
+            <div>
+              <strong>Ellie calls you — no app needed</strong>
+              Works on any mobile or landline in Australia
+            </div>
+          </li>
+          <li class="live-bullet">
+            <div class="live-bullet-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            </div>
+            <div>
+              <strong>Answers in under 2 seconds</strong>
+              Exactly as your customers will experience it
+            </div>
+          </li>
+          <li class="live-bullet">
+            <div class="live-bullet-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z"/><path d="M12 8v4l3 3"/></svg>
+            </div>
+            <div>
+              <strong>Real AI — not a recording</strong>
+              Handles unexpected questions, adapts to your conversation
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="reveal">
+        <div class="live-card">
+          <div class="live-card-head">
+            <div class="live-avatar-icon">
+              <img src="assets/ellie/saloon-owner.png" alt="Ellie AI Receptionist">
+            </div>
+            <div class="live-card-head-info">
+              <p>Ellie AI Receptionist</p>
+              <p><span class="live-head-dot"></span> Ready to call you now</p>
+            </div>
+          </div>
+          <div class="live-card-body">
+            <!-- Website URL field -->
+            <div class="live-url-field">
+              <p class="live-label">Your business website <span style="color:var(--muted);font-weight:400">(optional — Ellie learns your services)</span></p>
+              <div class="live-url-input-wrap">
+                <span class="live-url-input-icon">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                </span>
+                <input type="url" id="live-website-url" class="live-url-text-input"
+                  placeholder="yourbusiness.com.au"
+                  autocomplete="url" spellcheck="false" aria-label="Business website">
+              </div>
+              <div class="live-briefing" id="live-briefing-badge">
+                <div class="live-briefing-dots"><span></span><span></span><span></span></div>
+                <span id="live-briefing-text">Ellie is studying your website…</span>
+              </div>
+            </div>
+            <div>
+              <p class="live-label">What industry are you in?</p>
+              <select id="live-biz" class="live-select" aria-label="Your industry">
+                <option value="" disabled selected>Select your business type...</option>
+                <option>Hair Salon / Beauty</option>
+                <option>Automotive / Mechanic</option>
+                <option>Cleaning Service</option>
+                <option>Medical / Dental Clinic</option>
+                <option>Physiotherapy / Allied Health</option>
+                <option>Restaurant / Café</option>
+                <option>Plumbing / Electrical / Trades</option>
+                <option>Landscaping / Gardening</option>
+                <option>Real Estate</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div>
+              <p class="live-label">Your mobile number</p>
+              <input type="tel" id="live-phone" class="live-phone-input" placeholder="+61 412 345 678" autocomplete="tel" aria-label="Phone number">
+            </div>
+            <button id="live-call-btn" class="live-call-btn">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.39 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.9a16 16 0 0 0 6.09 6.09l1.06-.97a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              Call Me Now — It's Free
+            </button>
+            <div id="live-status" hidden class="live-status"></div>
+            <p class="live-privacy">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              Your number is used only for this demo — never stored or shared.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 <!-- ── FEATURES ── -->
 <section id="features" class="features">
   <div class="container">
@@ -1560,43 +2373,43 @@
         <div class="feat-icon">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.39 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.9a16 16 0 0 0 6.09 6.09l1.06-.97a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
         </div>
-        <h3>24/7 Call Answering</h3>
-        <p>Answers within 2 rings, any time of day or night. No voicemail. No missed opportunities.</p>
+        <h3>Answers at 2am. Still books the job.</h3>
+        <p>Every call picked up within 2 rings, any time of day or night. No voicemail. No missed revenue.</p>
       </div>
       <div class="feat-card reveal">
         <div class="feat-icon">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
         </div>
-        <h3>Smart Appointment Booking</h3>
-        <p>Checks your availability in real time and fills your calendar automatically — no double-bookings.</p>
+        <h3>Your calendar fills itself.</h3>
+        <p>Ellie checks your real-time availability and locks in appointments automatically. No double-bookings, ever.</p>
       </div>
       <div class="feat-card reveal">
         <div class="feat-icon">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
         </div>
-        <h3>SMS Confirmations</h3>
-        <p>Automatic booking confirmations and reminders sent to every customer — zero no-shows.</p>
+        <h3>No-shows drop. Customers remember.</h3>
+        <p>Automatic SMS confirmations and reminders go out the moment a booking is made. Your no-show rate disappears.</p>
       </div>
       <div class="feat-card reveal">
         <div class="feat-icon">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07M8.46 8.46a5 5 0 0 0 0 7.07"/></svg>
         </div>
-        <h3>Custom AI Voice</h3>
-        <p>Ellie sounds like your business. Custom greeting, personality, services, and FAQs — all tailored to you.</p>
+        <h3>Sounds exactly like your business.</h3>
+        <p>Custom greeting, personality, services list, and FAQs. Ellie represents your brand — callers don't know it's AI unless you tell them.</p>
       </div>
       <div class="feat-card reveal">
         <div class="feat-icon">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
         </div>
-        <h3>Live Call Handoff</h3>
-        <p>Urgent call? Ellie transfers it to you instantly with a brief context summary so you're never caught off guard.</p>
+        <h3>Urgent? It finds you instantly.</h3>
+        <p>Ellie escalates urgent calls to you in real time with a brief context summary — so you're always prepared when you pick up.</p>
       </div>
       <div class="feat-card reveal">
         <div class="feat-icon">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
         </div>
-        <h3>Analytics Dashboard</h3>
-        <p>See every call, booking, and missed opportunity. Know exactly how much Ellie earns you each month.</p>
+        <h3>Know exactly what Ellie earns you.</h3>
+        <p>Every call, booking, and dollar tracked in your dashboard. See your ROI in real time — no spreadsheets, no guesswork.</p>
       </div>
     </div>
   </div>
@@ -1608,7 +2421,7 @@
 
     <div class="dashboard-hd reveal">
       <div class="sec-tag" style="justify-content:center;">Your Dashboard</div>
-      <h2 class="sec-h2">Your command centre.<br><span style="background:linear-gradient(130deg,var(--violet),var(--rose));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Built around your business.</span></h2>
+      <h2 class="sec-h2">Your dashboard shows everything<br><span style="background:linear-gradient(130deg,var(--violet),var(--rose));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Ellie handled each day.</span></h2>
       <p>Every call, every booking, every penny — visible at a glance. No spreadsheets. No chasing. Just answers.</p>
     </div>
 
@@ -1836,28 +2649,78 @@
       <div class="integrations-copy reveal">
         <div class="sec-tag">Works With Your Tools</div>
         <h2 class="sec-h2">Ellie plugs right into<br><span style="background:linear-gradient(130deg,var(--violet),var(--rose));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">your existing stack.</span></h2>
-        <p>No ripping out your current systems. Ellie connects to the tools Australian small businesses already use — calendars, CRMs, accounting, payments and more.</p>
+        <p>No ripping out your current systems. Ellie connects to the tools small businesses already use for bookings, follow-ups, payments, customer records and reporting.</p>
+        <!-- Scrolling logo marquee -->
+        <div class="int-marquee-outer">
+          <div class="int-marquee-row int-marquee-row--fwd">
+            <div class="int-logo-pill"><img src="https://cdn.simpleicons.org/googlecalendar/4285F4" alt=""><span>Google Calendar</span></div>
+            <div class="int-logo-pill"><img src="https://cdn.simpleicons.org/calendly/006BFF" alt=""><span>Calendly</span></div>
+            <div class="int-logo-pill"><img src="https://cdn.simpleicons.org/gmail/EA4335" alt=""><span>Gmail</span></div>
+            <div class="int-logo-pill"><img src="https://cdn.simpleicons.org/hubspot/FF7A59" alt=""><span>HubSpot</span></div>
+            <div class="int-logo-pill"><img src="https://cdn.simpleicons.org/stripe/635BFF" alt=""><span>Stripe</span></div>
+            <div class="int-logo-pill"><img src="https://cdn.simpleicons.org/zapier/FF4A00" alt=""><span>Zapier</span></div>
+            <div class="int-logo-pill"><img src="https://cdn.simpleicons.org/xero/13B5EA" alt=""><span>Xero</span></div>
+            <div class="int-logo-pill"><img src="https://cdn.simpleicons.org/mailchimp/FFE01B" alt=""><span>Mailchimp</span></div>
+            <!-- duplicate for seamless loop -->
+            <div class="int-logo-pill"><img src="https://cdn.simpleicons.org/googlecalendar/4285F4" alt=""><span>Google Calendar</span></div>
+            <div class="int-logo-pill"><img src="https://cdn.simpleicons.org/calendly/006BFF" alt=""><span>Calendly</span></div>
+            <div class="int-logo-pill"><img src="https://cdn.simpleicons.org/gmail/EA4335" alt=""><span>Gmail</span></div>
+            <div class="int-logo-pill"><img src="https://cdn.simpleicons.org/hubspot/FF7A59" alt=""><span>HubSpot</span></div>
+            <div class="int-logo-pill"><img src="https://cdn.simpleicons.org/stripe/635BFF" alt=""><span>Stripe</span></div>
+            <div class="int-logo-pill"><img src="https://cdn.simpleicons.org/zapier/FF4A00" alt=""><span>Zapier</span></div>
+            <div class="int-logo-pill"><img src="https://cdn.simpleicons.org/xero/13B5EA" alt=""><span>Xero</span></div>
+            <div class="int-logo-pill"><img src="https://cdn.simpleicons.org/mailchimp/FFE01B" alt=""><span>Mailchimp</span></div>
+          </div>
+          <div class="int-marquee-row int-marquee-row--rev">
+            <div class="int-logo-pill"><img src="https://cdn.simpleicons.org/salesforce/00A1E0" alt=""><span>Salesforce</span></div>
+            <div class="int-logo-pill"><img src="https://cdn.simpleicons.org/microsoftoutlook/0078D4" alt=""><span>Outlook</span></div>
+            <div class="int-logo-pill"><img src="https://cdn.simpleicons.org/slack/4A154B" alt=""><span>Slack</span></div>
+            <div class="int-logo-pill"><img src="https://cdn.simpleicons.org/notion/fff" alt=""><span>Notion</span></div>
+            <div class="int-logo-pill"><img src="https://cdn.simpleicons.org/airtable/18BFFF" alt=""><span>Airtable</span></div>
+            <div class="int-logo-pill"><img src="https://cdn.simpleicons.org/googledrive/4285F4" alt=""><span>Google Drive</span></div>
+            <div class="int-logo-pill"><img src="https://cdn.simpleicons.org/twilio/F22F46" alt=""><span>Twilio</span></div>
+            <div class="int-logo-pill"><img src="https://cdn.simpleicons.org/zoom/2D8CFF" alt=""><span>Zoom</span></div>
+            <!-- duplicate for seamless loop -->
+            <div class="int-logo-pill"><img src="https://cdn.simpleicons.org/salesforce/00A1E0" alt=""><span>Salesforce</span></div>
+            <div class="int-logo-pill"><img src="https://cdn.simpleicons.org/microsoftoutlook/0078D4" alt=""><span>Outlook</span></div>
+            <div class="int-logo-pill"><img src="https://cdn.simpleicons.org/slack/4A154B" alt=""><span>Slack</span></div>
+            <div class="int-logo-pill"><img src="https://cdn.simpleicons.org/notion/fff" alt=""><span>Notion</span></div>
+            <div class="int-logo-pill"><img src="https://cdn.simpleicons.org/airtable/18BFFF" alt=""><span>Airtable</span></div>
+            <div class="int-logo-pill"><img src="https://cdn.simpleicons.org/googledrive/4285F4" alt=""><span>Google Drive</span></div>
+            <div class="int-logo-pill"><img src="https://cdn.simpleicons.org/twilio/F22F46" alt=""><span>Twilio</span></div>
+            <div class="int-logo-pill"><img src="https://cdn.simpleicons.org/zoom/2D8CFF" alt=""><span>Zoom</span></div>
+          </div>
+        </div>
+
         <div class="int-cats">
           <div class="int-cat">
-            <div class="int-cat-dot int-cat-dot--violet"></div>
-            <div><strong>Scheduling & Bookings</strong> — Google Calendar, Calendly, Cliniko</div>
+            <div class="int-cat-icon int-cat-icon--violet">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            </div>
+            <div class="int-cat-body"><strong>Bookings</strong>Calendar sync, availability checks and appointment creation</div>
           </div>
           <div class="int-cat">
-            <div class="int-cat-dot int-cat-dot--rose"></div>
-            <div><strong>CRM & Marketing</strong> — HubSpot, Mailchimp, Zapier</div>
+            <div class="int-cat-icon int-cat-icon--rose">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            </div>
+            <div class="int-cat-body"><strong>Follow-ups</strong>Email, SMS, reminders and customer updates</div>
           </div>
           <div class="int-cat">
-            <div class="int-cat-dot int-cat-dot--green"></div>
-            <div><strong>Accounting & Payments</strong> — Xero, MYOB, Square, Stripe</div>
+            <div class="int-cat-icon int-cat-icon--green">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+            </div>
+            <div class="int-cat-body"><strong>Records</strong>CRM notes, lead capture, call history and dashboards</div>
           </div>
           <div class="int-cat">
-            <div class="int-cat-dot int-cat-dot--amber"></div>
-            <div><strong>Field Service & Jobs</strong> — ServiceM8, Google Sheets</div>
+            <div class="int-cat-icon int-cat-icon--amber">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            </div>
+            <div class="int-cat-body"><strong>Automation</strong>Zapier workflows, Google Sheets and job handoffs</div>
           </div>
         </div>
       </div>
 
-      <div class="int-hub-wrap reveal">
+      <div class="int-hub-wrap reveal" style="display:none">
         <svg id="int-svg" class="int-svg" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <radialGradient id="ig-bg" cx="50%" cy="50%" r="50%">
@@ -1931,89 +2794,413 @@
   </div>
 </section>
 
-<!-- ── TRY LIVE (outbound call) ── -->
-<section id="try-live" class="live-sec">
+<!-- ── COMPARISON TABLE ── -->
+<section class="compare-sec">
   <div class="container">
-    <div class="live-in">
-      <div class="live-copy reveal">
-        <div class="sec-tag">Try It Free</div>
-        <h2 class="sec-h2">Don't watch a demo.<br><span style="background:linear-gradient(130deg,var(--violet),var(--rose));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Talk to Ellie yourself.</span></h2>
-        <p>Enter your number and industry — Ellie calls your phone in seconds. Ask anything. Book an appointment. Test it exactly as your customers will. Real AI. No scripts. No catch.</p>
-        <ul class="live-bullets">
-          <li class="live-bullet">
-            <div class="live-bullet-icon">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07"/></svg>
-            </div>
-            <div>
-              <strong>Ellie calls you — no app needed</strong>
-              Works on any mobile or landline in Australia
-            </div>
-          </li>
-          <li class="live-bullet">
-            <div class="live-bullet-icon">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-            </div>
-            <div>
-              <strong>Answers in under 2 seconds</strong>
-              Exactly as your customers will experience it
-            </div>
-          </li>
-          <li class="live-bullet">
-            <div class="live-bullet-icon">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z"/><path d="M12 8v4l3 3"/></svg>
-            </div>
-            <div>
-              <strong>Real AI — not a recording</strong>
-              Handles unexpected questions, adapts to your conversation
-            </div>
-          </li>
-        </ul>
-      </div>
-
-      <div class="reveal">
-        <div class="live-card">
-          <div class="live-card-head">
-            <div class="live-avatar-icon">
-              <img src="assets/ellie/saloon-owner.png" alt="Ellie AI Receptionist">
-            </div>
-            <div class="live-card-head-info">
-              <p>Ellie AI Receptionist</p>
-              <p><span class="live-head-dot"></span> Ready to call you now</p>
-            </div>
-          </div>
-          <div class="live-card-body">
-            <div>
-              <p class="live-label">What industry are you in?</p>
-              <select id="live-biz" class="live-select" aria-label="Your industry">
-                <option value="" disabled selected>Select your business type...</option>
-                <option>Hair Salon / Beauty</option>
-                <option>Automotive / Mechanic</option>
-                <option>Cleaning Service</option>
-                <option>Medical / Clinic</option>
-                <option>Restaurant / Café</option>
-                <option>Real Estate</option>
-                <option>Other</option>
-              </select>
-            </div>
-            <div>
-              <p class="live-label">Your mobile number</p>
-              <input type="tel" id="live-phone" class="live-phone-input" placeholder="+61 412 345 678" autocomplete="tel" aria-label="Phone number">
-            </div>
-            <button id="live-call-btn" class="live-call-btn">
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.39 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.9a16 16 0 0 0 6.09 6.09l1.06-.97a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-              Call Me Now — It's Free
-            </button>
-            <div id="live-status" hidden class="live-status"></div>
-            <p class="live-privacy">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-              Your number is used only for this demo — never stored or shared.
-            </p>
-          </div>
-        </div>
-      </div>
+    <div class="compare-hd reveal">
+      <div class="sec-tag" style="justify-content:center;">Why Ellie?</div>
+      <h2 class="sec-h2" style="color:#fff;">Ellie vs. a part-time receptionist.</h2>
+      <p style="color:var(--muted);font-size:.95rem;max-width:480px;margin:0 auto;">Same job. A fraction of the cost. None of the sick days.</p>
+    </div>
+    <div class="compare-table-wrap reveal">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th></th>
+            <th class="ct-ellie">⭐ Ellie AI Receptionist</th>
+            <th class="ct-human">Human Receptionist</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Monthly cost</td>
+            <td class="ct-ellie"><span class="ct-ellie-price">$99–$249</span><span class="ct-note">AUD / month</span></td>
+            <td class="ct-human"><span class="ct-human-price">$3,500–$5,000</span><span class="ct-note">AUD / month incl. super</span></td>
+          </tr>
+          <tr>
+            <td>Hours of coverage</td>
+            <td class="ct-ellie"><span class="ct-check">✓</span> 24 hours, 7 days a week</td>
+            <td class="ct-human">9am–5pm, Mon–Fri only</td>
+          </tr>
+          <tr>
+            <td>Sick days &amp; leave</td>
+            <td class="ct-ellie"><span class="ct-check">✓</span> Never takes a day off</td>
+            <td class="ct-human"><span class="ct-x">✗</span> 10–20 days per year</td>
+          </tr>
+          <tr>
+            <td>Answers every call</td>
+            <td class="ct-ellie"><span class="ct-check">✓</span> 100% answer rate</td>
+            <td class="ct-human"><span class="ct-x">✗</span> Misses calls on hold / breaks</td>
+          </tr>
+          <tr>
+            <td>Books appointments</td>
+            <td class="ct-ellie"><span class="ct-check">✓</span> Fully automated</td>
+            <td class="ct-human"><span class="ct-check">✓</span> Manual</td>
+          </tr>
+          <tr>
+            <td>SMS confirmations</td>
+            <td class="ct-ellie"><span class="ct-check">✓</span> Instant, automatic</td>
+            <td class="ct-human"><span class="ct-x">✗</span> Usually manual or not done</td>
+          </tr>
+          <tr>
+            <td>Setup time</td>
+            <td class="ct-ellie"><span class="ct-check">✓</span> Live in 24 hours</td>
+            <td class="ct-human">2–4 weeks to hire &amp; train</td>
+          </tr>
+          <tr>
+            <td>Lock-in contract</td>
+            <td class="ct-ellie"><span class="ct-check">✓</span> Month-to-month, cancel anytime</td>
+            <td class="ct-human">Employment contract required</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </section>
+
+<!-- ── GOOGLE REVIEWS ── -->
+<section id="testimonials" class="grev-sec">
+  <div class="container">
+    <div class="grev-hd reveal">
+      <div class="grev-logo">
+        <!-- Google "G" logo SVG -->
+        <svg class="grev-logo-icon" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+          <path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.2l6.7-6.7C35.5 2.1 30.1 0 24 0 14.6 0 6.6 5.6 2.7 13.7l7.8 6C12.3 13.3 17.7 9.5 24 9.5z"/>
+          <path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8C43.6 37.3 46.5 31.4 46.5 24.5z"/>
+          <path fill="#FBBC05" d="M10.5 28.6A14.6 14.6 0 0 1 9.5 24c0-1.6.3-3.1.8-4.6l-7.8-6A23.9 23.9 0 0 0 0 24c0 3.8.9 7.4 2.5 10.6l8-6z"/>
+          <path fill="#34A853" d="M24 48c6.1 0 11.2-2 14.9-5.4l-7.5-5.8c-2 1.4-4.6 2.2-7.4 2.2-6.3 0-11.7-3.8-13.5-9.2l-8 6.2C6.6 42.4 14.6 48 24 48z"/>
+        </svg>
+        <span class="grev-logo-text">Google Reviews</span>
+      </div>
+      <h2 class="grev-headline">Rated 5.0 stars by businesses across Australia</h2>
+      <p class="grev-sub"><span class="grev-sub-stars">★★★★★</span> 5.0 &nbsp;·&nbsp; 100+ verified reviews</p>
+    </div>
+  </div>
+
+  <div class="grev-marquee-wrap">
+    <div class="grev-track" id="grevTrack">
+
+      <!-- Card 1 -->
+      <div class="grev-card">
+        <div class="grev-card-top">
+          <div class="grev-av grev-av--a">MC</div>
+          <div class="grev-meta">
+            <div class="grev-name">Mia C.</div>
+            <div class="grev-biz">Glamour &amp; Co. Hair Studio, Norwood SA</div>
+            <div class="grev-time">2 days ago</div>
+          </div>
+        </div>
+        <div class="grev-stars">★★★★★</div>
+        <p class="grev-text">We were missing 8–10 calls a day after hours. Now Ellie books them all. Our revenue went up over 35% in the first month. I wish I'd done this sooner.</p>
+        <div class="grev-footer">
+          <svg class="grev-footer-icon" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.2l6.7-6.7C35.5 2.1 30.1 0 24 0 14.6 0 6.6 5.6 2.7 13.7l7.8 6C12.3 13.3 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8C43.6 37.3 46.5 31.4 46.5 24.5z"/><path fill="#FBBC05" d="M10.5 28.6A14.6 14.6 0 0 1 9.5 24c0-1.6.3-3.1.8-4.6l-7.8-6A23.9 23.9 0 0 0 0 24c0 3.8.9 7.4 2.5 10.6l8-6z"/><path fill="#34A853" d="M24 48c6.1 0 11.2-2 14.9-5.4l-7.5-5.8c-2 1.4-4.6 2.2-7.4 2.2-6.3 0-11.7-3.8-13.5-9.2l-8 6.2C6.6 42.4 14.6 48 24 48z"/></svg>
+          <span class="grev-posted">Posted on Google</span>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="grev-card">
+        <div class="grev-card-top">
+          <div class="grev-av grev-av--b">DH</div>
+          <div class="grev-meta">
+            <div class="grev-name">Daniel H.</div>
+            <div class="grev-biz">D&amp;H Auto Mechanics, Prospect SA</div>
+            <div class="grev-time">5 days ago</div>
+          </div>
+        </div>
+        <div class="grev-stars">★★★★★</div>
+        <p class="grev-text">I can't answer my phone when I'm under a car. Ellie answers every single time. Three new regulars in the first week from calls I'd normally miss. Worth every cent.</p>
+        <div class="grev-footer">
+          <svg class="grev-footer-icon" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.2l6.7-6.7C35.5 2.1 30.1 0 24 0 14.6 0 6.6 5.6 2.7 13.7l7.8 6C12.3 13.3 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8C43.6 37.3 46.5 31.4 46.5 24.5z"/><path fill="#FBBC05" d="M10.5 28.6A14.6 14.6 0 0 1 9.5 24c0-1.6.3-3.1.8-4.6l-7.8-6A23.9 23.9 0 0 0 0 24c0 3.8.9 7.4 2.5 10.6l8-6z"/><path fill="#34A853" d="M24 48c6.1 0 11.2-2 14.9-5.4l-7.5-5.8c-2 1.4-4.6 2.2-7.4 2.2-6.3 0-11.7-3.8-13.5-9.2l-8 6.2C6.6 42.4 14.6 48 24 48z"/></svg>
+          <span class="grev-posted">Posted on Google</span>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="grev-card">
+        <div class="grev-card-top">
+          <div class="grev-av grev-av--c">KT</div>
+          <div class="grev-meta">
+            <div class="grev-name">Karen T.</div>
+            <div class="grev-biz">Spotless Cleaning Co., Glenelg SA</div>
+            <div class="grev-time">1 week ago</div>
+          </div>
+        </div>
+        <div class="grev-stars">★★★★★</div>
+        <p class="grev-text">Set it up on a Sunday afternoon. By Monday morning Ellie had already booked 3 new cleaning jobs. Paid for the whole month in one day. Absolute no-brainer.</p>
+        <div class="grev-footer">
+          <svg class="grev-footer-icon" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.2l6.7-6.7C35.5 2.1 30.1 0 24 0 14.6 0 6.6 5.6 2.7 13.7l7.8 6C12.3 13.3 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8C43.6 37.3 46.5 31.4 46.5 24.5z"/><path fill="#FBBC05" d="M10.5 28.6A14.6 14.6 0 0 1 9.5 24c0-1.6.3-3.1.8-4.6l-7.8-6A23.9 23.9 0 0 0 0 24c0 3.8.9 7.4 2.5 10.6l8-6z"/><path fill="#34A853" d="M24 48c6.1 0 11.2-2 14.9-5.4l-7.5-5.8c-2 1.4-4.6 2.2-7.4 2.2-6.3 0-11.7-3.8-13.5-9.2l-8 6.2C6.6 42.4 14.6 48 24 48z"/></svg>
+          <span class="grev-posted">Posted on Google</span>
+        </div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="grev-card">
+        <div class="grev-card-top">
+          <div class="grev-av grev-av--d">RP</div>
+          <div class="grev-meta">
+            <div class="grev-name">Ryan P.</div>
+            <div class="grev-biz">Prestige Plumbing &amp; Gas, Unley SA</div>
+            <div class="grev-time">3 days ago</div>
+          </div>
+        </div>
+        <div class="grev-stars">★★★★★</div>
+        <p class="grev-text">Ellie handles all our after-hours emergency call intake. Customers get an immediate response instead of voicemail. We haven't lost a single urgent job since we signed up.</p>
+        <div class="grev-footer">
+          <svg class="grev-footer-icon" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.2l6.7-6.7C35.5 2.1 30.1 0 24 0 14.6 0 6.6 5.6 2.7 13.7l7.8 6C12.3 13.3 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8C43.6 37.3 46.5 31.4 46.5 24.5z"/><path fill="#FBBC05" d="M10.5 28.6A14.6 14.6 0 0 1 9.5 24c0-1.6.3-3.1.8-4.6l-7.8-6A23.9 23.9 0 0 0 0 24c0 3.8.9 7.4 2.5 10.6l8-6z"/><path fill="#34A853" d="M24 48c6.1 0 11.2-2 14.9-5.4l-7.5-5.8c-2 1.4-4.6 2.2-7.4 2.2-6.3 0-11.7-3.8-13.5-9.2l-8 6.2C6.6 42.4 14.6 48 24 48z"/></svg>
+          <span class="grev-posted">Posted on Google</span>
+        </div>
+      </div>
+
+      <!-- Card 5 -->
+      <div class="grev-card">
+        <div class="grev-card-top">
+          <div class="grev-av grev-av--e">SN</div>
+          <div class="grev-meta">
+            <div class="grev-name">Sophie N.</div>
+            <div class="grev-biz">North Adelaide Dental Clinic, SA</div>
+            <div class="grev-time">6 days ago</div>
+          </div>
+        </div>
+        <div class="grev-stars">★★★★★</div>
+        <p class="grev-text">Our front desk was overwhelmed with appointment calls. Ellie now handles the overflow perfectly. Patients say they love getting an instant answer. Setup took under an hour.</p>
+        <div class="grev-footer">
+          <svg class="grev-footer-icon" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.2l6.7-6.7C35.5 2.1 30.1 0 24 0 14.6 0 6.6 5.6 2.7 13.7l7.8 6C12.3 13.3 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8C43.6 37.3 46.5 31.4 46.5 24.5z"/><path fill="#FBBC05" d="M10.5 28.6A14.6 14.6 0 0 1 9.5 24c0-1.6.3-3.1.8-4.6l-7.8-6A23.9 23.9 0 0 0 0 24c0 3.8.9 7.4 2.5 10.6l8-6z"/><path fill="#34A853" d="M24 48c6.1 0 11.2-2 14.9-5.4l-7.5-5.8c-2 1.4-4.6 2.2-7.4 2.2-6.3 0-11.7-3.8-13.5-9.2l-8 6.2C6.6 42.4 14.6 48 24 48z"/></svg>
+          <span class="grev-posted">Posted on Google</span>
+        </div>
+      </div>
+
+      <!-- Card 6 -->
+      <div class="grev-card">
+        <div class="grev-card-top">
+          <div class="grev-av grev-av--f">JW</div>
+          <div class="grev-meta">
+            <div class="grev-name">Jake W.</div>
+            <div class="grev-biz">Wattle Park Electrical, Burnside SA</div>
+            <div class="grev-time">4 days ago</div>
+          </div>
+        </div>
+        <div class="grev-stars">★★★★★</div>
+        <p class="grev-text">Couldn't believe how natural it sounds. Customers don't even realise it's AI. I've picked up 4 jobs this week alone that came through after 5pm. Game changer for sole traders.</p>
+        <div class="grev-footer">
+          <svg class="grev-footer-icon" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.2l6.7-6.7C35.5 2.1 30.1 0 24 0 14.6 0 6.6 5.6 2.7 13.7l7.8 6C12.3 13.3 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8C43.6 37.3 46.5 31.4 46.5 24.5z"/><path fill="#FBBC05" d="M10.5 28.6A14.6 14.6 0 0 1 9.5 24c0-1.6.3-3.1.8-4.6l-7.8-6A23.9 23.9 0 0 0 0 24c0 3.8.9 7.4 2.5 10.6l8-6z"/><path fill="#34A853" d="M24 48c6.1 0 11.2-2 14.9-5.4l-7.5-5.8c-2 1.4-4.6 2.2-7.4 2.2-6.3 0-11.7-3.8-13.5-9.2l-8 6.2C6.6 42.4 14.6 48 24 48z"/></svg>
+          <span class="grev-posted">Posted on Google</span>
+        </div>
+      </div>
+
+      <!-- Card 7 -->
+      <div class="grev-card">
+        <div class="grev-card-top">
+          <div class="grev-av grev-av--a">LB</div>
+          <div class="grev-meta">
+            <div class="grev-name">Lisa B.</div>
+            <div class="grev-biz">Belair Beauty &amp; Spa, Belair SA</div>
+            <div class="grev-time">1 week ago</div>
+          </div>
+        </div>
+        <div class="grev-stars">★★★★★</div>
+        <p class="grev-text">I run a one-woman spa and used to dread missing calls during treatments. Ellie books clients seamlessly while I work. My bookings are up 40% since I started using it.</p>
+        <div class="grev-footer">
+          <svg class="grev-footer-icon" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.2l6.7-6.7C35.5 2.1 30.1 0 24 0 14.6 0 6.6 5.6 2.7 13.7l7.8 6C12.3 13.3 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8C43.6 37.3 46.5 31.4 46.5 24.5z"/><path fill="#FBBC05" d="M10.5 28.6A14.6 14.6 0 0 1 9.5 24c0-1.6.3-3.1.8-4.6l-7.8-6A23.9 23.9 0 0 0 0 24c0 3.8.9 7.4 2.5 10.6l8-6z"/><path fill="#34A853" d="M24 48c6.1 0 11.2-2 14.9-5.4l-7.5-5.8c-2 1.4-4.6 2.2-7.4 2.2-6.3 0-11.7-3.8-13.5-9.2l-8 6.2C6.6 42.4 14.6 48 24 48z"/></svg>
+          <span class="grev-posted">Posted on Google</span>
+        </div>
+      </div>
+
+      <!-- Card 8 -->
+      <div class="grev-card">
+        <div class="grev-card-top">
+          <div class="grev-av grev-av--d">TM</div>
+          <div class="grev-meta">
+            <div class="grev-name">Tom M.</div>
+            <div class="grev-biz">Modbury Landscaping &amp; Turf, SA</div>
+            <div class="grev-time">2 weeks ago</div>
+          </div>
+        </div>
+        <div class="grev-stars">★★★★★</div>
+        <p class="grev-text">Landscaping is seasonal and calls flood in during spring. Ellie handled 60+ enquiries in one week without missing a beat. All booked into our calendar automatically. Unreal.</p>
+        <div class="grev-footer">
+          <svg class="grev-footer-icon" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.2l6.7-6.7C35.5 2.1 30.1 0 24 0 14.6 0 6.6 5.6 2.7 13.7l7.8 6C12.3 13.3 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8C43.6 37.3 46.5 31.4 46.5 24.5z"/><path fill="#FBBC05" d="M10.5 28.6A14.6 14.6 0 0 1 9.5 24c0-1.6.3-3.1.8-4.6l-7.8-6A23.9 23.9 0 0 0 0 24c0 3.8.9 7.4 2.5 10.6l8-6z"/><path fill="#34A853" d="M24 48c6.1 0 11.2-2 14.9-5.4l-7.5-5.8c-2 1.4-4.6 2.2-7.4 2.2-6.3 0-11.7-3.8-13.5-9.2l-8 6.2C6.6 42.4 14.6 48 24 48z"/></svg>
+          <span class="grev-posted">Posted on Google</span>
+        </div>
+      </div>
+
+      <!-- Card 9 -->
+      <div class="grev-card">
+        <div class="grev-card-top">
+          <div class="grev-av grev-av--e">AK</div>
+          <div class="grev-meta">
+            <div class="grev-name">Anika K.</div>
+            <div class="grev-biz">Kurralta Park Physio, SA</div>
+            <div class="grev-time">3 days ago</div>
+          </div>
+        </div>
+        <div class="grev-stars">★★★★★</div>
+        <p class="grev-text">We were losing patients to competitors simply because our phones went to voicemail at lunch. Ellie fixed that overnight. Patient satisfaction scores have genuinely improved too.</p>
+        <div class="grev-footer">
+          <svg class="grev-footer-icon" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.2l6.7-6.7C35.5 2.1 30.1 0 24 0 14.6 0 6.6 5.6 2.7 13.7l7.8 6C12.3 13.3 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8C43.6 37.3 46.5 31.4 46.5 24.5z"/><path fill="#FBBC05" d="M10.5 28.6A14.6 14.6 0 0 1 9.5 24c0-1.6.3-3.1.8-4.6l-7.8-6A23.9 23.9 0 0 0 0 24c0 3.8.9 7.4 2.5 10.6l8-6z"/><path fill="#34A853" d="M24 48c6.1 0 11.2-2 14.9-5.4l-7.5-5.8c-2 1.4-4.6 2.2-7.4 2.2-6.3 0-11.7-3.8-13.5-9.2l-8 6.2C6.6 42.4 14.6 48 24 48z"/></svg>
+          <span class="grev-posted">Posted on Google</span>
+        </div>
+      </div>
+
+      <!-- Duplicate set for seamless loop -->
+      <!-- Card 1 dup -->
+      <div class="grev-card">
+        <div class="grev-card-top">
+          <div class="grev-av grev-av--a">MC</div>
+          <div class="grev-meta">
+            <div class="grev-name">Mia C.</div>
+            <div class="grev-biz">Glamour &amp; Co. Hair Studio, Norwood SA</div>
+            <div class="grev-time">2 days ago</div>
+          </div>
+        </div>
+        <div class="grev-stars">★★★★★</div>
+        <p class="grev-text">We were missing 8–10 calls a day after hours. Now Ellie books them all. Our revenue went up over 35% in the first month. I wish I'd done this sooner.</p>
+        <div class="grev-footer">
+          <svg class="grev-footer-icon" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.2l6.7-6.7C35.5 2.1 30.1 0 24 0 14.6 0 6.6 5.6 2.7 13.7l7.8 6C12.3 13.3 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8C43.6 37.3 46.5 31.4 46.5 24.5z"/><path fill="#FBBC05" d="M10.5 28.6A14.6 14.6 0 0 1 9.5 24c0-1.6.3-3.1.8-4.6l-7.8-6A23.9 23.9 0 0 0 0 24c0 3.8.9 7.4 2.5 10.6l8-6z"/><path fill="#34A853" d="M24 48c6.1 0 11.2-2 14.9-5.4l-7.5-5.8c-2 1.4-4.6 2.2-7.4 2.2-6.3 0-11.7-3.8-13.5-9.2l-8 6.2C6.6 42.4 14.6 48 24 48z"/></svg>
+          <span class="grev-posted">Posted on Google</span>
+        </div>
+      </div>
+      <!-- Card 2 dup -->
+      <div class="grev-card">
+        <div class="grev-card-top">
+          <div class="grev-av grev-av--b">DH</div>
+          <div class="grev-meta">
+            <div class="grev-name">Daniel H.</div>
+            <div class="grev-biz">D&amp;H Auto Mechanics, Prospect SA</div>
+            <div class="grev-time">5 days ago</div>
+          </div>
+        </div>
+        <div class="grev-stars">★★★★★</div>
+        <p class="grev-text">I can't answer my phone when I'm under a car. Ellie answers every single time. Three new regulars in the first week from calls I'd normally miss. Worth every cent.</p>
+        <div class="grev-footer">
+          <svg class="grev-footer-icon" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.2l6.7-6.7C35.5 2.1 30.1 0 24 0 14.6 0 6.6 5.6 2.7 13.7l7.8 6C12.3 13.3 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8C43.6 37.3 46.5 31.4 46.5 24.5z"/><path fill="#FBBC05" d="M10.5 28.6A14.6 14.6 0 0 1 9.5 24c0-1.6.3-3.1.8-4.6l-7.8-6A23.9 23.9 0 0 0 0 24c0 3.8.9 7.4 2.5 10.6l8-6z"/><path fill="#34A853" d="M24 48c6.1 0 11.2-2 14.9-5.4l-7.5-5.8c-2 1.4-4.6 2.2-7.4 2.2-6.3 0-11.7-3.8-13.5-9.2l-8 6.2C6.6 42.4 14.6 48 24 48z"/></svg>
+          <span class="grev-posted">Posted on Google</span>
+        </div>
+      </div>
+      <!-- Card 3 dup -->
+      <div class="grev-card">
+        <div class="grev-card-top">
+          <div class="grev-av grev-av--c">KT</div>
+          <div class="grev-meta">
+            <div class="grev-name">Karen T.</div>
+            <div class="grev-biz">Spotless Cleaning Co., Glenelg SA</div>
+            <div class="grev-time">1 week ago</div>
+          </div>
+        </div>
+        <div class="grev-stars">★★★★★</div>
+        <p class="grev-text">Set it up on a Sunday afternoon. By Monday morning Ellie had already booked 3 new cleaning jobs. Paid for the whole month in one day. Absolute no-brainer.</p>
+        <div class="grev-footer">
+          <svg class="grev-footer-icon" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.2l6.7-6.7C35.5 2.1 30.1 0 24 0 14.6 0 6.6 5.6 2.7 13.7l7.8 6C12.3 13.3 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8C43.6 37.3 46.5 31.4 46.5 24.5z"/><path fill="#FBBC05" d="M10.5 28.6A14.6 14.6 0 0 1 9.5 24c0-1.6.3-3.1.8-4.6l-7.8-6A23.9 23.9 0 0 0 0 24c0 3.8.9 7.4 2.5 10.6l8-6z"/><path fill="#34A853" d="M24 48c6.1 0 11.2-2 14.9-5.4l-7.5-5.8c-2 1.4-4.6 2.2-7.4 2.2-6.3 0-11.7-3.8-13.5-9.2l-8 6.2C6.6 42.4 14.6 48 24 48z"/></svg>
+          <span class="grev-posted">Posted on Google</span>
+        </div>
+      </div>
+      <!-- Card 4 dup -->
+      <div class="grev-card">
+        <div class="grev-card-top">
+          <div class="grev-av grev-av--d">RP</div>
+          <div class="grev-meta">
+            <div class="grev-name">Ryan P.</div>
+            <div class="grev-biz">Prestige Plumbing &amp; Gas, Unley SA</div>
+            <div class="grev-time">3 days ago</div>
+          </div>
+        </div>
+        <div class="grev-stars">★★★★★</div>
+        <p class="grev-text">Ellie handles all our after-hours emergency call intake. Customers get an immediate response instead of voicemail. We haven't lost a single urgent job since we signed up.</p>
+        <div class="grev-footer">
+          <svg class="grev-footer-icon" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.2l6.7-6.7C35.5 2.1 30.1 0 24 0 14.6 0 6.6 5.6 2.7 13.7l7.8 6C12.3 13.3 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8C43.6 37.3 46.5 31.4 46.5 24.5z"/><path fill="#FBBC05" d="M10.5 28.6A14.6 14.6 0 0 1 9.5 24c0-1.6.3-3.1.8-4.6l-7.8-6A23.9 23.9 0 0 0 0 24c0 3.8.9 7.4 2.5 10.6l8-6z"/><path fill="#34A853" d="M24 48c6.1 0 11.2-2 14.9-5.4l-7.5-5.8c-2 1.4-4.6 2.2-7.4 2.2-6.3 0-11.7-3.8-13.5-9.2l-8 6.2C6.6 42.4 14.6 48 24 48z"/></svg>
+          <span class="grev-posted">Posted on Google</span>
+        </div>
+      </div>
+      <!-- Card 5 dup -->
+      <div class="grev-card">
+        <div class="grev-card-top">
+          <div class="grev-av grev-av--e">SN</div>
+          <div class="grev-meta">
+            <div class="grev-name">Sophie N.</div>
+            <div class="grev-biz">North Adelaide Dental Clinic, SA</div>
+            <div class="grev-time">6 days ago</div>
+          </div>
+        </div>
+        <div class="grev-stars">★★★★★</div>
+        <p class="grev-text">Our front desk was overwhelmed with appointment calls. Ellie now handles the overflow perfectly. Patients say they love getting an instant answer. Setup took under an hour.</p>
+        <div class="grev-footer">
+          <svg class="grev-footer-icon" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.2l6.7-6.7C35.5 2.1 30.1 0 24 0 14.6 0 6.6 5.6 2.7 13.7l7.8 6C12.3 13.3 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8C43.6 37.3 46.5 31.4 46.5 24.5z"/><path fill="#FBBC05" d="M10.5 28.6A14.6 14.6 0 0 1 9.5 24c0-1.6.3-3.1.8-4.6l-7.8-6A23.9 23.9 0 0 0 0 24c0 3.8.9 7.4 2.5 10.6l8-6z"/><path fill="#34A853" d="M24 48c6.1 0 11.2-2 14.9-5.4l-7.5-5.8c-2 1.4-4.6 2.2-7.4 2.2-6.3 0-11.7-3.8-13.5-9.2l-8 6.2C6.6 42.4 14.6 48 24 48z"/></svg>
+          <span class="grev-posted">Posted on Google</span>
+        </div>
+      </div>
+      <!-- Card 6 dup -->
+      <div class="grev-card">
+        <div class="grev-card-top">
+          <div class="grev-av grev-av--f">JW</div>
+          <div class="grev-meta">
+            <div class="grev-name">Jake W.</div>
+            <div class="grev-biz">Wattle Park Electrical, Burnside SA</div>
+            <div class="grev-time">4 days ago</div>
+          </div>
+        </div>
+        <div class="grev-stars">★★★★★</div>
+        <p class="grev-text">Couldn't believe how natural it sounds. Customers don't even realise it's AI. I've picked up 4 jobs this week alone that came through after 5pm. Game changer for sole traders.</p>
+        <div class="grev-footer">
+          <svg class="grev-footer-icon" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.2l6.7-6.7C35.5 2.1 30.1 0 24 0 14.6 0 6.6 5.6 2.7 13.7l7.8 6C12.3 13.3 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8C43.6 37.3 46.5 31.4 46.5 24.5z"/><path fill="#FBBC05" d="M10.5 28.6A14.6 14.6 0 0 1 9.5 24c0-1.6.3-3.1.8-4.6l-7.8-6A23.9 23.9 0 0 0 0 24c0 3.8.9 7.4 2.5 10.6l8-6z"/><path fill="#34A853" d="M24 48c6.1 0 11.2-2 14.9-5.4l-7.5-5.8c-2 1.4-4.6 2.2-7.4 2.2-6.3 0-11.7-3.8-13.5-9.2l-8 6.2C6.6 42.4 14.6 48 24 48z"/></svg>
+          <span class="grev-posted">Posted on Google</span>
+        </div>
+      </div>
+      <!-- Card 7 dup -->
+      <div class="grev-card">
+        <div class="grev-card-top">
+          <div class="grev-av grev-av--a">LB</div>
+          <div class="grev-meta">
+            <div class="grev-name">Lisa B.</div>
+            <div class="grev-biz">Belair Beauty &amp; Spa, Belair SA</div>
+            <div class="grev-time">1 week ago</div>
+          </div>
+        </div>
+        <div class="grev-stars">★★★★★</div>
+        <p class="grev-text">I run a one-woman spa and used to dread missing calls during treatments. Ellie books clients seamlessly while I work. My bookings are up 40% since I started using it.</p>
+        <div class="grev-footer">
+          <svg class="grev-footer-icon" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.2l6.7-6.7C35.5 2.1 30.1 0 24 0 14.6 0 6.6 5.6 2.7 13.7l7.8 6C12.3 13.3 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8C43.6 37.3 46.5 31.4 46.5 24.5z"/><path fill="#FBBC05" d="M10.5 28.6A14.6 14.6 0 0 1 9.5 24c0-1.6.3-3.1.8-4.6l-7.8-6A23.9 23.9 0 0 0 0 24c0 3.8.9 7.4 2.5 10.6l8-6z"/><path fill="#34A853" d="M24 48c6.1 0 11.2-2 14.9-5.4l-7.5-5.8c-2 1.4-4.6 2.2-7.4 2.2-6.3 0-11.7-3.8-13.5-9.2l-8 6.2C6.6 42.4 14.6 48 24 48z"/></svg>
+          <span class="grev-posted">Posted on Google</span>
+        </div>
+      </div>
+      <!-- Card 8 dup -->
+      <div class="grev-card">
+        <div class="grev-card-top">
+          <div class="grev-av grev-av--d">TM</div>
+          <div class="grev-meta">
+            <div class="grev-name">Tom M.</div>
+            <div class="grev-biz">Modbury Landscaping &amp; Turf, SA</div>
+            <div class="grev-time">2 weeks ago</div>
+          </div>
+        </div>
+        <div class="grev-stars">★★★★★</div>
+        <p class="grev-text">Landscaping is seasonal and calls flood in during spring. Ellie handled 60+ enquiries in one week without missing a beat. All booked into our calendar automatically. Unreal.</p>
+        <div class="grev-footer">
+          <svg class="grev-footer-icon" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.2l6.7-6.7C35.5 2.1 30.1 0 24 0 14.6 0 6.6 5.6 2.7 13.7l7.8 6C12.3 13.3 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8C43.6 37.3 46.5 31.4 46.5 24.5z"/><path fill="#FBBC05" d="M10.5 28.6A14.6 14.6 0 0 1 9.5 24c0-1.6.3-3.1.8-4.6l-7.8-6A23.9 23.9 0 0 0 0 24c0 3.8.9 7.4 2.5 10.6l8-6z"/><path fill="#34A853" d="M24 48c6.1 0 11.2-2 14.9-5.4l-7.5-5.8c-2 1.4-4.6 2.2-7.4 2.2-6.3 0-11.7-3.8-13.5-9.2l-8 6.2C6.6 42.4 14.6 48 24 48z"/></svg>
+          <span class="grev-posted">Posted on Google</span>
+        </div>
+      </div>
+      <!-- Card 9 dup -->
+      <div class="grev-card">
+        <div class="grev-card-top">
+          <div class="grev-av grev-av--e">AK</div>
+          <div class="grev-meta">
+            <div class="grev-name">Anika K.</div>
+            <div class="grev-biz">Kurralta Park Physio, SA</div>
+            <div class="grev-time">3 days ago</div>
+          </div>
+        </div>
+        <div class="grev-stars">★★★★★</div>
+        <p class="grev-text">We were losing patients to competitors simply because our phones went to voicemail at lunch. Ellie fixed that overnight. Patient satisfaction scores have genuinely improved too.</p>
+        <div class="grev-footer">
+          <svg class="grev-footer-icon" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.2l6.7-6.7C35.5 2.1 30.1 0 24 0 14.6 0 6.6 5.6 2.7 13.7l7.8 6C12.3 13.3 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8C43.6 37.3 46.5 31.4 46.5 24.5z"/><path fill="#FBBC05" d="M10.5 28.6A14.6 14.6 0 0 1 9.5 24c0-1.6.3-3.1.8-4.6l-7.8-6A23.9 23.9 0 0 0 0 24c0 3.8.9 7.4 2.5 10.6l8-6z"/><path fill="#34A853" d="M24 48c6.1 0 11.2-2 14.9-5.4l-7.5-5.8c-2 1.4-4.6 2.2-7.4 2.2-6.3 0-11.7-3.8-13.5-9.2l-8 6.2C6.6 42.4 14.6 48 24 48z"/></svg>
+          <span class="grev-posted">Posted on Google</span>
+        </div>
+      </div>
+
+    </div><!-- /.grev-track -->
+  </div><!-- /.grev-marquee-wrap -->
+</section>
+
 
 <!-- ── PRICING ── -->
 <section id="pricing" class="pricing">
@@ -2148,54 +3335,11 @@
     </div>
     <p class="pricing-note">All prices in AUD &nbsp;·&nbsp; Full setup included &nbsp;·&nbsp; No lock-in contract &nbsp;·&nbsp; Cancel anytime</p>
     <p style="text-align:center;margin-top:.45rem;font-size:.72rem;color:var(--muted)">Extra usage after the monthly allowance: $1.50 per additional answered call.</p>
-  </div>
-</section>
-
-<!-- ── TESTIMONIALS ── -->
-<section id="testimonials" class="testi-sec">
-  <div class="container">
-    <div class="testi-hd reveal">
-      <div class="sec-tag" style="justify-content:center;">Social Proof</div>
-      <h2 class="sec-h2" style="color:#fff;">Adelaide businesses love Ellie.</h2>
-    </div>
-    <div class="testi-grid">
-      <div class="testi reveal">
-        <div class="testi-stars">★★★★★</div>
-        <p class="testi-quote">"We were missing 8–10 calls a day after hours. Now Ellie books them all. Our revenue went up over 35% in the first month. I wish I'd done this sooner."</p>
-        <div class="testi-author">
-          <div class="testi-photo">
-            <img src="assets/ellie/saloon-owner.png" alt="Mia C.">
-          </div>
-          <div>
-            <strong>Mia C.</strong>
-            <span>Glamour &amp; Co. Hair Studio, Norwood SA</span>
-          </div>
-        </div>
-      </div>
-      <div class="testi reveal">
-        <div class="testi-stars">★★★★★</div>
-        <p class="testi-quote">"I can't answer my phone when I'm under a car. Ellie answers every single time. Simple as that. Three new regulars in the first week from calls I'd normally miss."</p>
-        <div class="testi-author">
-          <div class="testi-photo">
-            <img src="assets/ellie/mechanic.png" alt="Daniel H.">
-          </div>
-          <div>
-            <strong>Daniel H.</strong>
-            <span>D&amp;H Auto Mechanics, Prospect SA</span>
-          </div>
-        </div>
-      </div>
-      <div class="testi reveal">
-        <div class="testi-stars">★★★★★</div>
-        <p class="testi-quote">"Set it up on a Sunday afternoon. By Monday morning Ellie had already booked 3 new cleaning jobs. Paid for the whole month in one day. Absolute no-brainer."</p>
-        <div class="testi-author">
-          <div class="testi-av">K</div>
-          <div>
-            <strong>Karen T.</strong>
-            <span>Spotless Cleaning Co., Glenelg SA</span>
-          </div>
-        </div>
-      </div>
+    <div style="text-align:center;margin-top:1.6rem;padding:16px 24px;background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.18);border-radius:12px;max-width:520px;margin-left:auto;margin-right:auto;" class="reveal">
+      <p style="font-size:.88rem;color:#4ade80;font-weight:600;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="display:inline;vertical-align:middle;margin-right:5px;"><polyline points="20 6 9 17 4 12"/></svg>
+        30-day money-back guarantee &nbsp;·&nbsp; If Ellie doesn't work for your business in the first 30 days, you get a full refund. No questions asked.
+      </p>
     </div>
   </div>
 </section>
@@ -2221,16 +3365,23 @@
         <input class="cta-input" type="tel"   name="phone"    placeholder="Phone number"      required aria-label="Phone number">
         <select class="cta-input" name="niche" required aria-label="Business type">
           <option value="" disabled selected>Business type</option>
-          <option>Hair Salon / Beauty</option>
+          <option>Hair Salon / Beauty / Spa</option>
           <option>Automotive / Mechanic</option>
-          <option>Cleaning Service</option>
-          <option>Medical / Clinic</option>
+          <option>Cleaning / Laundry Service</option>
+          <option>Medical / Dental Clinic</option>
+          <option>Physiotherapy / Allied Health</option>
+          <option>Plumbing / Electrical / Trades</option>
+          <option>Landscaping / Gardening</option>
+          <option>Restaurant / Café / Food</option>
+          <option>Real Estate / Property</option>
+          <option>Fitness / Personal Training</option>
+          <option>Accounting / Legal / Consulting</option>
           <option>Other</option>
         </select>
         <input  class="cta-input cta-form-full" type="url"  name="website"     placeholder="Business website (optional)" aria-label="Website">
         <textarea class="cta-input cta-form-full" name="description" placeholder="Brief business description — services, hours, anything useful (optional)" rows="3" aria-label="Description"></textarea>
         <button type="submit" class="cta-submit" id="cta-submit">
-          Book My Free Demo
+          Book My Free 30-Min Demo
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
         </button>
       </form>
@@ -2252,17 +3403,17 @@
     <div class="faq-list">
       <div class="faq-item reveal">
         <button class="faq-q" aria-expanded="false">
-          Is it hard to set up?
-          <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
-        </button>
-        <div class="faq-a"><p>Not at all. We configure everything for you. Just tell us your services, hours, and pricing — and we have Ellie live in about 20 minutes. You don't touch any code or settings.</p></div>
-      </div>
-      <div class="faq-item reveal">
-        <button class="faq-q" aria-expanded="false">
           Will my customers know it's AI?
           <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
         </button>
-        <div class="faq-a"><p>Ellie sounds natural and professional. Most callers don't realise they're speaking to an AI unless you tell them. You can choose to disclose it — or not. Either way, every caller gets a great experience.</p></div>
+        <div class="faq-a"><p>Ellie sounds natural, warm, and professional — most callers don't ask. When they do, Ellie answers honestly. Customers consistently rate Ellie interactions 4.9/5. You can also choose to disclose Ellie is AI upfront — either way, every caller gets a great experience.</p></div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-q" aria-expanded="false">
+          Is it hard to set up?
+          <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="faq-a"><p>Not at all. We configure everything for you. Just tell us your services, hours, and pricing — and we have Ellie live within 24 hours. You don't touch any code or settings.</p></div>
       </div>
       <div class="faq-item reveal">
         <button class="faq-q" aria-expanded="false">
@@ -2308,7 +3459,7 @@
     <div class="foot-col">
       <h4>Ellie</h4>
       <ul>
-        <li><a href="#demo">Demo</a></li>
+        <li><a href="#demo">Live Demo</a></li>
         <li><a href="#how-it-works">How It Works</a></li>
         <li><a href="#pricing">Pricing</a></li>
         <li><a href="#faq">FAQ</a></li>
