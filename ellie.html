@@ -345,6 +345,19 @@
     .hero-av-live-dot { width: 6px; height: 6px; border-radius: 50%; background: #10b981; animation: blink 1.4s ease-in-out infinite; }
     .hero-av-name { font-size: .92rem; font-weight: 700; color: #fff; margin-bottom: 2px; }
     .hero-av-tagline { font-size: .72rem; color: var(--muted); line-height: 1.4; }
+    .hero-av-play-btn {
+      flex-shrink: 0; width: 30px; height: 30px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--violet), #6d28d9);
+      border: none; cursor: pointer; display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 0 12px rgba(167,139,250,.4);
+      transition: transform .18s, box-shadow .18s;
+    }
+    .hero-av-play-btn:hover { transform: scale(1.1); box-shadow: 0 0 20px rgba(167,139,250,.6); }
+    .hero-av-play-btn:active { transform: scale(.95); }
+    .hero-av-play-btn svg { color: #fff; display: block; }
+    .hero-av-play-btn .icon-pause { display: none; }
+    .hero-av-play-btn.playing .icon-play  { display: none; }
+    .hero-av-play-btn.playing .icon-pause { display: block; }
     .hero-av-sound { display: flex; align-items: center; gap: 3px; height: 26px; flex-shrink: 0; }
     .hero-av-bar {
       width: 3px; border-radius: 3px; transform-origin: bottom;
@@ -700,15 +713,18 @@
     .demo-url-wrap { margin-bottom: 1.4rem; }
     .demo-url-bar {
       display:flex; align-items:center;
+      min-width: 0;
+      max-width: 100%;
       background:rgba(255,255,255,.04); border:1px solid rgba(167,139,250,.25);
       border-radius:10px; overflow:hidden; transition:border-color .25s, box-shadow .25s;
     }
     .demo-url-bar:focus-within { border-color:var(--violet); box-shadow:0 0 0 3px rgba(167,139,250,.1); }
     .demo-url-icon { padding:0 12px; color:var(--muted); display:flex; align-items:center; flex-shrink:0; }
     .demo-url-input {
-      flex:1; background:transparent; border:none; outline:none;
+      flex:1; min-width: 0; background:transparent; border:none; outline:none;
       font-family:'Inter',sans-serif; font-size:.88rem; color:var(--text);
       padding:12px 8px 12px 0; caret-color:var(--violet);
+      overflow: hidden; text-overflow: ellipsis;
     }
     .demo-url-input::placeholder { color:rgba(124,143,168,.55); }
     .demo-url-btn {
@@ -733,10 +749,76 @@
     .demo-url-status {
       font-size:.74rem; margin-top:6px; min-height:18px;
       display:flex; align-items:center; gap:6px;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
     .demo-url-status.briefing { color:var(--violet); }
     .demo-url-status.ready    { color:#10b981; }
     .demo-url-status.error    { color:#f87171; }
+    @keyframes briefIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+    .demo-brief-card {
+      display: none;
+      margin-top: 14px;
+      border: 1px solid rgba(167,139,250,.22);
+      border-radius: 14px;
+      overflow: hidden;
+      background: linear-gradient(160deg, rgba(167,139,250,.08), rgba(255,255,255,.03));
+    }
+    .demo-brief-card.visible { display: block; animation: briefIn .3s ease; }
+    .demo-brief-top {
+      display: flex; align-items: center; gap: 12px;
+      padding: 14px 14px 12px;
+      border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+    .demo-brief-favicon {
+      width: 32px; height: 32px; border-radius: 8px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.1);
+      flex-shrink: 0; object-fit: contain;
+    }
+    .demo-brief-meta { flex: 1; min-width: 0; }
+    .demo-brief-name {
+      font-size: .82rem; font-weight: 700; color: #fff;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .demo-brief-domain {
+      font-size: .7rem; color: rgba(255,255,255,.45); margin-top: 1px;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .demo-brief-badge {
+      flex-shrink: 0; display: flex; align-items: center; gap: 5px;
+      font-size: .68rem; font-weight: 700; color: #34d399;
+      background: rgba(52,211,153,.1); border: 1px solid rgba(52,211,153,.22);
+      border-radius: 999px; padding: 4px 10px;
+    }
+    .demo-brief-badge svg { flex-shrink: 0; }
+    .demo-brief-desc {
+      padding: 11px 14px 12px;
+      font-size: .75rem; color: rgba(255,255,255,.55);
+      line-height: 1.6; margin: 0;
+      border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+    .demo-brief-chips {
+      display: flex; flex-wrap: wrap; gap: 7px;
+      padding: 10px 14px;
+      border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+    .demo-brief-chip {
+      display: flex; align-items: center; gap: 5px;
+      padding: 4px 10px; border-radius: 999px;
+      font-size: .69rem; font-weight: 600;
+      background: rgba(255,255,255,.055); border: 1px solid rgba(255,255,255,.1);
+      color: rgba(255,255,255,.72);
+    }
+    .demo-brief-chip svg { flex-shrink: 0; opacity: .65; }
+    .demo-brief-chips:empty { display: none; }
+    .demo-brief-footer {
+      padding: 9px 14px;
+      font-size: .7rem; color: rgba(167,139,250,.8);
+      display: flex; align-items: center; gap: 6px;
+    }
     .demo-hints { list-style:none;display:flex;flex-direction:column;gap:11px; }
     .demo-hints li { display:flex;align-items:flex-start;gap:10px;font-size:.85rem;color:var(--muted); }
     .demo-hints svg { color:var(--violet);flex-shrink:0;margin-top:2px; }
@@ -1534,14 +1616,87 @@
       .nav-hamburger { display:flex; }
     }
     @media (max-width: 600px) {
-      section { padding: 64px 0; }
-      .hero-in { padding-top: 16px; }
-      .hero-url-bar { flex-wrap:wrap; }
-      .hero-url-btn { width:100%; margin:5px; justify-content:center; }
+      section { padding: 56px 0; }
+      .hero { min-height: auto; padding-top: 74px; }
+      .hero-in { padding: 0 24px 34px; gap: 16px; }
+
+      /* ── Mobile hero order ── */
+      .hero-in { display: flex; flex-direction: column; }
+      .hero-copy { display: contents; }
+      .hero-pill {
+        order: 1;
+        margin: 0 auto .35rem;
+        max-width: 100%;
+        padding: 5px 12px;
+        font-size: .58rem;
+        letter-spacing: .13em;
+        white-space: nowrap;
+      }
+      .hero-h1 {
+        order: 2;
+        text-align: center;
+        margin-bottom: .15rem;
+        font-size: clamp(2rem, 8.5vw, 2.45rem);
+        line-height: 1.06;
+      }
+      .hero-right { order: 3; }
+      .hero-sub { order: 4; }
+      .hero-url-wrap { order: 5; width: 100%; }
+      .hero-actions { order: 6; }
+      .hero-checks { order: 7; }
+      .hero-rev-panel { display: none; }
+      .hero-av-wrap {
+        flex-direction: column; align-items: center; text-align: center;
+        width: min(100%, 260px);
+        margin: 0 auto;
+        padding: 20px 18px 18px;
+        gap: 9px;
+        background: radial-gradient(ellipse at 50% 0%, rgba(167,139,250,.14), transparent 70%),
+                    rgba(8,10,20,.8);
+        border-color: rgba(167,139,250,.25);
+        border-radius: 14px;
+      }
+      .hero-av-rings { width: 104px; height: 104px; }
+      .hero-av-info { flex: none; }
+      .hero-av-live { font-size: .56rem; margin-bottom: 3px; }
+      .hero-av-name { font-size: 1rem; margin-bottom: 1px; }
+      .hero-av-tagline { font-size: .68rem; max-width: 190px; margin: 0 auto; line-height: 1.35; }
+      .hero-av-play-btn { width: 34px; height: 34px; }
+      .hero-av-play-btn svg { width: 14px; height: 14px; }
+      .hero-av-sound { height: 20px; margin-top: 0; transform: scale(.86); }
+
+      /* ── Copy — center on mobile ── */
+      .hero-copy { text-align: center; }
+      .hero-sub {
+        max-width: 310px;
+        margin: .1rem auto .7rem;
+        font-size: .86rem;
+        line-height: 1.68;
+      }
+      .hero-setup-promise { justify-content: center; }
+      .hero-actions { justify-content: center; margin-bottom: 1rem; }
+      .hero-book-btn { min-width: unset; width: 100%; }
+      .hero-checks { justify-content: center; flex-wrap: wrap; gap: 8px; }
+      .hero-check { font-size: .75rem; }
+
+      /* ── URL bar ── */
+      .hero-url-wrap { margin-bottom: .9rem; }
+      .hero-url-label {
+        justify-content: center;
+        font-size: .6rem;
+        letter-spacing: .1em;
+        margin-bottom: .5rem;
+      }
+      .hero-url-bar { flex-wrap: wrap; }
+      .hero-url-input {
+        min-width: 0;
+        font-size: .8rem;
+        padding: 12px 0;
+      }
+      .hero-url-btn { width: 100%; margin: 4px 5px 5px; justify-content: center; }
+
+      /* ── Other sections ── */
       .hero-rev-card-wrap { min-height:185px; }
-      .hero-checks { flex-wrap:wrap; gap:10px; }
-      .hero-av-sound { display:none; }
-      .hero-av-wrap { padding:12px 14px; }
       .feat-grid { grid-template-columns:1fr; }
       .plans { grid-template-columns:1fr; }
       .problem { padding-top: 60px; }
@@ -1561,13 +1716,14 @@
       overflow: hidden;
     }
     .integrations-in { display: block; }
-    .integrations-copy { min-width: 0; max-width: 600px; margin: 0 auto; text-align: center; }
+    .integrations-copy { min-width: 0; max-width: 960px; margin: 0 auto; text-align: center; }
     .integrations-copy .sec-tag { justify-content: center; }
     .integrations-copy .sec-h2 { margin-bottom: 16px; }
     .integrations-copy p {
       color: var(--muted);
       line-height: 1.75;
-      margin-bottom: 32px;
+      max-width: 600px;
+      margin: 0 auto 32px;
     }
     /* ── Marquee ── */
     .int-marquee-outer {
@@ -1674,6 +1830,7 @@
     @media (max-width: 540px) {
       .integrations-copy { text-align: left; }
       .integrations-copy .sec-tag { justify-content: flex-start; }
+      .integrations-copy p { margin-left: 0; margin-right: 0; }
       .int-cats { grid-template-columns: 1fr; }
     }
 
@@ -1890,6 +2047,13 @@
           <div class="hero-av-name">Ellie</div>
           <div class="hero-av-tagline">Most human-like AI receptionist in the world</div>
         </div>
+        <button class="hero-av-play-btn" id="hero-av-play" aria-label="Play Ellie intro">
+          <svg class="icon-play"  width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          <svg class="icon-pause" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+        </button>
+        <audio id="hero-av-audio" preload="auto"
+          src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">
+        </audio>
         <div class="hero-av-sound">
           <div class="hero-av-bar" style="--d:0s;height:8px"></div>
           <div class="hero-av-bar" style="--d:.2s;height:16px"></div>
@@ -2179,6 +2343,25 @@
             </button>
           </div>
           <div class="demo-url-status" id="demo-url-status"></div>
+          <div class="demo-brief-card" id="demo-brief-card" aria-live="polite">
+            <div class="demo-brief-top">
+              <img class="demo-brief-favicon" id="demo-brief-favicon" src="" alt="">
+              <div class="demo-brief-meta">
+                <div class="demo-brief-name" id="demo-brief-name"></div>
+                <div class="demo-brief-domain" id="demo-brief-domain"></div>
+              </div>
+              <div class="demo-brief-badge">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                Briefed
+              </div>
+            </div>
+            <p class="demo-brief-desc" id="demo-brief-line"></p>
+            <div class="demo-brief-chips" id="demo-brief-chips"></div>
+            <div class="demo-brief-footer">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              Ellie will answer calls as this business's receptionist
+            </div>
+          </div>
         </div>
 
         <ul class="demo-hints">

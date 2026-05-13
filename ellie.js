@@ -45,6 +45,33 @@
   );
   document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
 
+  // ── Hero avatar intro audio ───────────────────────────────
+  const heroPlayBtn   = document.getElementById('hero-av-play');
+  const heroAudio     = document.getElementById('hero-av-audio');
+  const heroAvTalk    = document.querySelector('.hero-av-img-talk');
+  const heroAvSound   = document.querySelector('.hero-av-sound');
+
+  if (heroPlayBtn && heroAudio) {
+    heroPlayBtn.addEventListener('click', () => {
+      if (heroAudio.paused) {
+        heroAudio.play();
+        heroPlayBtn.classList.add('playing');
+        if (heroAvTalk)  heroAvTalk.style.opacity  = '0.85';
+        if (heroAvSound) heroAvSound.classList.add('active');
+      } else {
+        heroAudio.pause();
+        heroPlayBtn.classList.remove('playing');
+        if (heroAvTalk)  heroAvTalk.style.opacity  = '0';
+        if (heroAvSound) heroAvSound.classList.remove('active');
+      }
+    });
+    heroAudio.addEventListener('ended', () => {
+      heroPlayBtn.classList.remove('playing');
+      if (heroAvTalk)  heroAvTalk.style.opacity  = '0';
+      if (heroAvSound) heroAvSound.classList.remove('active');
+    });
+  }
+
   // ── Clock in phone status bar ─────────────────────────────
   function updateClock() {
     const el = document.getElementById('phone-time');
@@ -74,6 +101,12 @@
   const demoContactName  = document.getElementById('demo-contact-name');
   const demoContactLabel = document.getElementById('demo-contact-label');
   const demoPhoneNote    = document.getElementById('demo-phone-note');
+  const demoBriefCard    = document.getElementById('demo-brief-card');
+  const demoBriefDomain  = document.getElementById('demo-brief-domain');
+  const demoBriefName    = document.getElementById('demo-brief-name');
+  const demoBriefFavicon = document.getElementById('demo-brief-favicon');
+  const demoBriefLine    = document.getElementById('demo-brief-line');
+  const demoBriefChips   = document.getElementById('demo-brief-chips');
 
   let briefedUrl = null;
 
@@ -89,16 +122,70 @@
     demoBizBtn.disabled = loading;
   }
 
+  function getCompanyDomain(raw) {
+    return extractDomain(raw || '').split('/')[0].split('?')[0].split('#')[0];
+  }
+
+  function setDemoBriefing(visible, details = {}) {
+    if (!demoBriefCard) return;
+    demoBriefCard.classList.toggle('visible', visible);
+    if (!visible) return;
+
+    const domain = getCompanyDomain(details.url || '');
+    const name = (details.name || domain || 'this business').replace(/\s+/g, ' ').trim();
+    const description = (details.description || '').replace(/\s+/g, ' ').trim();
+
+    if (demoBriefName)   demoBriefName.textContent   = name;
+    if (demoBriefDomain) demoBriefDomain.textContent = domain;
+
+    if (demoBriefFavicon && domain) {
+      demoBriefFavicon.style.display = '';
+      demoBriefFavicon.src = `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
+      demoBriefFavicon.alt = name;
+      demoBriefFavicon.onerror = () => { demoBriefFavicon.style.display = 'none'; };
+    }
+
+    if (demoBriefLine) {
+      demoBriefLine.textContent = description
+        ? `${description.slice(0, 200)}${description.length > 200 ? '…' : ''}`
+        : `Ellie will greet callers using the business name and website as context for handling enquiries.`;
+    }
+
+    if (demoBriefChips) {
+      demoBriefChips.innerHTML = '';
+      const chips = [
+        details.phone    && { icon: '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>', label: details.phone },
+        details.location && { icon: '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>', label: details.location },
+        details.bizType  && { icon: '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>', label: details.bizType },
+      ].filter(Boolean);
+
+      chips.forEach(({ icon, label }) => {
+        const chip = document.createElement('div');
+        chip.className = 'demo-brief-chip';
+        chip.innerHTML = `${icon}<span>${label}</span>`;
+        demoBriefChips.appendChild(chip);
+      });
+    }
+  }
+
   async function briefEllie() {
     const val = demoBizUrlInput ? demoBizUrlInput.value.trim() : '';
     if (!val) {
       setDemoUrlStatus('', '');
+      setDemoBriefing(false);
       briefedUrl = null;
       if (demoContactName)  demoContactName.textContent  = 'Ellie AI Receptionist';
       if (demoContactLabel) demoContactLabel.textContent = 'Your AI receptionist demo';
       if (demoPhoneNote)    demoPhoneNote.textContent    = 'Enter your website above — Ellie will demo as your receptionist';
       return;
     }
+
+    const domain = getCompanyDomain(val);
+    briefedUrl = val;
+    if (demoContactName)  demoContactName.textContent  = domain;
+    if (demoContactLabel) demoContactLabel.textContent = 'Ellie · AI Receptionist';
+    if (demoPhoneNote)    demoPhoneNote.textContent    = 'Ellie is being briefed on ' + domain;
+    setDemoBriefing(true, { url: val, name: domain });
 
     setBtnLoading(true);
     setDemoUrlStatus('briefing', 'Reading your website…');
@@ -109,25 +196,50 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ businessWebsite: val }),
       });
+      if (!res.ok) throw new Error('Could not read website');
       const data = await res.json();
-      const name = data.businessName || val;
+      const name = data.businessName || getCompanyDomain(val);
       briefedUrl = val;
       if (demoContactName)  demoContactName.textContent  = name;
       if (demoContactLabel) demoContactLabel.textContent = 'Ellie · AI Receptionist';
       if (demoPhoneNote)    demoPhoneNote.textContent    = 'Ellie is briefed on ' + name;
+      setDemoBriefing(true, {
+        url:         val,
+        name,
+        description: data.businessDescription,
+        phone:       data.businessPhone,
+        location:    data.businessLocation,
+        bizType:     data.businessType,
+      });
       setDemoUrlStatus('ready', '✓ Ellie is ready as ' + name);
     } catch (_) {
-      briefedUrl = null;
-      setDemoUrlStatus('error', 'Could not read website — Ellie will demo as herself');
+      briefedUrl = val;
+      setDemoBriefing(true, { url: val, name: getCompanyDomain(val) });
+      setDemoUrlStatus('ready', 'Using website address as company context');
     } finally {
       setBtnLoading(false);
     }
   }
 
   if (demoBizBtn)     demoBizBtn.addEventListener('click', briefEllie);
-  if (demoBizUrlInput) demoBizUrlInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') briefEllie();
-  });
+  if (demoBizUrlInput) {
+    demoBizUrlInput.addEventListener('input', () => {
+      const val = demoBizUrlInput.value.trim();
+      if (!val && briefedUrl) {
+        setDemoUrlStatus('', '');
+        setDemoBriefing(false);
+        briefedUrl = null;
+        if (demoContactName)  demoContactName.textContent  = 'Ellie AI Receptionist';
+        if (demoContactLabel) demoContactLabel.textContent = 'Your AI receptionist demo';
+        if (demoPhoneNote)    demoPhoneNote.textContent    = 'Enter your website above — Ellie will demo as your receptionist';
+      }
+    });
+    demoBizUrlInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        briefEllie();
+      }
+    });
+  }
 
   const callBtn    = document.getElementById('demo-call-btn');
   const endBtn     = document.getElementById('demo-end-btn');
@@ -239,11 +351,15 @@
     setStatus('Connecting…', false);
 
     try {
+      const enteredUrl = demoBizUrlInput ? demoBizUrlInput.value.trim() : '';
+      const websiteForCall = enteredUrl || briefedUrl || null;
+
       const cfgRes = await fetch('/.netlify/functions/demo-vapi-config', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ businessWebsite: briefedUrl || null }),
+        body: JSON.stringify({ businessWebsite: websiteForCall }),
       });
+      if (!cfgRes.ok) throw new Error('Could not prepare company context');
       const { publicKey, assistantId, assistantOverrides } = await cfgRes.json();
 
       const VapiClass = (typeof Vapi === 'function') ? Vapi : Vapi.default;
@@ -427,7 +543,13 @@
       { l1: 'Your business answers',   l2: 'every single call.'             },
     ];
 
-    let idx = 0;
+    const mobileStartIndex = HEADLINES.findIndex(h => h.l1 === '24/7 availability,');
+    let idx = window.matchMedia('(max-width: 600px)').matches && mobileStartIndex >= 0
+      ? mobileStartIndex
+      : 0;
+
+    line1.textContent = HEADLINES[idx].l1;
+    line2.textContent = HEADLINES[idx].l2;
 
     setInterval(() => {
       idx = (idx + 1) % HEADLINES.length;
@@ -446,7 +568,7 @@
     }, 4000);
   })();
 
-  // ── Hero URL bar → Try Live ────────────────────────────────
+  // ── Hero URL bar → visible demo ───────────────────────────
   const heroBizUrl   = document.getElementById('hero-biz-url');
   const heroUrlBtn   = document.getElementById('hero-url-btn');
   const heroDomBadge = document.getElementById('hero-domain-badge');
@@ -460,11 +582,16 @@
   }
 
   function applyHeroUrl(raw) {
-    if (!raw) return;
+    if (!raw) {
+      if (demoBizUrlInput) demoBizUrlInput.focus();
+      return;
+    }
     const domain = extractDomain(raw);
     if (heroDomText) heroDomText.textContent = domain;
     if (heroDomBadge) heroDomBadge.classList.add('visible');
-    // Pre-fill Try Live website field
+
+    // Pre-fill the visible demo and the disabled live-call section if it is re-enabled later.
+    if (demoBizUrlInput) demoBizUrlInput.value = raw;
     const liveUrl = document.getElementById('live-website-url');
     if (liveUrl) liveUrl.value = raw;
     applyLiveBriefing(raw);
@@ -482,7 +609,8 @@
     heroUrlBtn.addEventListener('click', () => {
       const url = heroBizUrl ? heroBizUrl.value.trim() : '';
       applyHeroUrl(url);
-      const target = document.getElementById('try-live');
+      if (url && demoBizUrlInput) briefEllie();
+      const target = document.getElementById('demo');
       if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
   }

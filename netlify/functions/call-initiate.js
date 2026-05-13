@@ -35,6 +35,12 @@ exports.handler = async (event) => {
       : `https://${businessWebsite.trim()}`;
 
     let businessContext = `The business website provided is: ${siteUrl}.`;
+    let businessName;
+    try {
+      businessName = new URL(siteUrl).hostname.replace(/^www\./i, '');
+    } catch {
+      businessName = String(businessWebsite).replace(/^https?:\/\//i, '').replace(/^www\./i, '').split('/')[0].split('?')[0];
+    }
 
     try {
       const siteRes = await fetch(siteUrl, {
@@ -71,7 +77,10 @@ exports.handler = async (event) => {
         ]);
 
         const parts = [];
-        if (title) parts.push(`Business name / brand: "${title}"`);
+        if (title) {
+          businessName = title;
+          parts.push(`Business name / brand: "${title}"`);
+        }
         if (desc)  parts.push(`About the business: ${desc}`);
         if (phone_raw) parts.push(`Business phone found on site: ${phone_raw}`);
         parts.push(`Website: ${siteUrl}`);
@@ -83,16 +92,19 @@ exports.handler = async (event) => {
     }
 
     assistantOverrides = {
+      firstMessage: `Thanks for calling ${businessName}, this is Ellie. How can I help?`,
       model: {
         messages: [
           {
             role: 'system',
             content:
-              `IMPORTANT CONTEXT FOR THIS CALL: You are acting as the receptionist for a specific business. ` +
-              `${businessContext} ` +
-              `Greet the caller warmly, answer questions about this business as best you can based on the information above, ` +
-              `and handle bookings or inquiries as their professional receptionist. ` +
-              `If asked something you don't know, say you'll pass the message on to the team.`,
+              `You are Ellie, the front-desk receptionist for this specific business. ${businessContext} ` +
+              `Critical behaviour: act as this business's receptionist, not as a generic Ellie demo. ` +
+              `Open with "Thanks for calling ${businessName}, this is Ellie. How can I help?" ` +
+              `Answer only from the business context and the caller's words. ` +
+              `If the caller asks about services, bookings, pricing, hours or location and the context does not contain the exact answer, take their details and offer to pass the message to the team. ` +
+              `Collect the caller's name, phone number, reason for calling, and preferred time when handling a booking or enquiry. ` +
+              `Use natural, concise Australian English.`,
           },
         ],
       },
