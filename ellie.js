@@ -46,29 +46,37 @@
   document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
 
   // ── Hero avatar intro audio ───────────────────────────────
-  const heroPlayBtn   = document.getElementById('hero-av-play');
-  const heroAudio     = document.getElementById('hero-av-audio');
-  const heroAvTalk    = document.querySelector('.hero-av-img-talk');
-  const heroAvSound   = document.querySelector('.hero-av-sound');
+  const heroPlayBtn       = document.getElementById('hero-av-play');
+  const heroBubblePlayBtn = document.getElementById('hero-av-play-bubble');
+  const heroAudio         = document.getElementById('hero-av-audio');
+  const heroAvTalk        = document.querySelector('.hero-av-img-talk');
+  const heroAvSound       = document.querySelector('.hero-av-sound');
 
-  if (heroPlayBtn && heroAudio) {
-    heroPlayBtn.addEventListener('click', () => {
-      if (heroAudio.paused) {
-        heroAudio.play();
-        heroPlayBtn.classList.add('playing');
-        if (heroAvTalk)  heroAvTalk.style.opacity  = '0.85';
-        if (heroAvSound) heroAvSound.classList.add('active');
-      } else {
-        heroAudio.pause();
-        heroPlayBtn.classList.remove('playing');
-        if (heroAvTalk)  heroAvTalk.style.opacity  = '0';
-        if (heroAvSound) heroAvSound.classList.remove('active');
-      }
-    });
+  function toggleHeroAudio() {
+    if (!heroAudio) return;
+    if (heroAudio.paused) {
+      heroAudio.play();
+      if (heroPlayBtn)       heroPlayBtn.classList.add('playing');
+      if (heroBubblePlayBtn) heroBubblePlayBtn.classList.add('playing');
+      if (heroAvTalk)        heroAvTalk.style.opacity  = '0.85';
+      if (heroAvSound)       heroAvSound.classList.add('active');
+    } else {
+      heroAudio.pause();
+      if (heroPlayBtn)       heroPlayBtn.classList.remove('playing');
+      if (heroBubblePlayBtn) heroBubblePlayBtn.classList.remove('playing');
+      if (heroAvTalk)        heroAvTalk.style.opacity  = '0';
+      if (heroAvSound)       heroAvSound.classList.remove('active');
+    }
+  }
+
+  if (heroAudio) {
+    if (heroPlayBtn)       heroPlayBtn.addEventListener('click', toggleHeroAudio);
+    if (heroBubblePlayBtn) heroBubblePlayBtn.addEventListener('click', toggleHeroAudio);
     heroAudio.addEventListener('ended', () => {
-      heroPlayBtn.classList.remove('playing');
-      if (heroAvTalk)  heroAvTalk.style.opacity  = '0';
-      if (heroAvSound) heroAvSound.classList.remove('active');
+      if (heroPlayBtn)       heroPlayBtn.classList.remove('playing');
+      if (heroBubblePlayBtn) heroBubblePlayBtn.classList.remove('playing');
+      if (heroAvTalk)        heroAvTalk.style.opacity  = '0';
+      if (heroAvSound)       heroAvSound.classList.remove('active');
     });
   }
 
@@ -1077,6 +1085,23 @@
       }, delay);
     }
     scheduleTalk();
+  }
+
+  // ── Pricing tabs (mobile) ──────────────────────────────────
+  const pricingTabs  = document.querySelectorAll('.pricing-tab');
+  const pricingPlans = document.querySelectorAll('.plan');
+
+  function activatePricingTab(index) {
+    pricingTabs.forEach(t => t.classList.remove('active'));
+    pricingPlans.forEach(p => p.classList.remove('plan-active'));
+    if (pricingTabs[index])  pricingTabs[index].classList.add('active');
+    if (pricingPlans[index]) pricingPlans[index].classList.add('plan-active');
+  }
+
+  pricingTabs.forEach((tab, i) => tab.addEventListener('click', () => activatePricingTab(i)));
+
+  if (window.innerWidth <= 600 && pricingTabs.length) {
+    activatePricingTab(1); // default to "Core" (Most Popular)
   }
 
 })();
