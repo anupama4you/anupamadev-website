@@ -207,23 +207,59 @@
   })();
 
 
-  // ── 2. Custom Cursor Glow ─────────────────────────────────
-  (function initCursorGlow() {
-    if (window.matchMedia('(pointer: coarse)').matches) return; // skip touch devices
+  // ── 2. Custom Cursor (dot + lagging ring) + ambient glow ────
+  (function initCursor() {
+    if (window.matchMedia('(pointer: coarse)').matches) return;
+
+    /* Ambient glow (pre-existing) */
     const glow = document.createElement('div');
     glow.className = 'cursor-glow';
     document.body.appendChild(glow);
 
-    let tx = 0, ty = 0, cx = 0, cy = 0;
-    document.addEventListener('mousemove', e => { tx = e.clientX; ty = e.clientY; }, { passive: true });
-
-    function animGlow() {
-      cx += (tx - cx) * 0.1;
-      cy += (ty - cy) * 0.1;
-      glow.style.transform = `translate(${cx - 300}px, ${cy - 300}px)`;
-      requestAnimationFrame(animGlow);
+    /* Precise cursor elements — inject if not already in HTML */
+    let dot  = document.getElementById('cursor-dot');
+    let ring = document.getElementById('cursor-ring');
+    if (!dot) {
+      dot  = document.createElement('div');  dot.id  = 'cursor-dot';  dot.className  = 'cursor-dot';
+      ring = document.createElement('div');  ring.id = 'cursor-ring'; ring.className = 'cursor-ring';
+      document.body.prepend(ring);
+      document.body.prepend(dot);
     }
-    animGlow();
+
+    let mx = -200, my = -200;
+    let rx = -200, ry = -200;
+    let gx = 0, gy = 0;
+    const lerp = (a, b, t) => a + (b - a) * t;
+
+    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; }, { passive: true });
+
+    const hovers = 'a, button, [role="button"], input, textarea, select, label';
+    document.addEventListener('mouseover', e => {
+      if (e.target.closest(hovers)) {
+        dot.classList.add('cursor-dot--hover');
+        ring.classList.add('cursor-ring--hover');
+      }
+    });
+    document.addEventListener('mouseout', e => {
+      if (e.target.closest(hovers)) {
+        dot.classList.remove('cursor-dot--hover');
+        ring.classList.remove('cursor-ring--hover');
+      }
+    });
+    document.addEventListener('mousedown', () => ring.classList.add('cursor-ring--click'));
+    document.addEventListener('mouseup',   () => ring.classList.remove('cursor-ring--click'));
+
+    function animCursor() {
+      dot.style.transform  = `translate(${mx}px, ${my}px)`;
+      rx = lerp(rx, mx, 0.12);
+      ry = lerp(ry, my, 0.12);
+      ring.style.transform = `translate(${rx}px, ${ry}px)`;
+      gx += (mx - gx) * 0.1;
+      gy += (my - gy) * 0.1;
+      glow.style.transform = `translate(${gx - 300}px, ${gy - 300}px)`;
+      requestAnimationFrame(animCursor);
+    }
+    animCursor();
   })();
 
 
@@ -385,18 +421,27 @@
     `).join('');
   })();
 
-  // ── Render: Tech stack ────────────────────────────────────
+  // ── Render: Tech stack (card grid) ───────────────────────
   (function renderTechStack() {
     const container = document.getElementById('tech-groups');
     if (!container || !window.SITE_DATA) return;
-    container.innerHTML = SITE_DATA.techStack.map(g => `
-      <div class="tech__group">
-        <h4 class="tech__group-label">${g.label}</h4>
-        <div class="tech__pills">
-          ${g.pills.map(p => `<span>${p}</span>`).join('')}
-        </div>
-      </div>
-    `).join('');
+
+    const COLORS = ['violet', 'cyan', 'indigo', 'blue', 'green', 'purple'];
+
+    container.innerHTML = SITE_DATA.techStack.map((g, i) => {
+      const color = COLORS[i % COLORS.length];
+      const pills = g.pills.map((p, j) =>
+        `<span class="tg-pill" style="--pi:${j}">${p}</span>`
+      ).join('');
+      return `
+        <div class="tg-card tg-card--${color} reveal" style="--ci:${i}">
+          <div class="tg-card__head">
+            <span class="tg-card__dot"></span>
+            <h4 class="tg-card__label">${g.label}</h4>
+          </div>
+          <div class="tg-card__pills">${pills}</div>
+        </div>`;
+    }).join('');
   })();
 
   // Wire up observers now that all dynamic content is in the DOM

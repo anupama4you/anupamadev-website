@@ -7,7 +7,7 @@
   <title>anupama.dev — AI & Software Solutions for Business</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="stylesheet" href="style.css">
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
@@ -64,35 +64,41 @@
       <div class="hero__grid"></div>
     </div>
     <div class="hero__container">
-      <div class="hero__badge">
-        <span class="hero__badge-dot"></span>
-        Available for New Projects
-      </div>
-      <h1 class="hero__headline">
-        <span class="hero__line1">AI-Powered Software</span>
-        <span class="hero__headline-gradient hero__line2">Built for Business</span>
-      </h1>
-      <p class="hero__sub">
-        We engineer scalable web platforms, intelligent automation, and cloud-native
-        solutions that give your business a measurable edge.
-      </p>
-      <div class="hero__actions">
-        <a href="#contact" class="btn btn--primary">
-          Start a Project
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
-        </a>
-        <a href="#work" class="btn btn--ghost">View Our Work</a>
-      </div>
-      <div class="hero__trusted">
-        <span class="hero__trusted-label">Trusted by teams at</span>
-        <div class="hero__trusted-logos">
-          <span>Govt. of SA</span><span class="sep">·</span>
-          <span>Savvy Finance</span><span class="sep">·</span>
-          <span>IFS Global</span><span class="sep">·</span>
-          <span>Devest</span>
+      <div class="hero__text">
+        <div class="hero__badge">
+          <span class="hero__badge-dot"></span>
+          Available for New Projects
         </div>
-      </div>
-    </div>
+        <h1 class="hero__headline">
+          <span class="hero__line1">AI-Powered Software</span>
+          <span class="hero__headline-gradient hero__line2">Built for Business</span>
+        </h1>
+        <p class="hero__sub">
+          We engineer scalable web platforms, intelligent automation, and cloud-native
+          solutions that give your business a measurable edge.
+        </p>
+        <div class="hero__actions">
+          <a href="#contact" class="btn btn--primary">
+            Start a Project
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
+          </a>
+          <a href="#work" class="btn btn--ghost">View Our Work</a>
+        </div>
+        <div class="hero__trusted">
+          <span class="hero__trusted-label">Trusted by teams at</span>
+          <div class="hero__trusted-logos">
+            <span>Govt. of SA</span><span class="sep">·</span>
+            <span>Savvy Finance</span><span class="sep">·</span>
+            <span>IFS Global</span><span class="sep">·</span>
+            <span>Devest</span>
+          </div>
+        </div>
+      </div><!-- /hero__text -->
+
+      <div class="hero__visual" aria-hidden="true">
+        <canvas id="constellation-canvas" class="constellation-canvas"></canvas>
+      </div><!-- /hero__visual -->
+    </div><!-- /hero__container -->
     <div class="hero__scroll">
       <div class="hero__scroll-line"></div>
     </div>
@@ -281,54 +287,35 @@
   </section>
 
   <!-- ==================== TECH STACK ==================== -->
-  <section class="tech">
+  <section class="tech" id="stack">
     <div class="tech__container">
-      <div class="section-tag tech__tag">Technology Stack</div>
-      <div class="tech__groups" id="tech-groups"></div>
+      <div class="tech__hd reveal">
+        <div class="section-tag">Technology Stack</div>
+        <h2 class="section-title">Languages, frameworks &amp; platforms</h2>
+        <p class="section-sub">A full-spectrum toolkit built across 6+ years of production projects — from frontend to cloud infrastructure, AI to mobile.</p>
+      </div>
+      <div class="tech__grid" id="tech-groups"></div>
     </div>
   </section>
 
-  <!-- ==================== ELLIE PROMO ==================== -->
-  <section class="nova-promo" id="ai-products">
-    <div class="nova-promo__container reveal">
-      <div class="nova-promo__copy">
-        <div class="nova-promo__badge">
-          <span class="nova-promo__dot" style="background:#a78bfa"></span>
-          AI Receptionist
+  <!-- ==================== BLOG PREVIEW ==================== -->
+  <section id="blog" class="blog-preview">
+    <div class="blog-preview__container">
+      <div class="blog-preview__hd">
+        <div>
+          <div class="section-tag">From the blog</div>
+          <h2 class="section-title">Latest thinking</h2>
         </div>
-        <h2 class="nova-promo__headline">Never miss a customer call again.</h2>
-        <p class="nova-promo__sub">Ellie is your AI receptionist — she answers every call within 2 rings, books appointments, and sends SMS confirmations automatically. 24/7, while you focus on your work.</p>
-        <div class="nova-promo__actions">
-          <a href="ellie.html" class="btn btn--ellie">
-            Meet Ellie
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
-          </a>
-          <a href="ellie.html#demo" class="btn btn--ghost">See the Demo</a>
-        </div>
+        <a href="blog.html" class="btn btn--outline blog-preview__all">
+          All posts
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
+        </a>
       </div>
-      <div class="nova-promo__visual" aria-hidden="true">
-        <div class="nova-promo__card" style="border-color:rgba(167,139,250,.25);box-shadow:0 16px 48px rgba(0,0,0,.3),0 0 40px rgba(167,139,250,.08)">
-          <div class="nova-promo__card-row nova-promo__card-row--header" style="color:#a78bfa">
-            <span class="nova-promo__dot" style="background:#a78bfa;animation:badgePulse 2.4s ease-in-out infinite"></span>
-            Ellie is active
-          </div>
-          <div class="nova-promo__card-row" style="--check-color:#a78bfa">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-            <span><strong>Sarah M.</strong> — Haircut booked · Sat 9:30 AM</span>
-          </div>
-          <div class="nova-promo__card-row">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-            <span><strong>Mia T.</strong> — Colour treatment · Sat 2:00 PM</span>
-          </div>
-          <div class="nova-promo__card-row">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-            <span><strong>James K.</strong> — Consultation · Mon 11:00 AM</span>
-          </div>
-          <div class="nova-promo__card-stat">
-            <span><strong>0</strong> missed calls today</span>
-            <span class="nova-promo__card-badge" style="color:#a78bfa;background:rgba(167,139,250,.1);border-color:rgba(167,139,250,.2)">24/7</span>
-          </div>
-        </div>
+      <div class="blog-preview__grid" id="blog-preview-grid">
+        <!-- skeleton -->
+        <div class="bp-skeleton bp-skeleton--featured"></div>
+        <div class="bp-skeleton"></div>
+        <div class="bp-skeleton"></div>
       </div>
     </div>
   </section>
@@ -586,5 +573,214 @@
   <script src="data.js"></script>
   <script src="script.js"></script>
   <script src="chat-widget.js"></script>
+
+  <script>
+  (function () {
+    function fmtDate(iso) {
+      if (!iso) return '';
+      return new Date(iso).toLocaleDateString('en-AU', { year: 'numeric', month: 'short', day: 'numeric' });
+    }
+
+    function bpCard(post, featured) {
+      const cover = post.cover
+        ? `<div class="bp-card__img-wrap"><img src="${post.cover}" alt="${post.title}" loading="lazy" class="bp-card__img"></div>`
+        : `<div class="bp-card__img-wrap bp-card__img-wrap--placeholder"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></svg></div>`;
+
+      const tags = (post.tags || []).slice(0, 2).map(t =>
+        `<span class="bp-card__tag">${t}</span>`
+      ).join('');
+
+      return `
+        <a class="bp-card${featured ? ' bp-card--featured' : ''} reveal" href="post.html?slug=${encodeURIComponent(post.slug)}">
+          ${cover}
+          <div class="bp-card__body">
+            <div class="bp-card__meta">
+              <span class="bp-card__date">${fmtDate(post.date)}</span>
+              ${tags ? `<div class="bp-card__tags">${tags}</div>` : ''}
+            </div>
+            <h3 class="bp-card__title">${post.title}</h3>
+            ${featured && post.excerpt ? `<p class="bp-card__excerpt">${post.excerpt.replace(/^"|"$/g, '').trim().slice(0, 160)}…</p>` : ''}
+            <span class="bp-card__read">
+              Read article
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
+            </span>
+          </div>
+        </a>`;
+    }
+
+    const grid = document.getElementById('blog-preview-grid');
+    if (!grid) return;
+
+    fetch('/posts/index.json')
+      .then(r => r.json())
+      .then(posts => {
+        const sorted = posts.sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 3);
+        if (!sorted.length) { grid.innerHTML = ''; return; }
+        grid.innerHTML = sorted.map((p, i) => bpCard(p, i === 0)).join('');
+        const obs = new IntersectionObserver(
+          entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } }),
+          { threshold: 0.08, rootMargin: '0px 0px -32px 0px' }
+        );
+        grid.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+      })
+      .catch(() => { grid.innerHTML = ''; });
+  })();
+  </script>
+
+  <!-- ── Constellation canvas ── -->
+  <script>
+  (function () {
+    /* Constellation canvas in hero__visual */
+    const canvas = document.getElementById('constellation-canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+
+    const isDark = () => !document.documentElement.dataset.theme || document.documentElement.dataset.theme !== 'light';
+
+    const COLORS = ['#818cf8', '#a78bfa', '#22d3ee', '#6366f1', '#c084fc'];
+    const CONNECT_DIST = 130;
+    const MOUSE_ATTRACT = 160;
+    const NODE_COUNT = 65;
+    let W, H, nodes, mouse = { x: -999, y: -999 };
+
+    function resize() {
+      const rect = canvas.parentElement.getBoundingClientRect();
+      W = canvas.width  = rect.width  || 460;
+      H = canvas.height = rect.height || 520;
+      // reposition any nodes that escaped bounds
+      if (nodes) nodes.forEach(n => {
+        n.x = Math.min(n.x, W);
+        n.y = Math.min(n.y, H);
+      });
+    }
+
+    function makeNode() {
+      const angle = Math.random() * Math.PI * 2;
+      const speed = 0.18 + Math.random() * 0.22;
+      return {
+        x:    Math.random() * (W || 460),
+        y:    Math.random() * (H || 520),
+        vx:   Math.cos(angle) * speed,
+        vy:   Math.sin(angle) * speed,
+        r:    1.5 + Math.random() * 2,
+        col:  COLORS[Math.floor(Math.random() * COLORS.length)],
+        pulse: Math.random() * Math.PI * 2,
+      };
+    }
+
+    function init() {
+      resize();
+      nodes = Array.from({ length: NODE_COUNT }, makeNode);
+    }
+
+    /* Track mouse relative to canvas */
+    canvas.addEventListener('mousemove', e => {
+      const r = canvas.getBoundingClientRect();
+      mouse.x = e.clientX - r.left;
+      mouse.y = e.clientY - r.top;
+    });
+    canvas.addEventListener('mouseleave', () => { mouse.x = -999; mouse.y = -999; });
+
+    /* Also track when mouse moves over the whole hero section */
+    const heroEl = document.getElementById('home');
+    if (heroEl) {
+      heroEl.addEventListener('mousemove', e => {
+        const r = canvas.getBoundingClientRect();
+        mouse.x = e.clientX - r.left;
+        mouse.y = e.clientY - r.top;
+      });
+      heroEl.addEventListener('mouseleave', () => { mouse.x = -999; mouse.y = -999; });
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+
+      const dark = isDark();
+      nodes.forEach(n => {
+        /* Drift */
+        n.x += n.vx;
+        n.y += n.vy;
+        n.pulse += 0.025;
+
+        /* Bounce */
+        if (n.x < 0 || n.x > W) n.vx *= -1;
+        if (n.y < 0 || n.y > H) n.vy *= -1;
+        n.x = Math.max(0, Math.min(W, n.x));
+        n.y = Math.max(0, Math.min(H, n.y));
+
+        /* Mouse attraction */
+        const dx = mouse.x - n.x;
+        const dy = mouse.y - n.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < MOUSE_ATTRACT && dist > 1) {
+          const force = (1 - dist / MOUSE_ATTRACT) * 0.04;
+          n.vx += dx / dist * force;
+          n.vy += dy / dist * force;
+          /* cap speed */
+          const spd = Math.sqrt(n.vx * n.vx + n.vy * n.vy);
+          if (spd > 1.2) { n.vx = n.vx / spd * 1.2; n.vy = n.vy / spd * 1.2; }
+        }
+      });
+
+      /* Draw connections */
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          const a = nodes[i], b = nodes[j];
+          const dx = a.x - b.x, dy = a.y - b.y;
+          const d  = Math.sqrt(dx * dx + dy * dy);
+          if (d < CONNECT_DIST) {
+            const alpha = (1 - d / CONNECT_DIST) * (dark ? 0.35 : 0.18);
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.strokeStyle = dark
+              ? `rgba(129,140,248,${alpha})`
+              : `rgba(99,102,241,${alpha})`;
+            ctx.lineWidth = 0.8;
+            ctx.stroke();
+          }
+        }
+      }
+
+      /* Draw nodes */
+      nodes.forEach(n => {
+        const glow = 0.7 + Math.sin(n.pulse) * 0.3;
+        const r = n.r * glow;
+
+        /* outer soft glow */
+        const grad = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, r * 5);
+        grad.addColorStop(0,   n.col + (dark ? '55' : '33'));
+        grad.addColorStop(1,   'transparent');
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, r * 5, 0, Math.PI * 2);
+        ctx.fillStyle = grad;
+        ctx.fill();
+
+        /* core dot */
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, r, 0, Math.PI * 2);
+        ctx.fillStyle = n.col + (dark ? 'cc' : '99');
+        ctx.fill();
+      });
+
+      /* Mouse repel burst — draw glow at cursor position */
+      if (mouse.x > 0 && mouse.x < W) {
+        const mg = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, 80);
+        mg.addColorStop(0,   dark ? 'rgba(167,139,250,0.12)' : 'rgba(99,102,241,0.08)');
+        mg.addColorStop(1,   'transparent');
+        ctx.beginPath();
+        ctx.arc(mouse.x, mouse.y, 80, 0, Math.PI * 2);
+        ctx.fillStyle = mg;
+        ctx.fill();
+      }
+
+      requestAnimationFrame(draw);
+    }
+
+    init();
+    draw();
+    window.addEventListener('resize', resize);
+  })();
+  </script>
 </body>
 </html>

@@ -115,6 +115,28 @@ window.SITE_DATA = {
       link:       'https://devest.co',
       linkLabel:  'View Live',
     },
+    {
+      imageClass: 'project-card__image--ytdrop',
+      imageSrc:   'assets/blog-images/chatgpt-image-may-2-2026-02_37_41-am.png',
+      imageAlt:   'YTDrop YouTube downloader screenshot',
+      tags:       ['Node.js', 'yt-dlp', 'Self-hosted'],
+      category:   'Developer Tool · Live',
+      title:      'YTDrop — Clean YouTube Downloader',
+      desc:       'Ad-free, sign-up-free YouTube video and audio downloader. No sketchy redirects, no pop-ups — just paste a URL and download. Built for speed and simplicity.',
+      link:       '#',
+      linkLabel:  'View Project',
+    },
+    {
+      imageClass: 'project-card__image--ellie',
+      imageSrc:   'assets/ellie/dashboard.png',
+      imageAlt:   'Ellie AI Receptionist dashboard',
+      tags:       ['VAPI', 'GPT-4o', 'Netlify'],
+      category:   'AI Product · Live',
+      title:      'Ellie — AI Receptionist for Small Business',
+      desc:       'AI-powered phone receptionist that answers every call 24/7, books appointments, and sends SMS confirmations. Personalises to any business via live website scraping.',
+      link:       'ellie.html',
+      linkLabel:  'Meet Ellie',
+    },
   ],
 
   // ── Contact form ──────────────────────────────────────────

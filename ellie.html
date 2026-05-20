@@ -1603,6 +1603,92 @@
     }
     .cta-img-caption { font-size:.8rem;color:rgba(255,255,255,.75);font-style:italic; }
 
+    /* ── BOOK SECTION LAYOUT ── */
+    .book-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 52px;
+      align-items: start;
+    }
+    .book-h2 {
+      font-size: clamp(1.7rem, 2.8vw, 2.4rem);
+      color: #fff;
+      margin: .7rem 0 .85rem;
+      line-height: 1.15;
+    }
+    .book-sub {
+      font-size: .95rem;
+      color: var(--muted);
+      line-height: 1.72;
+      margin-bottom: 1.6rem;
+    }
+    .book-bullets {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 1.6rem;
+    }
+    .book-bullets li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: .88rem;
+      color: var(--text);
+      line-height: 1.5;
+    }
+    .book-bullet-icon {
+      flex-shrink: 0;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: rgba(167,139,250,.15);
+      border: 1px solid rgba(167,139,250,.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--violet);
+      margin-top: 1px;
+    }
+    .book-trust-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 2rem;
+    }
+    .book-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: .74rem;
+      font-weight: 600;
+      color: rgba(255,255,255,.6);
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 20px;
+      padding: 6px 12px;
+    }
+    .book-chip svg { color: var(--violet); flex-shrink: 0; }
+    .book-testimonial .cta-img-panel { margin-bottom: 0; }
+
+    /* Calendly column */
+    .book-cal { display: flex; flex-direction: column; gap: 10px; }
+    .book-cal-label {
+      font-size: .74rem;
+      font-weight: 700;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      color: var(--violet);
+    }
+    .book-cal-inner {
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.02);
+      box-shadow: 0 0 48px rgba(167,139,250,.08);
+    }
+    .book-cal-inner .calendly-inline-widget { display: block; }
+
     /* ── NEW RESPONSIVE OVERRIDES ── */
     @media (max-width: 900px) {
       .prob-split { grid-template-columns:1fr; gap:14px; }
@@ -1662,6 +1748,8 @@
       .cta-card { padding:36px 24px; }
       nav .nav-links, nav .nav-cta, nav .nav-book { display:none; }
       .nav-hamburger { display:flex; }
+      .book-layout { grid-template-columns: 1fr; gap: 36px; }
+      .book-testimonial { display: none; }
     }
     @media (max-width: 600px) {
       section { padding: 56px 0; }
@@ -1822,6 +1910,11 @@
       .cta-card { padding: 28px 18px; }
       .phone-shell { width: 100%; max-width: 320px; }
       .phone-avatar { width: 120px; height: 152px; border-radius: 22px; }
+      .book-h2 { font-size: 1.6rem; }
+      .book-trust-chips { gap: 6px; }
+      .book-chip { font-size: .7rem; padding: 5px 10px; }
+      .book-cal-inner { border-radius: 14px; }
+      .book-cal-inner .calendly-inline-widget { height: 620px !important; }
     }
 
     /* ── Integrations ─────────────────────────────────────── */
@@ -3699,22 +3792,81 @@
   </div>
 </section>
 
-<!-- ── CTA FORM ── -->
+<!-- ── BOOK SECTION ── -->
 <section id="book" class="cta-sec">
   <div class="container">
     <div class="cta-card reveal">
-      <div class="cta-img-panel">
-        <img src="assets/ellie/couple-happy.png" alt="Small business owners thrilled by their Ellie dashboard results">
-        <div class="cta-img-panel-overlay">
-          <span class="cta-img-caption">"Paid for the whole month in one day." — Real Ellie customers</span>
+      <div class="book-layout">
+
+        <!-- Left: copy + trust -->
+        <div class="book-copy">
+          <div class="sec-tag" style="justify-content:flex-start;">Free 30-Min Setup Call</div>
+          <h2 class="book-h2">Ready to stop missing customers?</h2>
+          <p class="book-sub">Pick a time that works — we'll set Ellie up live on the call. Most businesses are live within 24 hours.</p>
+
+          <ul class="book-bullets">
+            <li>
+              <span class="book-bullet-icon">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              </span>
+              <span>We configure Ellie for your services, hours &amp; pricing</span>
+            </li>
+            <li>
+              <span class="book-bullet-icon">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              </span>
+              <span>Your phone number forwards to Ellie — nothing else changes</span>
+            </li>
+            <li>
+              <span class="book-bullet-icon">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              </span>
+              <span>Test Ellie live before you commit to anything</span>
+            </li>
+            <li>
+              <span class="book-bullet-icon">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              </span>
+              <span>30-day money-back guarantee — zero risk</span>
+            </li>
+          </ul>
+
+          <div class="book-trust-chips">
+            <span class="book-chip">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              No credit card
+            </span>
+            <span class="book-chip">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              Setup in 24 hrs
+            </span>
+            <span class="book-chip">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+              No lock-in
+            </span>
+          </div>
+
+          <div class="book-testimonial">
+            <div class="cta-img-panel">
+              <img src="assets/ellie/couple-happy.png" alt="Small business owners thrilled by their Ellie results">
+              <div class="cta-img-panel-overlay">
+                <span class="cta-img-caption">"Paid for the whole month in one day." — Real Ellie customers</span>
+              </div>
+            </div>
+          </div>
         </div>
+
+        <!-- Right: Calendly -->
+        <div class="book-cal">
+          <div class="book-cal-label">Pick a time that suits you</div>
+          <div class="book-cal-inner">
+            <div class="calendly-inline-widget"
+              data-url="https://calendly.com/anupamadilshan83/ellie-ai-free-30-min-setup-call?hide_gdpr_banner=1&background_color=0f0f13&text_color=ffffff&primary_color=a78bfa"
+              style="min-width:280px;height:680px;"></div>
+          </div>
+        </div>
+
       </div>
-      <div class="cta-header">
-        <div class="sec-tag" style="justify-content:center;">Get Started</div>
-        <h2>Ready to stop missing customers?</h2>
-        <p>Pick a time that works for you — we'll set Ellie up live on the call. No credit card, no contracts, no catch.</p>
-      </div>
-      <div class="calendly-inline-widget" data-url="https://calendly.com/anupamadilshan83/ellie-ai-free-30-min-setup-call?hide_gdpr_banner=1&background_color=0f0f13&text_color=ffffff&primary_color=a78bfa" style="min-width:280px;height:680px;"></div>
     </div>
   </div>
 </section>

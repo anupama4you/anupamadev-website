@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Bash(open ellie.html)",
-      "Bash(awk -F: '$2>2192')"
+      "Bash(awk -F: '$2>2192')",
+      "WebFetch(domain:raw.githubusercontent.com)"
     ]
   },
   "enabledPlugins": {
