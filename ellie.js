@@ -128,6 +128,8 @@
     if (!demoBizBtn) return;
     demoBizBtn.classList.toggle('loading', loading);
     demoBizBtn.disabled = loading;
+    const phoneLoader = document.getElementById('phone-fetch-loader');
+    if (phoneLoader) phoneLoader.classList.toggle('active', loading);
   }
 
   function getCompanyDomain(raw) {

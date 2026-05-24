@@ -211,49 +211,34 @@
   (function initCursor() {
     if (window.matchMedia('(pointer: coarse)').matches) return;
 
-    /* Ambient glow (pre-existing) */
+    /* Ambient glow */
     const glow = document.createElement('div');
     glow.className = 'cursor-glow';
     document.body.appendChild(glow);
 
-    /* Precise cursor elements — inject if not already in HTML */
-    let dot  = document.getElementById('cursor-dot');
-    let ring = document.getElementById('cursor-ring');
-    if (!dot) {
-      dot  = document.createElement('div');  dot.id  = 'cursor-dot';  dot.className  = 'cursor-dot';
-      ring = document.createElement('div');  ring.id = 'cursor-ring'; ring.className = 'cursor-ring';
-      document.body.prepend(ring);
-      document.body.prepend(dot);
-    }
+    /* Reticle cursor */
+    const cur = document.createElement('div');
+    cur.id = 'cursor-reticle';
+    cur.className = 'cursor-reticle';
+    document.body.prepend(cur);
 
-    let mx = -200, my = -200;
-    let rx = -200, ry = -200;
+    let mx = -300, my = -300;
     let gx = 0, gy = 0;
-    const lerp = (a, b, t) => a + (b - a) * t;
 
     document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; }, { passive: true });
 
     const hovers = 'a, button, [role="button"], input, textarea, select, label';
     document.addEventListener('mouseover', e => {
-      if (e.target.closest(hovers)) {
-        dot.classList.add('cursor-dot--hover');
-        ring.classList.add('cursor-ring--hover');
-      }
+      if (e.target.closest(hovers)) cur.classList.add('cursor-reticle--hover');
     });
     document.addEventListener('mouseout', e => {
-      if (e.target.closest(hovers)) {
-        dot.classList.remove('cursor-dot--hover');
-        ring.classList.remove('cursor-ring--hover');
-      }
+      if (e.target.closest(hovers)) cur.classList.remove('cursor-reticle--hover');
     });
-    document.addEventListener('mousedown', () => ring.classList.add('cursor-ring--click'));
-    document.addEventListener('mouseup',   () => ring.classList.remove('cursor-ring--click'));
+    document.addEventListener('mousedown', () => cur.classList.add('cursor-reticle--click'));
+    document.addEventListener('mouseup',   () => cur.classList.remove('cursor-reticle--click'));
 
     function animCursor() {
-      dot.style.transform  = `translate(${mx}px, ${my}px)`;
-      rx = lerp(rx, mx, 0.12);
-      ry = lerp(ry, my, 0.12);
-      ring.style.transform = `translate(${rx}px, ${ry}px)`;
+      cur.style.transform = `translate(${mx}px, ${my}px)`;
       gx += (mx - gx) * 0.1;
       gy += (my - gy) * 0.1;
       glow.style.transform = `translate(${gx - 300}px, ${gy - 300}px)`;
