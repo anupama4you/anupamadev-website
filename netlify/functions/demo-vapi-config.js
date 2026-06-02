@@ -200,6 +200,15 @@ Keep responses under 45 words unless the caller asks for more detail. Never make
           model:    'gpt-4o',
           messages: [{ role: 'system', content: systemPrompt }],
         },
+        voice: {
+          provider: '11labs',
+          voiceId:  'cgSgspJ2msm6clMCkdW9', // Jessica — clear, warm Australian-ish English
+        },
+        transcriber: {
+          provider: 'deepgram',
+          model:    'nova-2',
+          language: 'en-AU',
+        },
       },
       businessName,
       businessDescription,

@@ -915,6 +915,12 @@ body,
   box-shadow: var(--shadow);
 }
 
+/* Wrapper link around the card image — inherits block display */
+.project-card__img-link {
+  display: block;
+  text-decoration: none;
+}
+
 .project-card__image {
   height: 220px;
   position: relative;
@@ -986,7 +992,30 @@ body,
   font-size: 0.855rem;
   color: var(--text-muted);
   line-height: 1.65;
+  margin-bottom: 1rem;
+}
+.project-card__tech {
   margin-bottom: 1.25rem;
+  padding: 0.6rem 0.85rem;
+  border-left: 2px solid rgba(99, 102, 241, 0.35);
+  background: rgba(99, 102, 241, 0.04);
+  border-radius: 0 6px 6px 0;
+}
+.project-card__tech-label {
+  display: block;
+  font-size: 0.67rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--primary-light);
+  margin-bottom: 3px;
+  opacity: 0.8;
+}
+.project-card__tech-list {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin: 0;
 }
 .project-card__link {
   display: inline-flex;

@@ -338,6 +338,7 @@
   function resetDemo() {
     clearAllTimeouts();
     clearInterval(timerInterval);
+    stopRing();
     timerSecs = 0;
     demoActive = false;
     if (vapiInstance) { try { vapiInstance.stop(); } catch(_) {} vapiInstance = null; }
@@ -352,13 +353,54 @@
     endBtn.style.display  = 'none';
   }
 
+  /* ── Synthetic ring tone (AU: 400+450 Hz, 400ms on/200ms off × 2, 2s silence) ── */
+  let ringCtx = null, ringTimeout = null;
+  function startRing() {
+    stopRing();
+    try {
+      ringCtx = new (window.AudioContext || window.webkitAudioContext)();
+    } catch (_) { return; }
+
+    function beep(startAt, dur) {
+      [400, 450].forEach(freq => {
+        const osc  = ringCtx.createOscillator();
+        const gain = ringCtx.createGain();
+        osc.type      = 'sine';
+        osc.frequency.value = freq;
+        gain.gain.setValueAtTime(0, startAt);
+        gain.gain.linearRampToValueAtTime(0.18, startAt + 0.02);
+        gain.gain.setValueAtTime(0.18, startAt + dur - 0.02);
+        gain.gain.linearRampToValueAtTime(0, startAt + dur);
+        osc.connect(gain);
+        gain.connect(ringCtx.destination);
+        osc.start(startAt);
+        osc.stop(startAt + dur);
+      });
+    }
+
+    function scheduleRing() {
+      if (!ringCtx) return;
+      const now = ringCtx.currentTime;
+      // AU pattern: 0.4s on, 0.2s off, 0.4s on, 2s silence = 3s cycle
+      beep(now,        0.4);
+      beep(now + 0.6,  0.4);
+      ringTimeout = setTimeout(scheduleRing, 3000);
+    }
+    scheduleRing();
+  }
+  function stopRing() {
+    clearTimeout(ringTimeout);
+    if (ringCtx) { try { ringCtx.close(); } catch (_) {} ringCtx = null; }
+  }
+
   async function startDemo() {
     if (demoActive) return;
     demoActive = true;
     btns.className = 'phone-btns phone-btns-active';
     callBtn.style.display = 'none';
     endBtn.style.display  = '';
-    setStatus('Connecting…', false);
+    setStatus('Ringing…', false);
+    startRing();
 
     try {
       const enteredUrl = demoBizUrlInput ? demoBizUrlInput.value.trim() : '';
@@ -378,6 +420,7 @@
 
       // ── UI events ──────────────────────────────────────────
       vapi.on('call-start', () => {
+        stopRing();
         setStatus('Connected', true);
         timerSecs = 0;
         timerEl.textContent = '0:00';
@@ -419,12 +462,19 @@
 
       vapi.on('error', (err) => {
         console.error('VAPI error', err);
+        stopRing();
         setStatus('Could not connect', false);
         resetDemo();
       });
 
-      // ── Start the call with dynamic overrides ─────────────
-      vapi.start(assistantId, assistantOverrides);
+      // ── Start the call ────────────────────────────────────
+      // If a pre-built assistantId exists use it with overrides,
+      // otherwise pass the full config as a transient assistant.
+      if (assistantId) {
+        vapi.start(assistantId, assistantOverrides);
+      } else {
+        vapi.start(assistantOverrides);
+      }
 
     } catch (err) {
       console.error('Demo start error', err);

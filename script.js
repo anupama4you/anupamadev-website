@@ -386,20 +386,23 @@
     const arrowSvg = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M7 7h10v10"/></svg>`;
     grid.innerHTML = SITE_DATA.projects.map(p => `
       <div class="project-card reveal">
-        <div class="project-card__image ${p.imageClass}">
-          <img src="${p.imageSrc}" alt="${p.imageAlt}" class="project-card__img" loading="lazy">
-          <div class="project-card__overlay">
-            <div class="project-card__tags">
-              ${p.tags.map(t => `<span>${t}</span>`).join('')}
+        <a href="project.html?slug=${p.slug}" class="project-card__img-link" aria-label="View ${p.title} details">
+          <div class="project-card__image ${p.imageClass}">
+            <img src="${p.imageSrc}" alt="${p.imageAlt}" class="project-card__img" loading="lazy">
+            <div class="project-card__overlay">
+              <div class="project-card__tags">
+                ${p.tags.map(t => `<span>${t}</span>`).join('')}
+              </div>
             </div>
           </div>
-        </div>
+        </a>
         <div class="project-card__content">
           <span class="project-card__category">${p.category}</span>
           <h3 class="project-card__title">${p.title}</h3>
           <p class="project-card__desc">${p.desc}</p>
-          <a href="${p.link}" target="_blank" rel="noopener" class="project-card__link">
-            ${p.linkLabel} ${arrowSvg}
+          ${p.technologies ? `<div class="project-card__tech"><span class="project-card__tech-label">Tools &amp; Stack</span><p class="project-card__tech-list">${p.technologies}</p></div>` : ''}
+          <a href="project.html?slug=${p.slug}" class="project-card__link">
+            View Details ${arrowSvg}
           </a>
         </div>
       </div>
