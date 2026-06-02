@@ -12,7 +12,9 @@
     "packageJson": {
       "dependencies": [
         "npm:@netlify/blobs@^10.7.4",
-        "npm:@vapi-ai/web@^2.5.2"
+        "npm:@vapi-ai/web@^2.5.2",
+        "npm:gsap@^3.15.0",
+        "npm:three@0.184"
       ]
     }
   }

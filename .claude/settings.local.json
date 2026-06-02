@@ -1,7 +1,24 @@
 {
   "permissions": {
     "allow": [
-      "Read(//tmp/**)"
+      "Read(//tmp/**)",
+      "WebFetch(domain:red1-for-hek.vercel.app)",
+      "WebFetch(domain:r.jina.ai)",
+      "Bash(curl -s \"https://red1-for-hek.vercel.app/\")",
+      "Bash(curl -s \"https://red1-for-hek.vercel.app/assets/index-BuHr1GX4.js\")",
+      "Bash(curl -s \"https://red1-for-hek.vercel.app/assets/index-BuHr1GX4.js\" > /tmp/site-bundle.js && echo \"downloaded: $\\(wc -c < /tmp/site-bundle.js\\) bytes\")",
+      "Bash(curl -s \"https://red1-for-hek.vercel.app/assets/initialFX-CDQb8pFz.js\" > /tmp/initialFX.js && echo \"size: $\\(wc -c < /tmp/initialFX.js\\) bytes\" && cat /tmp/initialFX.js)",
+      "Bash(curl -s \"https://red1-for-hek.vercel.app/assets/Navbar-Cn50Zus-.js\")",
+      "Bash(curl -s \"https://red1-for-hek.vercel.app/assets/MainContainer-BnS4tBrV.js\" > /tmp/main.js && echo \"size: $\\(wc -c < /tmp/main.js\\) bytes\")",
+      "Bash(gh api *)",
+      "WebFetch(domain:github.com)",
+      "Bash(curl -s \"https://raw.githubusercontent.com/red1-for-hek/portfolio-website/main/package.json\")",
+      "Bash(npm install *)",
+      "Bash(cp -r \"c:\\\\Users\\\\dilshana\\\\Documents\\\\projects\\\\anupama-dev\\\\node_modules\\\\three\\\\examples\\\\jsm\\\\libs\\\\draco\" \"c:\\\\Users\\\\dilshana\\\\Documents\\\\projects\\\\anupama-dev\\\\assets\\\\draco\" && echo \"draco copied\")",
+      "Bash(node -e ' *)"
+    ],
+    "additionalDirectories": [
+      "\\tmp"
     ]
   }
 }

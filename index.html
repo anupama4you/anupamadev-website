@@ -11,8 +11,25 @@
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="stylesheet" href="style.css">
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+
+  <!-- Three.js importmap (ES module resolution) -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three":          "https://cdn.jsdelivr.net/npm/three@0.168.0/build/three.module.js",
+      "three/addons/":  "https://cdn.jsdelivr.net/npm/three@0.168.0/examples/jsm/"
+    }
+  }
+  </script>
 </head>
 <body>
+
+  <!-- ==================== 3D CHARACTER ==================== -->
+  <div id="char-container" class="char-container" aria-hidden="true">
+    <div id="char-canvas-mount" class="char-canvas-mount"></div>
+    <!-- Glow ring behind the character -->
+    <div class="char-glow"></div>
+  </div>
 
   <!-- ==================== NAVIGATION ==================== -->
   <nav class="nav" id="nav">
@@ -573,6 +590,12 @@
   <script src="data.js"></script>
   <script src="script.js"></script>
   <script src="chat-widget.js"></script>
+
+  <!-- GSAP + ScrollTrigger (UMD — must load before character module) -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/ScrollTrigger.min.js"></script>
+  <!-- 3D character animation -->
+  <script type="module" src="character.js"></script>
 
   <script>
   (function () {
