@@ -235,20 +235,15 @@
     @keyframes orb2{from{transform:rotateX(72deg) rotate(0)}to{transform:rotateX(72deg) rotate(360deg)}}
     @keyframes orb3{from{transform:rotateY(68deg) rotate(0)}to{transform:rotateY(68deg) rotate(360deg)}}
     @keyframes naturalBlink {
-      /* Eyes open — long rest */
-      0%,   7%     { opacity: 0; animation-timing-function: ease-in; }
-      /* Fast close (~140ms in 7.2s cycle) */
-      9%           { opacity: 1; }
-      /* Brief hold */
-      11%          { opacity: 1; animation-timing-function: ease-out; }
-      /* Slower open (~160ms) */
-      13.2%        { opacity: 0; }
-      /* Second blink after a short gap */
-      60%,  63%    { opacity: 0; animation-timing-function: ease-in; }
-      64.5%        { opacity: 1; }
-      66%           { opacity: 1; animation-timing-function: ease-out; }
-      68%           { opacity: 0; }
-      100%          { opacity: 0; }
+      0%,   7%    { opacity: 0; animation-timing-function: ease-in; }
+      9%          { opacity: 1; }
+      11%         { opacity: 1; animation-timing-function: ease-out; }
+      13.2%       { opacity: 0; }
+      60%,  63%   { opacity: 0; animation-timing-function: ease-in; }
+      64.5%       { opacity: 1; }
+      66%         { opacity: 1; animation-timing-function: ease-out; }
+      68%         { opacity: 0; }
+      100%        { opacity: 0; }
     }
     /* Subtle alive motion — combines breathing, gentle sway and micro head-tilt */
     @keyframes avatarAlive {
@@ -554,8 +549,8 @@
       width: 100%; height: 100%; object-fit: cover; object-position: center top;
     }
     .hero-av-img-base   { opacity: 1; z-index: 0; }
-    .hero-av-img-blink  { opacity: 0; z-index: 1; animation: naturalBlink 7.2s ease-in-out infinite; }
-    .hero-av-img-talk   { opacity: 0; z-index: 2; animation: avatarIdleMouth 6.4s 1.8s ease-in-out infinite; }
+    .hero-av-img-blink  { opacity: 0; z-index: 1; animation: naturalBlink 7.2s infinite; }
+    .hero-av-img-talk   { display: none; }
     .hero-av-info { flex: 1; min-width: 0; }
     .hero-av-live {
       display: inline-flex; align-items: center; gap: 5px;
@@ -2708,9 +2703,8 @@
           <div class="hero-av-ring hero-av-ring--2"></div>
           <div class="hero-av-ring hero-av-ring--3"></div>
           <div class="hero-av-core">
-            <img src="assets/emma/1.png"          class="hero-av-img-base"  alt="">
+            <img src="assets/emma/mouth_closed.png" class="hero-av-img-base"  alt="">
             <img src="assets/emma/eyes_closed.png" class="hero-av-img-blink" alt="">
-            <img src="assets/emma/talking.png"     class="hero-av-img-talk"  alt="">
           </div>
         </div>
         <div class="hero-av-info">
