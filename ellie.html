@@ -254,6 +254,12 @@
     }
     .hero-sub { font-size: .97rem; color: var(--muted); max-width: 440px; margin-bottom: 2rem; line-height: 1.74; }
     .hero-sub strong { color: var(--text); font-weight: 600; }
+    .hero-trial-badge {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: rgba(167,139,250,.1); border: 1px solid rgba(167,139,250,.3);
+      border-radius: 100px; padding: 7px 16px; margin-bottom: 1.4rem;
+      font-size: .78rem; font-weight: 600; color: var(--violet);
+    }
     .hero-setup-promise {
       display: inline-flex; align-items: center; gap: 7px;
       font-size: .8rem; font-weight: 600; color: var(--violet);
@@ -1346,6 +1352,15 @@
     }
     .plan-cta-ghost:hover { border-color: var(--violet); color: var(--violet); background: rgba(167,139,250,.04); }
     .pricing-note { text-align:center;font-size:.76rem;color:rgba(255,255,255,.28);margin-top:1.8rem;letter-spacing:.03em; }
+    .pricing-trial-banner {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      background: rgba(167,139,250,.08); border: 1px solid rgba(167,139,250,.22);
+      border-radius: 100px; padding: 10px 22px; margin: 0 auto 2rem;
+      font-size: .82rem; color: rgba(255,255,255,.75); max-width: fit-content;
+      color: var(--violet);
+    }
+    .pricing-trial-banner strong { color: #fff; }
+    .pricing-trial-banner svg { flex-shrink: 0; }
     .pricing-tabs { display: none; }
     .pricing-swipe-hint { display: none; }
 
@@ -2275,7 +2290,7 @@
       .integrations-copy { text-align: left; }
       .integrations-copy .sec-tag { justify-content: flex-start; }
       .integrations-copy p { margin-left: 0; margin-right: 0; }
-      .int-cats { grid-template-columns: 1fr; }
+      .int-cats { grid-template-columns: repeat(2, 1fr); }
     }
 
     /* ── CTA IDLE PULSE ── */
@@ -2403,7 +2418,7 @@
       <li><a href="#how-it-works">How It Works</a></li>
       <li><a href="#pricing">Pricing</a></li>
       <li><a href="blog.html">Blog</a></li>
-      <li><a href="#book" class="nav-book">Book Demo</a></li>
+      <li><a href="#book" class="nav-book">Book Free 10-Min Call</a></li>
       <li><a href="#demo" class="nav-cta">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;margin-right:5px;margin-top:-1px"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.39 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.9a16 16 0 0 0 6.09 6.09l.97-1.06a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>Try Live Demo
       </a></li>
@@ -2420,7 +2435,7 @@
     <a href="blog.html">Blog</a>
     <div class="nav-mobile-divider"></div>
     <a href="#try-live">📞 Try Free Call</a>
-    <a href="#book" style="color:var(--violet);font-weight:600;">Book Demo →</a>
+    <a href="#book" style="color:var(--violet);font-weight:600;">Book Free 10-Min Call →</a>
     <a href="index.html" style="opacity:.5;font-size:.8rem;">← anupama.dev portfolio</a>
   </div>
 </nav>
@@ -3942,6 +3957,11 @@
       <h2 class="sec-h2">A plan built for<br><span class="h2-grad">where you are now.</span></h2>
       <p>No setup fees. No lock-in contracts. Scale up as you grow.</p>
     </div>
+    <div class="pricing-trial-banner">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      Every plan includes a <strong>7-day free trial</strong> — we set everything up for you on a free 10-min call
+    </div>
+
     <div class="pricing-tabs">
       <button class="pricing-tab" data-plan="0">Starter</button>
       <button class="pricing-tab" data-plan="1">Core ⭐</button>
@@ -3956,129 +3976,123 @@
         <div class="plan-headline">Never miss a customer call again</div>
         <div class="plan-price">
           <span class="plan-currency">$</span>
-          <span class="plan-amt">99</span>
+          <span class="plan-amt">199</span>
         </div>
-        <div class="plan-aud">AUD / month</div>
+        <div class="plan-aud">AUD / month · 7-day free trial</div>
         <div class="plan-divider"></div>
         <div class="plan-section-label">Included</div>
         <ul class="plan-list">
-          <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Up to 50 calls per month</li>
+          <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Up to 150 calls per month</li>
           <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>24/7 AI call answering</li>
           <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Appointment request capture</li>
-          <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Email confirmation to customer</li>
-          <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Google Sheets call history</li>
-          <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>1 agent / 1 business location</li>
-          <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Email support</li>
+          <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>SMS &amp; email confirmation to customer</li>
+          <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>After-hours &amp; business hours handling</li>
+          <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Google Sheets call log</li>
+          <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>1 business number · email support</li>
         </ul>
         <div class="plan-divider"></div>
         <div class="plan-section-label">Not included</div>
         <ul class="plan-list">
-          <li class="exc"><svg class="exc-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Confirmed appointment booking</li>
-          <li class="exc"><svg class="exc-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>SMS confirmations</li>
           <li class="exc"><svg class="exc-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Calendar integration</li>
           <li class="exc"><svg class="exc-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Call transfer</li>
           <li class="exc"><svg class="exc-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Analytics dashboard</li>
         </ul>
         <div class="plan-spacer"></div>
-        <a href="#book" class="plan-cta plan-cta-ghost">Book a Demo</a>
+        <a href="#book" class="plan-cta plan-cta-ghost">Book a Free 10-min Call</a>
       </div>
 
       <!-- PLAN 2: Core — RECOMMENDED -->
       <div class="plan plan-feat reveal">
         <div class="plan-badge">⭐ Most Popular</div>
         <div class="plan-name">Core</div>
-        <div class="plan-headline">Capture and manage every customer enquiry</div>
+        <div class="plan-headline">Capture every enquiry and book it automatically</div>
         <div class="plan-price">
           <span class="plan-currency">$</span>
-          <span class="plan-amt">149</span>
+          <span class="plan-amt">299</span>
         </div>
-        <div class="plan-aud">AUD / month</div>
+        <div class="plan-aud">AUD / month · 7-day free trial</div>
         <div class="plan-divider"></div>
         <div class="plan-section-label">Included</div>
         <ul class="plan-list">
-          <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Up to 120 calls per month</li>
+          <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Up to 300 calls per month</li>
           <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Everything in Starter</li>
           <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Confirmed appointment booking</li>
-          <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Email confirmations to customer &amp; team</li>
           <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Google Calendar / TeamUp integration</li>
-          <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Business hours handling</li>
+          <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>SMS reminders &amp; follow-ups</li>
           <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Call history dashboard</li>
+          <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Priority email support</li>
         </ul>
         <div class="plan-divider"></div>
         <div class="plan-section-label">Not included</div>
         <ul class="plan-list">
-          <li class="exc"><svg class="exc-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>SMS confirmations</li>
           <li class="exc"><svg class="exc-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Call transfer</li>
-          <li class="exc"><svg class="exc-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Analytics dashboard</li>
+          <li class="exc"><svg class="exc-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Advanced analytics</li>
+          <li class="exc"><svg class="exc-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>CRM integration</li>
         </ul>
         <div class="plan-spacer"></div>
-        <a href="#book" class="plan-cta plan-cta-primary">Book a Demo</a>
+        <a href="#book" class="plan-cta plan-cta-primary">Book a Free 10-min Call</a>
       </div>
 
       <!-- PLAN 3: Professional -->
       <div class="plan reveal">
         <div class="plan-name">Professional</div>
-        <div class="plan-headline">Turn calls into confirmed bookings automatically</div>
+        <div class="plan-headline">Full automation with smart call handling</div>
         <div class="plan-price">
           <span class="plan-currency">$</span>
-          <span class="plan-amt">199</span>
+          <span class="plan-amt">399</span>
         </div>
-        <div class="plan-aud">AUD / month</div>
+        <div class="plan-aud">AUD / month · 7-day free trial</div>
         <div class="plan-divider"></div>
         <div class="plan-section-label">Included</div>
         <ul class="plan-list">
-          <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Up to 250 calls per month</li>
+          <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Up to 600 calls per month</li>
           <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Everything in Core</li>
-          <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>SMS confirmations &amp; reminders</li>
-          <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Automated reminders &amp; reschedule support</li>
-          <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Call transfer to business owner</li>
-          <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Basic analytics dashboard</li>
+          <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Smart call transfer to business owner</li>
+          <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Automated reminders &amp; reschedule handling</li>
+          <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Advanced analytics dashboard</li>
+          <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Zapier &amp; Google Sheets automation</li>
+          <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Custom AI greeting &amp; personality</li>
         </ul>
         <div class="plan-divider"></div>
         <div class="plan-section-label">Not included</div>
         <ul class="plan-list">
           <li class="exc"><svg class="exc-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>CRM integrations</li>
           <li class="exc"><svg class="exc-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Multi-agent routing</li>
-          <li class="exc"><svg class="exc-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Custom AI persona</li>
+          <li class="exc"><svg class="exc-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Dedicated account manager</li>
         </ul>
         <div class="plan-spacer"></div>
-        <a href="#book" class="plan-cta plan-cta-ghost">Book a Demo</a>
+        <a href="#book" class="plan-cta plan-cta-ghost">Book a Free 10-min Call</a>
       </div>
 
       <!-- PLAN 4: Enterprise -->
       <div class="plan reveal">
         <div class="plan-name">Enterprise</div>
-        <div class="plan-headline">Fully automated front desk for your business</div>
+        <div class="plan-headline">Unlimited calls, full team &amp; CRM automation</div>
         <div class="plan-price">
           <span class="plan-currency">$</span>
-          <span class="plan-amt">249</span>
+          <span class="plan-amt">499</span>
         </div>
-        <div class="plan-aud">AUD / month</div>
+        <div class="plan-aud">AUD / month · 7-day free trial</div>
         <div class="plan-divider"></div>
         <div class="plan-section-label">Included</div>
         <ul class="plan-list">
-          <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Up to 500 calls per month</li>
+          <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Unlimited calls</li>
           <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Everything in Professional</li>
           <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>CRM integrations (HubSpot, Salesforce)</li>
           <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Multi-agent call routing</li>
           <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Custom AI voice &amp; persona</li>
-          <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Priority support</li>
+          <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Dedicated account manager</li>
+          <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Monthly performance review</li>
         </ul>
         <div class="plan-divider"></div>
         <div class="plan-section-label" style="opacity:.35">All features included</div>
         <div class="plan-spacer"></div>
-        <a href="#book" class="plan-cta plan-cta-ghost">Book a Demo</a>
+        <a href="#book" class="plan-cta plan-cta-ghost">Book a Free 10-min Call</a>
       </div>
 
     </div>
-    <p class="pricing-note">All prices in AUD &nbsp;·&nbsp; Full setup included &nbsp;·&nbsp; No lock-in contract &nbsp;·&nbsp; Cancel anytime</p>
+    <p class="pricing-note">All prices in AUD &nbsp;·&nbsp; Full setup included on your free 10-min call &nbsp;·&nbsp; No lock-in contract &nbsp;·&nbsp; Cancel anytime</p>
     <p style="text-align:center;margin-top:.45rem;font-size:.72rem;color:var(--muted)">Extra usage after the monthly allowance: $1.50 per additional answered call.</p>
-    <div style="text-align:center;margin-top:1.6rem;padding:16px 24px;background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.18);border-radius:12px;max-width:520px;margin-left:auto;margin-right:auto;" class="reveal">
-      <p style="font-size:.88rem;color:#4ade80;font-weight:600;">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="display:inline;vertical-align:middle;margin-right:5px;"><polyline points="20 6 9 17 4 12"/></svg>
-        30-day money-back guarantee &nbsp;·&nbsp; If Ellie doesn't work for your business in the first 30 days, you get a full refund. No questions asked.
-      </p>
-    </div>
   </div>
 </section>
 
@@ -4112,12 +4126,6 @@
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
               </span>
               <span>Test Ellie live before you commit to anything</span>
-            </li>
-            <li>
-              <span class="book-bullet-icon">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-              </span>
-              <span>30-day money-back guarantee — zero risk</span>
             </li>
           </ul>
 
