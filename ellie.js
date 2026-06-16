@@ -6,6 +6,19 @@
 (function () {
   'use strict';
 
+  // ── Light / dark theme toggle ─────────────────────────────
+  const themeToggle = document.getElementById('theme-toggle');
+  const savedTheme = localStorage.getItem('ellie-theme');
+  if (savedTheme) document.documentElement.setAttribute('data-theme', savedTheme);
+  if (themeToggle) {
+    themeToggle.addEventListener('click', () => {
+      const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+      const next = isLight ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('ellie-theme', next);
+    });
+  }
+
   // ── Nav scroll ────────────────────────────────────────────
   const nav = document.getElementById('main-nav');
   window.addEventListener('scroll', () => {
