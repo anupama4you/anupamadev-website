@@ -1,3 +1,156 @@
+// ─────────────────────────────────────────────────────────────
+//  Helpers
+// ─────────────────────────────────────────────────────────────
+
+/** Fetch Jina-cleaned markdown for a URL. Returns '' on failure. */
+async function fetchJina(url, timeoutMs = 7000) {
+  try {
+    const res = await fetch(`https://r.jina.ai/${url}`, {
+      headers: {
+        Accept: 'application/json',
+        'X-Remove-Selector': 'nav,footer,header,.cookie,.popup,.overlay,.banner',
+        'X-Timeout': '6',
+      },
+      signal: AbortSignal.timeout(timeoutMs),
+    });
+    if (!res.ok) return '';
+    const j = await res.json();
+    return (j.data?.content || '').replace(/\n{4,}/g, '\n\n').trim();
+  } catch { return ''; }
+}
+
+/** Fetch raw HTML (for link discovery only). Returns '' on failure. */
+async function fetchHtml(url, timeoutMs = 4000) {
+  try {
+    const res = await fetch(url, {
+      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; EllieBot/1.0)' },
+      signal: AbortSignal.timeout(timeoutMs),
+    });
+    return res.ok ? await res.text() : '';
+  } catch { return ''; }
+}
+
+/** Score an internal URL path — higher = more likely to have business details. */
+function pageScore(pathname) {
+  const p = pathname.toLowerCase();
+  if (/\/(contact|get-in-touch|find-us|reach-us|location)/.test(p)) return 100;
+  if (/\/(about|our-story|who-we-are|team|company)/.test(p))        return 80;
+  if (/\/(services|treatments|menu|what-we-do|our-work)/.test(p))   return 70;
+  if (/\/(faq|pricing|book|appointment|hours)/.test(p))             return 50;
+  return 0;
+}
+
+/** Pull unique internal links from raw HTML, scored by relevance. */
+function discoverPages(html, origin, limit = 3) {
+  const seen = new Set();
+  const pages = [];
+  for (const [, href] of html.matchAll(/href=["']([^"'#?]{2,})["']/gi)) {
+    try {
+      const u = new URL(href, origin);
+      if (u.origin !== origin || seen.has(u.pathname)) continue;
+      const score = pageScore(u.pathname);
+      if (score === 0) continue;
+      seen.add(u.pathname);
+      pages.push({ url: u.href, score });
+    } catch {}
+  }
+  return pages.sort((a, b) => b.score - a.score).slice(0, limit).map(p => p.url);
+}
+
+/** Use Claude Haiku to extract structured business info from crawled content. */
+async function extractWithClaude(siteUrl, combinedContent, apiKey) {
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'x-api-key':         apiKey,
+      'anthropic-version': '2023-06-01',
+      'content-type':      'application/json',
+    },
+    signal: AbortSignal.timeout(10000),
+    body: JSON.stringify({
+      model:      'claude-haiku-4-5-20251001',
+      max_tokens: 700,
+      messages: [{
+        role: 'user',
+        content: `Extract business information from this website content for an AI phone receptionist. Return ONLY valid JSON, no markdown, no explanation.
+
+Website: ${siteUrl}
+
+Content from multiple pages:
+${combinedContent.slice(0, 4000)}
+
+Return this exact JSON (use empty string if unknown):
+{
+  "name": "full business name",
+  "description": "2–3 sentences: what they do, who they serve, their speciality",
+  "phone": "main phone number",
+  "email": "main contact email",
+  "location": "full address or suburb/city + state",
+  "hours": "opening hours summary",
+  "businessType": "e.g. Car Dealership, Hair Salon, Dental Clinic, Plumber",
+  "services": "comma-separated list of key services or products offered",
+  "bookingInfo": "how customers book — online, phone, walk-in, etc."
+}`,
+      }],
+    }),
+  });
+  if (!res.ok) throw new Error(`Claude ${res.status}`);
+  const data = await res.json();
+  const raw = (data.content?.[0]?.text || '{}')
+    .replace(/^```(?:json)?\s*/i, '')
+    .replace(/\s*```$/, '');
+  return JSON.parse(raw);
+}
+
+// ─────────────────────────────────────────────────────────────
+//  Main crawler
+// ─────────────────────────────────────────────────────────────
+
+async function crawlSite(siteUrl, anthropicKey) {
+  const origin = new URL(siteUrl).origin;
+
+  // Step 1 — fetch homepage HTML (for link discovery) + homepage Jina in parallel
+  const [homeHtml, homeJina] = await Promise.all([
+    fetchHtml(siteUrl),
+    fetchJina(siteUrl),
+  ]);
+
+  // Step 2 — discover sub-pages from the raw HTML
+  const subUrls = discoverPages(homeHtml, origin);
+
+  // Step 3 — fetch sub-pages via Jina in parallel (renders JS, removes noise)
+  const subJina = await Promise.all(subUrls.map(u => fetchJina(u, 6000)));
+
+  // Step 4 — combine all content
+  const pageSections = [
+    homeJina && `=== Homepage (${siteUrl}) ===\n${homeJina}`,
+    ...subUrls.map((u, i) => subJina[i] && `=== ${u} ===\n${subJina[i]}`),
+  ].filter(Boolean);
+
+  const combinedContent = pageSections.join('\n\n').slice(0, 5000);
+
+  if (!combinedContent) {
+    return { name: '', description: '', phone: '', email: '', location: '', hours: '', businessType: '', services: '', bookingInfo: '' };
+  }
+
+  // Step 5 — extract structured data with GPT-4o-mini
+  try {
+    const info = await extractWithClaude(siteUrl, combinedContent, anthropicKey);
+    return info;
+  } catch {
+    // Fallback: return raw Jina snippet so at least some context exists
+    return {
+      name: '', description: '', phone: '', email: '', location: '',
+      hours: '', businessType: '', services: '', bookingInfo: '',
+      _rawContent: combinedContent.slice(0, 1500),
+    };
+  }
+}
+
+// ─────────────────────────────────────────────────────────────
+//  Netlify handler
+// ─────────────────────────────────────────────────────────────
+
 exports.handler = async (event) => {
   const headers = {
     'Access-Control-Allow-Origin': '*',
@@ -10,37 +163,33 @@ exports.handler = async (event) => {
   let businessWebsite;
   try { businessWebsite = JSON.parse(event.body || '{}').businessWebsite; } catch {}
 
-  let businessName        = 'Ellie AI Receptionist';
-  let businessDescription = '';
-  let businessPhone       = '';
-  let businessLocation    = '';
-  let businessType        = '';
   let systemPrompt, firstMessage;
+  let businessName = '', businessDescription = '', businessPhone = '', businessLocation = '', businessType = '', businessServices = '', businessHours = '';
 
-  // ── Generic demo mode (no URL) ─────────────────────────────
+  // ── Generic demo mode ──────────────────────────────────────
   if (!businessWebsite) {
-    systemPrompt = `You are Ellie — a warm, confident AI receptionist built by New Callings (newcallings.com.au).
-You are on a live demo call with a small business owner curious about whether Ellie could work for them.
+    businessName = 'Ellie AI Receptionist';
+    systemPrompt = `You are Ellie — a warm, friendly AI receptionist built by New Callings (newcallings.com.au).
+You are speaking with someone who called the demo line without entering their business details yet.
 
-Your personality: friendly, professional, a little witty, never robotic. You speak natural Australian English.
+Your personality: warm, natural, Australian English. Never robotic. Keep responses under 35 words unless they ask for more.
 
-Your goal: Show them exactly how you'd handle their real calls. Gently guide them toward entering their website URL for a personalised demo, or booking a free setup call.
+Your ONLY goal on this call: get them to hang up, enter their business website or details on the page, and call back. Once you have their business details, you will act as their own receptionist — answering exactly as you would for their real customers.
 
-Demo flow:
-1. Greet them warmly and acknowledge this is a demo.
-2. Ask what kind of business they run.
-3. Demonstrate how you'd answer their calls — take a pretend booking, handle an after-hours enquiry, etc.
-4. Highlight key benefits naturally in conversation: 24/7 coverage, no missed calls, instant SMS confirmation, calendar integration.
-5. If they ask about pricing, say plans start from $99 AUD/month with no lock-in contracts.
-6. Close by encouraging them to enter their website for a personalised demo or book a free 30-min setup call at anupama.dev.
+How to handle the conversation:
+1. Greet them warmly and explain you noticed they haven't entered their business details yet.
+2. Tell them it only takes a few seconds — just pop in their website or fill in a couple of fields on the page.
+3. Once they do that and call back, you'll instantly know their business and demo exactly how you'd sound to their customers — completely free.
+4. If they have questions about what Ellie does: answer briefly, then bring it back to "the best way to see it is to enter your details and call me back."
+5. If they ask about pricing: plans start from $99 AUD/month, no lock-in contracts.
+6. At the end of the conversation — or if they seem interested — invite them to book a free 30-minute setup call at anupama.dev.
 
 Guardrails:
-- Keep responses under 40 words unless asked for detail.
-- Never fabricate specific technical integrations you are unsure of.
-- If asked if you are an AI, say yes honestly — then point out that customers often cannot tell.
+- Never pretend to be their receptionist without their business details — you don't have them yet.
+- If asked if you're an AI: yes, honestly — then note that most callers can't tell.
 - Do not discuss competitors.`;
 
-    firstMessage = `Hi there! You've reached Ellie — I'm an AI receptionist. Is this a demo call, or would you like to see how I'd handle calls for your specific business?`;
+    firstMessage = `Hi there, I'm Ellie — an AI receptionist! I can see you haven't entered your business details yet. It only takes a few seconds — just pop in your website or fill in a couple of fields on the page, then call me back. I'll instantly act as your own receptionist and show you exactly how I'd sound to your customers, completely free!`;
 
   } else {
     // ── Personalised mode ──────────────────────────────────────
@@ -48,121 +197,40 @@ Guardrails:
       ? businessWebsite
       : `https://${businessWebsite}`;
 
+    // Fallback name from domain while crawling
     try {
       businessName = new URL(siteUrl).hostname.replace(/^www\./i, '');
     } catch {
       businessName = String(businessWebsite).replace(/^https?:\/\//i, '').replace(/^www\./i, '').split('/')[0];
     }
 
-    // ── Parallel fetch: Jina AI reader + direct HTML ───────────
-    // Running both simultaneously caps scraping time at ~6s instead of 15s.
-    let jinaContent = '';
-    let htmlContent = '';
+    const info = await crawlSite(siteUrl, process.env.ANTHROPIC_API_KEY);
 
-    const [jinaResult, htmlResult] = await Promise.allSettled([
-      fetch(`https://r.jina.ai/${siteUrl}`, {
-        headers: {
-          'Accept': 'application/json',
-          'X-Remove-Selector': 'nav, footer, header, .cookie-notice, .cookie-banner',
-          'X-Timeout': '5',
-        },
-        signal: AbortSignal.timeout(6000),
-      }).then(async r => {
-        if (!r.ok) return null;
-        const j = await r.json();
-        const title   = j.data?.title       || '';
-        const content = j.data?.content     || '';
-        return (title || content) ? `${title}\n${content}` : null;
-      }),
+    if (info.name)         businessName        = info.name;
+    if (info.description)  businessDescription = info.description;
+    if (info.phone)        businessPhone       = info.phone;
+    if (info.location)     businessLocation    = info.location;
+    if (info.businessType) businessType        = info.businessType;
+    if (info.services)     businessServices    = info.services;
+    if (info.hours)        businessHours       = info.hours;
 
-      fetch(siteUrl, {
-        headers: { 'User-Agent': 'Mozilla/5.0 (compatible; EllieAI/1.0)' },
-        signal: AbortSignal.timeout(4000),
-      }).then(async r => {
-        if (!r.ok) return null;
-        const html  = await r.text();
-        const title = (html.match(/<title[^>]*>([^<]+)<\/title>/i) || [])[1]?.trim() || '';
-        const desc  = (
-          html.match(/<meta[^>]+name=["']description["'][^>]+content=["']([^"']{10,300})["']/i) ||
-          html.match(/<meta[^>]+content=["']([^"']{10,300})["'][^>]+name=["']description["']/i) ||
-          [])[1]?.trim() || '';
-        // Strip all tags for readable plain text
-        const text = html
-          .replace(/<script[\s\S]*?<\/script>/gi, '')
-          .replace(/<style[\s\S]*?<\/style>/gi, '')
-          .replace(/<[^>]+>/g, ' ')
-          .replace(/&nbsp;/g, ' ')
-          .replace(/&amp;/g, '&')
-          .replace(/\s{2,}/g, ' ')
-          .trim()
-          .slice(0, 2000);
-        return [title, desc, text].filter(Boolean).join('\n');
-      }),
-    ]);
+    // Build receptionist context
+    const contextLines = [];
+    if (info.description)  contextLines.push(info.description);
+    if (info.businessType) contextLines.push(`Business type: ${info.businessType}`);
+    if (info.services)     contextLines.push(`Services: ${info.services}`);
+    if (info.phone)        contextLines.push(`Phone: ${info.phone}`);
+    if (info.email)        contextLines.push(`Email: ${info.email}`);
+    if (info.location)     contextLines.push(`Location: ${info.location}`);
+    if (info.hours)        contextLines.push(`Hours: ${info.hours}`);
+    if (info.bookingInfo)  contextLines.push(`Booking: ${info.bookingInfo}`);
+    if (info._rawContent)  contextLines.push(`\nWebsite content:\n${info._rawContent}`);
+    if (!contextLines.length) contextLines.push(`Website: ${siteUrl}`);
 
-    if (jinaResult.status === 'fulfilled' && jinaResult.value) jinaContent = jinaResult.value;
-    if (htmlResult.status === 'fulfilled' && htmlResult.value) htmlContent = htmlResult.value;
-
-    // Prefer Jina (richer content); fall back to stripped HTML
-    const rawContent = jinaContent || htmlContent;
-
-    // ── Claude Haiku: structured extraction ────────────────────
-    // Works even with minimal content — can infer from domain name alone.
-    try {
-      const claudeInput = rawContent
-        ? `Website: ${siteUrl}\n\nPage content:\n${rawContent.slice(0, 2800)}`
-        : `Website: ${siteUrl}\n\n(Page content unavailable — infer from the domain name and URL)`;
-
-      const claudeRes = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: {
-          'x-api-key':           process.env.ANTHROPIC_API_KEY,
-          'anthropic-version':   '2023-06-01',
-          'content-type':        'application/json',
-        },
-        body: JSON.stringify({
-          model:      'claude-haiku-4-5-20251001',
-          max_tokens: 500,
-          messages: [{
-            role:    'user',
-            content: `Extract business information from this website for an AI receptionist. Return ONLY valid JSON, no markdown fences, no explanation.
-
-${claudeInput}
-
-Required JSON:
-{
-  "name": "full business name",
-  "description": "one sentence about what they do",
-  "phone": "phone number or empty string",
-  "location": "suburb/city and state or empty string",
-  "businessType": "e.g. Hair Salon, Dental Clinic, Plumber — or empty string",
-  "receptionistContext": "3-4 sentences covering: key services, how bookings work, opening hours if known, and anything an AI receptionist needs to handle inbound calls naturally"
-}`,
-          }],
-        }),
-        signal: AbortSignal.timeout(8000),
-      });
-
-      if (claudeRes.ok) {
-        const claudeData = await claudeRes.json();
-        const raw = (claudeData.content?.[0]?.text?.trim() || '{}')
-          .replace(/^```(?:json)?\s*/i, '')
-          .replace(/\s*```$/, '');
-        const info = JSON.parse(raw);
-
-        if (info.name)         businessName        = info.name;
-        if (info.description)  businessDescription = info.description;
-        if (info.phone)        businessPhone       = info.phone;
-        if (info.location)     businessLocation    = info.location;
-        if (info.businessType) businessType        = info.businessType;
-
-        const bizContext = info.receptionistContext
-          || `${info.name || businessName} — ${info.description || ''}. Website: ${siteUrl}.`;
-
-        systemPrompt = `You are Ellie, the AI receptionist for ${businessName}. You are on a live call with a customer.
+    systemPrompt = `You are Ellie, the AI receptionist for ${businessName}. You are on a live call with a customer.
 
 Business context:
-${bizContext}
+${contextLines.join('\n')}
 
 Persona: Warm, professional, calm under pressure. Speak in natural Australian English. Never sound robotic.
 
@@ -176,15 +244,7 @@ How to handle calls:
 
 Keep responses under 45 words unless the caller asks for more detail. Never make up pricing, hours, or services not in the context above.`;
 
-        firstMessage = `Thanks for calling ${businessName}, this is Ellie. How can I help you today?`;
-      }
-    } catch (_) {}
-
-    // ── Fallback if Claude failed ──────────────────────────────
-    if (!systemPrompt) {
-      systemPrompt = `You are Ellie, the AI receptionist for ${businessName}. Website: ${siteUrl}. Warm, professional, natural Australian English. Under 45 words per response.`;
-      firstMessage = `Thanks for calling ${businessName}, this is Ellie. How can I help you today?`;
-    }
+    firstMessage = `Thanks for calling ${businessName}, this is Ellie. How can I help you today?`;
   }
 
   return {
@@ -202,7 +262,7 @@ Keep responses under 45 words unless the caller asks for more detail. Never make
         },
         voice: {
           provider: '11labs',
-          voiceId:  'cgSgspJ2msm6clMCkdW9', // Jessica — clear, warm Australian-ish English
+          voiceId:  'cgSgspJ2msm6clMCkdW9',
         },
         transcriber: {
           provider: 'deepgram',
@@ -215,6 +275,8 @@ Keep responses under 45 words unless the caller asks for more detail. Never make
       businessPhone,
       businessLocation,
       businessType,
+      businessServices,
+      businessHours,
     }),
   };
 };

@@ -103,20 +103,30 @@
 
   let DEMO_SCRIPT = DEFAULT_DEMO_SCRIPT;
 
+  // ── DOM refs ─────────────────────────────────────────────────
   const demoBizUrlInput  = document.getElementById('demo-biz-url');
   const demoBizBtn       = document.getElementById('demo-biz-btn');
   const demoUrlStatus    = document.getElementById('demo-url-status');
   const demoContactName  = document.getElementById('demo-contact-name');
   const demoContactLabel = document.getElementById('demo-contact-label');
   const demoPhoneNote    = document.getElementById('demo-phone-note');
-  const demoBriefCard    = document.getElementById('demo-brief-card');
-  const demoBriefDomain  = document.getElementById('demo-brief-domain');
-  const demoBriefName    = document.getElementById('demo-brief-name');
+  const demoStepUrl      = document.getElementById('demo-step-url');
+  const demoStepEdit     = document.getElementById('demo-step-edit');
+  const demoEditBack     = document.getElementById('demo-edit-back');
+  const demoManualBtn    = document.getElementById('demo-manual-btn');
   const demoBriefFavicon = document.getElementById('demo-brief-favicon');
-  const demoBriefLine    = document.getElementById('demo-brief-line');
-  const demoBriefChips   = document.getElementById('demo-brief-chips');
+  const demoBriefDomain  = document.getElementById('demo-brief-domain');
+  const demoBriefedBadge = document.getElementById('demo-briefed-badge');
+  const editName         = document.getElementById('edit-name');
+  const editPhone        = document.getElementById('edit-phone');
+  const editLocation     = document.getElementById('edit-location');
+  const editServices     = document.getElementById('edit-services');
+  const editHours        = document.getElementById('edit-hours');
+  const editDesc         = document.getElementById('edit-description');
+  const demoGenerateBtn  = document.getElementById('demo-generate-btn');
+  const demoGenerateName = document.getElementById('demo-generate-name');
 
-  let briefedUrl = null;
+  let briefedConfig = null; // stores full API response incl. publicKey + assistantOverrides
 
   function setDemoUrlStatus(type, msg) {
     if (!demoUrlStatus) return;
@@ -136,120 +146,171 @@
     return extractDomain(raw || '').split('/')[0].split('?')[0].split('#')[0];
   }
 
-  function setDemoBriefing(visible, details = {}) {
-    if (!demoBriefCard) return;
-    demoBriefCard.classList.toggle('visible', visible);
-    if (!visible) return;
+  function showEditStep(data, fromUrl) {
+    // Populate editable fields
+    if (editName)     editName.value     = data.businessName        || '';
+    if (editPhone)    editPhone.value    = data.businessPhone       || '';
+    if (editLocation) editLocation.value = data.businessLocation    || '';
+    if (editServices) editServices.value = data.businessServices    || '';
+    if (editHours)    editHours.value    = data.businessHours       || '';
+    if (editDesc)     editDesc.value     = data.businessDescription || '';
 
-    const domain = getCompanyDomain(details.url || '');
-    const name = (details.name || domain || 'this business').replace(/\s+/g, ' ').trim();
-    const description = (details.description || '').replace(/\s+/g, ' ').trim();
+    const bName = data.businessName || 'Ellie';
+    if (demoGenerateName) demoGenerateName.textContent = `${bName}'s`;
 
-    if (demoBriefName)   demoBriefName.textContent   = name;
-    if (demoBriefDomain) demoBriefDomain.textContent = domain;
-
-    if (demoBriefFavicon && domain) {
-      demoBriefFavicon.style.display = '';
-      demoBriefFavicon.src = `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
-      demoBriefFavicon.alt = name;
-      demoBriefFavicon.onerror = () => { demoBriefFavicon.style.display = 'none'; };
+    if (fromUrl) {
+      const domain = getCompanyDomain(fromUrl);
+      if (demoBriefDomain) demoBriefDomain.textContent = domain;
+      if (demoBriefFavicon) {
+        demoBriefFavicon.style.display = '';
+        demoBriefFavicon.src = `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
+        demoBriefFavicon.onerror = () => { demoBriefFavicon.style.display = 'none'; };
+      }
+      if (demoBriefedBadge) demoBriefedBadge.style.display = '';
+    } else {
+      if (demoBriefDomain)  demoBriefDomain.textContent   = 'Enter your details below';
+      if (demoBriefFavicon) demoBriefFavicon.style.display = 'none';
+      if (demoBriefedBadge) demoBriefedBadge.style.display = 'none';
     }
 
-    if (demoBriefLine) {
-      demoBriefLine.textContent = description
-        ? `${description.slice(0, 200)}${description.length > 200 ? '…' : ''}`
-        : `Ellie will greet callers using the business name and website as context for handling enquiries.`;
+    // Also update generate button name when name field is edited
+    if (editName) {
+      editName.addEventListener('input', () => {
+          }, { once: false });
     }
 
-    if (demoBriefChips) {
-      demoBriefChips.innerHTML = '';
-      const chips = [
-        details.phone    && { icon: '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>', label: details.phone },
-        details.location && { icon: '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>', label: details.location },
-        details.bizType  && { icon: '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>', label: details.bizType },
-      ].filter(Boolean);
+    if (demoStepUrl)  demoStepUrl.style.display  = 'none';
+    if (demoStepEdit) demoStepEdit.style.display  = '';
+  }
 
-      chips.forEach(({ icon, label }) => {
-        const chip = document.createElement('div');
-        chip.className = 'demo-brief-chip';
-        chip.innerHTML = `${icon}<span>${label}</span>`;
-        demoBriefChips.appendChild(chip);
-      });
+  function buildSystemPrompt(name, fields) {
+    const lines = [
+      fields.description,
+      fields.services  && `Services: ${fields.services}`,
+      fields.phone     && `Phone: ${fields.phone}`,
+      fields.location  && `Location: ${fields.location}`,
+      fields.hours     && `Hours: ${fields.hours}`,
+    ].filter(Boolean);
+
+    return `You are Ellie, the AI receptionist for ${name}. You are on a live call with a customer.
+
+Business context:
+${lines.join('\n') || `Website of ${name}`}
+
+Persona: Warm, professional, calm under pressure. Speak in natural Australian English. Never sound robotic.
+
+How to handle calls:
+- Greet: "Thanks for calling ${name}, this is Ellie. How can I help you today?"
+- For bookings: collect name, phone number, preferred date/time, and reason. Confirm back to them.
+- For questions answerable from the context above: answer confidently and briefly.
+- For questions you cannot answer: "I'll make sure the team gets back to you on that — can I take your name and number?"
+- For after-hours enquiries: "We're closed right now but I can take your details and the team will call you first thing."
+- If directly asked if you're an AI: be honest, then reassure them you can still fully help.
+
+Keep responses under 45 words unless the caller asks for more detail. Never make up pricing, hours, or services not in the context above.`;
+  }
+
+  function isValidWebsite(val) {
+    try {
+      const url = /^https?:\/\//i.test(val) ? val : `https://${val}`;
+      const u = new URL(url);
+      // Must have a proper hostname with at least one dot (e.g. example.com)
+      return u.hostname.includes('.') && u.hostname.length > 3;
+    } catch {
+      return false;
     }
   }
 
-  async function briefEllie() {
+  async function fetchAndBrief() {
     const val = demoBizUrlInput ? demoBizUrlInput.value.trim() : '';
-    if (!val) {
-      setDemoUrlStatus('', '');
-      setDemoBriefing(false);
-      briefedUrl = null;
-      if (demoContactName)  demoContactName.textContent  = 'Ellie AI Receptionist';
-      if (demoContactLabel) demoContactLabel.textContent = 'Your AI receptionist demo';
-      if (demoPhoneNote)    demoPhoneNote.textContent    = 'Enter your website above — Ellie will demo as your receptionist';
+    if (!val) return;
+
+    if (!isValidWebsite(val)) {
+      setDemoUrlStatus('error', 'Please enter a valid website, e.g. yourbusiness.com.au');
+      demoBizUrlInput.focus();
       return;
     }
 
-    const domain = getCompanyDomain(val);
-    briefedUrl = val;
-    if (demoContactName)  demoContactName.textContent  = domain;
-    if (demoContactLabel) demoContactLabel.textContent = 'Ellie · AI Receptionist';
-    if (demoPhoneNote)    demoPhoneNote.textContent    = 'Ellie is being briefed on ' + domain;
-    setDemoBriefing(true, { url: val, name: domain });
-
     setBtnLoading(true);
-    setDemoUrlStatus('briefing', 'Reading your website…');
+    setDemoUrlStatus('briefing', 'Analyzing your business website…');
 
     try {
-      const res  = await fetch('/.netlify/functions/demo-vapi-config', {
+      const res = await fetch('/.netlify/functions/demo-vapi-config', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ businessWebsite: val }),
       });
-      if (!res.ok) throw new Error('Could not read website');
+      if (!res.ok) throw new Error('fetch failed');
       const data = await res.json();
-      const name = data.businessName || getCompanyDomain(val);
-      briefedUrl = val;
-      if (demoContactName)  demoContactName.textContent  = name;
-      if (demoContactLabel) demoContactLabel.textContent = 'Ellie · AI Receptionist';
-      if (demoPhoneNote)    demoPhoneNote.textContent    = 'Ellie is briefed on ' + name;
-      setDemoBriefing(true, {
-        url:         val,
-        name,
-        description: data.businessDescription,
-        phone:       data.businessPhone,
-        location:    data.businessLocation,
-        bizType:     data.businessType,
-      });
-      setDemoUrlStatus('ready', '✓ Ellie is ready as ' + name);
-    } catch (_) {
-      briefedUrl = val;
-      setDemoBriefing(true, { url: val, name: getCompanyDomain(val) });
-      setDemoUrlStatus('ready', 'Using website address as company context');
+      briefedConfig = { ...data, _websiteUrl: val };
+      setDemoUrlStatus('ready', `✓ Details fetched for ${data.businessName || getCompanyDomain(val)}`);
+      showEditStep(data, val);
+    } catch {
+      // Still show manual form, just empty
+      briefedConfig = null;
+      setDemoUrlStatus('error', 'Could not read website — fill in details manually');
+      showEditStep({}, val);
     } finally {
       setBtnLoading(false);
     }
   }
 
-  if (demoBizBtn)     demoBizBtn.addEventListener('click', briefEllie);
-  if (demoBizUrlInput) {
-    demoBizUrlInput.addEventListener('input', () => {
-      const val = demoBizUrlInput.value.trim();
-      if (!val && briefedUrl) {
-        setDemoUrlStatus('', '');
-        setDemoBriefing(false);
-        briefedUrl = null;
-        if (demoContactName)  demoContactName.textContent  = 'Ellie AI Receptionist';
-        if (demoContactLabel) demoContactLabel.textContent = 'Your AI receptionist demo';
-        if (demoPhoneNote)    demoPhoneNote.textContent    = 'Enter your website above — Ellie will demo as your receptionist';
+  if (demoBizBtn)      demoBizBtn.addEventListener('click', fetchAndBrief);
+  if (demoBizUrlInput) demoBizUrlInput.addEventListener('keydown', e => { if (e.key === 'Enter') fetchAndBrief(); });
+
+  if (demoManualBtn) demoManualBtn.addEventListener('click', () => {
+    briefedConfig = null;
+    setDemoUrlStatus('', '');
+    showEditStep({}, null);
+  });
+
+  if (demoEditBack) demoEditBack.addEventListener('click', () => {
+    if (demoStepEdit) demoStepEdit.style.display = 'none';
+    if (demoStepUrl)  demoStepUrl.style.display  = '';
+    setDemoUrlStatus('', '');
+  });
+
+  if (demoGenerateBtn) demoGenerateBtn.addEventListener('click', () => {
+    const name     = editName?.value.trim()     || 'Ellie';
+    const phone    = editPhone?.value.trim()    || '';
+    const location = editLocation?.value.trim() || '';
+    const services = editServices?.value.trim() || '';
+    const hours    = editHours?.value.trim()    || '';
+    const desc     = editDesc?.value.trim()     || '';
+
+    const systemPrompt = buildSystemPrompt(name, { description: desc, phone, location, services, hours });
+    const firstMessage = `Thanks for calling ${name}, this is Ellie. How can I help you today?`;
+
+    // Store generated prompt separately — startDemo() always fetches fresh VAPI config
+    // and patches these in, so we never pass stale session data to VAPI.
+    briefedConfig = {
+      ...(briefedConfig || {}),
+      _generated:    true,
+      _systemPrompt: systemPrompt,
+      _firstMessage: firstMessage,
+    };
+
+    // Update phone UI to show ready state
+    if (demoContactName)  demoContactName.textContent  = name;
+    if (demoContactLabel) demoContactLabel.textContent = 'Ellie · AI Receptionist';
+    if (demoPhoneNote)    demoPhoneNote.textContent    = `${name}'s Ellie is ready — press Call`;
+
+    // Vibrate call button + show bubble
+    const callWrap = document.getElementById('call-btn-wrap');
+    if (callWrap) {
+      callWrap.classList.remove('ready');
+      void callWrap.offsetWidth; // force reflow to restart animation
+      callWrap.classList.add('ready');
+    }
+
+    // On mobile, scroll the phone into view so user sees the animated call button
+    if (window.innerWidth < 900) {
+      const phoneWrap = document.querySelector('.phone-wrap');
+      if (phoneWrap) {
+        setTimeout(() => phoneWrap.scrollIntoView({ behavior: 'smooth', block: 'start' }), 120);
       }
-    });
-    demoBizUrlInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        briefEllie();
-      }
-    });
-  }
+    }
+  });
 
   const callBtn    = document.getElementById('demo-call-btn');
   const endBtn     = document.getElementById('demo-end-btn');
@@ -401,18 +462,29 @@
     endBtn.style.display  = '';
     setStatus('Ringing…', false);
     startRing();
+    document.getElementById('call-btn-wrap')?.classList.remove('ready');
 
     try {
-      const enteredUrl = demoBizUrlInput ? demoBizUrlInput.value.trim() : '';
-      const websiteForCall = enteredUrl || briefedUrl || null;
-
+      // Always fetch a fresh config from the server for a valid publicKey/session.
+      // If the user went through Generate, we patch the overrides with their edited fields.
+      // If user already clicked Generate, the system prompt is pre-built client-side —
+      // no need to re-crawl. Just fetch the generic config (fast) and patch it in below.
       const cfgRes = await fetch('/.netlify/functions/demo-vapi-config', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ businessWebsite: websiteForCall }),
+        body: JSON.stringify({}),
       });
       if (!cfgRes.ok) throw new Error('Could not prepare company context');
       const { publicKey, assistantId, assistantOverrides } = await cfgRes.json();
+
+      // If user clicked Generate, override the system prompt + firstMessage with their edited fields
+      if (briefedConfig?._generated) {
+        const { _systemPrompt, _firstMessage } = briefedConfig;
+        if (_systemPrompt && assistantOverrides?.model?.messages?.[0]) {
+          assistantOverrides.model.messages[0].content = _systemPrompt;
+        }
+        if (_firstMessage) assistantOverrides.firstMessage = _firstMessage;
+      }
 
       const VapiClass = (typeof Vapi === 'function') ? Vapi : Vapi.default;
       const vapi = new VapiClass(publicKey);
@@ -421,6 +493,7 @@
       // ── UI events ──────────────────────────────────────────
       vapi.on('call-start', () => {
         stopRing();
+        document.getElementById('call-btn-wrap')?.classList.remove('ready');
         setStatus('Connected', true);
         timerSecs = 0;
         timerEl.textContent = '0:00';
@@ -668,8 +741,20 @@
   if (heroUrlBtn) {
     heroUrlBtn.addEventListener('click', () => {
       const url = heroBizUrl ? heroBizUrl.value.trim() : '';
+
+      // If Ellie is already generated, jump straight to the phone
+      if (briefedConfig?._generated) {
+        const phoneWrap = document.querySelector('.phone-wrap');
+        (phoneWrap || document.getElementById('demo'))
+          ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        return;
+      }
+
       applyHeroUrl(url);
-      if (url && demoBizUrlInput) briefEllie();
+      if (url && demoBizUrlInput) {
+        demoBizUrlInput.value = url;
+        fetchAndBrief();
+      }
       const target = document.getElementById('demo');
       if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
@@ -774,6 +859,15 @@
     });
   }
 
+  // ── Tech features accordion ───────────────────────────────
+  document.querySelectorAll('.ellie-tech-feat').forEach(feat => {
+    feat.addEventListener('click', () => {
+      const isOpen = feat.classList.contains('open');
+      document.querySelectorAll('.ellie-tech-feat.open').forEach(f => f.classList.remove('open'));
+      if (!isOpen) feat.classList.add('open');
+    });
+  });
+
   // ── FAQ accordion ─────────────────────────────────────────
   document.querySelectorAll('.faq-q').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -863,9 +957,9 @@
     new IntersectionObserver(entries => {
       if (entries[0].isIntersecting && !counted) {
         counted = true;
-        let n = 0; const target = 2400;
+        let n = 0; const target = 1800;
         const iv = setInterval(() => {
-          n = Math.min(n + 48, target);
+          n = Math.min(n + 36, target);
           probLossEl.textContent = '$' + n.toLocaleString();
           if (n >= target) clearInterval(iv);
         }, 18);
