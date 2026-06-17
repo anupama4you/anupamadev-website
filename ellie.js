@@ -303,6 +303,24 @@ Keep responses under 45 words unless the caller asks for more detail. Never make
       _firstMessage: firstMessage,
     };
 
+    // Silently save demo lead to Netlify Forms
+    try {
+      fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({
+          'form-name':   'demo-lead',
+          business_name: name,
+          website_url:   briefedConfig?._websiteUrl || '',
+          phone,
+          location,
+          services,
+          hours,
+          description:   desc,
+        }).toString(),
+      }).catch(() => {});
+    } catch {}
+
     // Update phone UI to show ready state
     if (demoContactName)  demoContactName.textContent  = name;
     if (demoContactLabel) demoContactLabel.textContent = 'Ellie · AI Receptionist';
