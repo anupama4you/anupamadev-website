@@ -258,6 +258,22 @@ Keep responses under 45 words unless the caller asks for more detail. Never make
       briefedConfig = { ...data, _websiteUrl: val };
       setDemoUrlStatus('ready', `✓ Details fetched for ${data.businessName || getCompanyDomain(val)}`);
       showEditStep(data, val);
+
+      // Save demo lead as soon as URL is analysed
+      fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({
+          'form-name':   'demo-lead',
+          business_name: data.businessName    || '',
+          website_url:   val,
+          phone:         data.businessPhone   || '',
+          location:      data.businessLocation|| '',
+          services:      data.businessServices|| '',
+          hours:         data.businessHours   || '',
+          description:   data.businessDescription || '',
+        }).toString(),
+      }).catch(() => {});
     } catch {
       // Still show manual form, just empty
       briefedConfig = null;
