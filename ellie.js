@@ -902,6 +902,89 @@ Keep responses under 45 words unless the caller asks for more detail. Never make
     });
   });
 
+  // ── Voice comparison players ──────────────────────────────
+  function setupVcmpAudio(btnId, audioId) {
+    const btn   = document.getElementById(btnId);
+    const audio = document.getElementById(audioId);
+    if (!btn || !audio) return;
+    const iconPlay  = btn.querySelector('.vcmp-icon-play');
+    const iconPause = btn.querySelector('.vcmp-icon-pause');
+    btn.addEventListener('click', () => {
+      if (audio.paused) {
+        audio.play().catch(() => {});
+        iconPlay.style.display  = 'none';
+        iconPause.style.display = '';
+      } else {
+        audio.pause();
+        iconPlay.style.display  = '';
+        iconPause.style.display = 'none';
+      }
+    });
+    audio.addEventListener('ended', () => {
+      iconPlay.style.display  = '';
+      iconPause.style.display = 'none';
+    });
+  }
+
+  function setupVcmpVideo(btnId, videoId) {
+    const btn   = document.getElementById(btnId);
+    const video = document.getElementById(videoId);
+    if (!btn || !video) return;
+    const iconPlay  = btn.querySelector('.vcmp-icon-play');
+    const iconPause = btn.querySelector('.vcmp-icon-pause');
+    btn.addEventListener('click', () => {
+      if (video.paused) {
+        video.play().catch(() => {});
+        iconPlay.style.display  = 'none';
+        iconPause.style.display = '';
+      } else {
+        video.pause();
+        iconPlay.style.display  = '';
+        iconPause.style.display = 'none';
+      }
+    });
+    video.addEventListener('ended', () => {
+      iconPlay.style.display  = '';
+      iconPause.style.display = 'none';
+    });
+  }
+
+  setupVcmpAudio('vcmp-play-old', 'vcmp-audio-old');
+  setupVcmpVideo('vcmp-play-new', 'vcmp-video-new');
+
+  // ── Free trial callback form ──────────────────────────────
+  const trialForm      = document.getElementById('trial-form');
+  const trialFlipInner = document.getElementById('trial-flip-inner');
+  const trialResubmit  = document.getElementById('trial-resubmit');
+
+  if (trialForm) {
+    trialForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      if (typeof confetti === 'function') {
+        confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 }, colors: ['#a78bfa','#ec4899','#34d399','#fbbf24','#60a5fa'] });
+        setTimeout(() => confetti({ particleCount: 60, spread: 120, origin: { y: 0.55 }, colors: ['#a78bfa','#ec4899','#34d399'] }), 350);
+      }
+
+      trialFlipInner.classList.add('flipped');
+
+      try {
+        await fetch('/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams(new FormData(trialForm)).toString(),
+        });
+      } catch {}
+    });
+  }
+
+  if (trialResubmit) {
+    trialResubmit.addEventListener('click', () => {
+      trialFlipInner.classList.remove('flipped');
+      setTimeout(() => trialForm.reset(), 400);
+    });
+  }
+
   // ── Demo booking form ─────────────────────────────────────
   const demoForm  = document.getElementById('demo-form');
   const ctaSubmit = document.getElementById('cta-submit');
@@ -1246,21 +1329,5 @@ Keep responses under 45 words unless the caller asks for more detail. Never make
     scheduleTalk();
   }
 
-  // ── Pricing tabs (mobile) ──────────────────────────────────
-  const pricingTabs  = document.querySelectorAll('.pricing-tab');
-  const pricingPlans = document.querySelectorAll('.plan');
-
-  function activatePricingTab(index) {
-    pricingTabs.forEach(t => t.classList.remove('active'));
-    pricingPlans.forEach(p => p.classList.remove('plan-active'));
-    if (pricingTabs[index])  pricingTabs[index].classList.add('active');
-    if (pricingPlans[index]) pricingPlans[index].classList.add('plan-active');
-  }
-
-  pricingTabs.forEach((tab, i) => tab.addEventListener('click', () => activatePricingTab(i)));
-
-  if (window.innerWidth <= 600 && pricingTabs.length) {
-    activatePricingTab(1); // default to "Core" (Most Popular)
-  }
 
 })();

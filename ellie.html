@@ -47,6 +47,10 @@
     }
     [data-theme="light"] body { background: var(--bg); color: var(--text); }
     [data-theme="light"] nav { background: rgba(248,250,252,.92); border-bottom-color: rgba(0,0,0,.08); }
+    .logo-dark  { display: block; }
+    .logo-light { display: none !important; }
+    [data-theme="light"] .logo-dark  { display: none !important; }
+    [data-theme="light"] .logo-light { display: block !important; }
     [data-theme="light"] nav.scrolled { background: rgba(248,250,252,.97); box-shadow: 0 1px 24px rgba(0,0,0,.08); }
     [data-theme="light"] .nav-links a { color: #334155; }
     [data-theme="light"] .nav-links a:hover { color: var(--violet); background: rgba(124,58,237,.06); }
@@ -72,8 +76,18 @@
     [data-theme="light"] .hero-rev-name { color: #0f172a; }
     [data-theme="light"] .hero-rev-card { background: rgba(0,0,0,.03); border-color: rgba(0,0,0,.07); }
     [data-theme="light"] .hero-rev-dot { background: rgba(0,0,0,.15); }
-    [data-theme="light"] .btn-ghost { color: #334155; border-color: rgba(0,0,0,.15); }
-    [data-theme="light"] .btn-ghost:hover { background: rgba(0,0,0,.04); }
+    [data-theme="light"] .btn-ghost { color: #1e293b; border-color: rgba(0,0,0,.28); background: rgba(0,0,0,.02); }
+    [data-theme="light"] .btn-ghost:hover { border-color: var(--violet); color: var(--violet); background: rgba(124,58,237,.05); }
+    [data-theme="light"] .hero-av-bubble { background: #fff; border-color: rgba(0,0,0,.1); box-shadow: 0 4px 24px rgba(0,0,0,.1); }
+    [data-theme="light"] .hero-av-bubble::before { border-bottom-color: #fff; }
+    [data-theme="light"] .hero-av-bubble p { color: #1e293b; }
+    [data-theme="light"] .hero-av-core { border-color: rgba(124,58,237,.4); box-shadow: 0 0 0 10px rgba(124,58,237,.07), 0 0 32px rgba(124,58,237,.18); }
+    [data-theme="light"] .hero-trust-badge { background: rgba(255,255,255,.9); border-color: rgba(0,0,0,.1); box-shadow: 0 2px 12px rgba(0,0,0,.08); }
+    [data-theme="light"] .hero-trust-google-label { color: #1e293b; }
+    [data-theme="light"] .hero-trust-sep { background: rgba(0,0,0,.12); }
+    [data-theme="light"] .hero-trust-stars b { color: #1e293b; }
+    [data-theme="light"] .hero-trust-count { color: #64748b; }
+    [data-theme="light"] .hero-av-wrap { background: transparent !important; border: none !important; box-shadow: none !important; backdrop-filter: none !important; }
     [data-theme="light"] .trust-strip { background: #fff; border-color: rgba(0,0,0,.07); }
     [data-theme="light"] .ts-val-grad { background: linear-gradient(135deg,var(--violet),var(--rose)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
     [data-theme="light"] .ts-label { color: #64748b; }
@@ -103,19 +117,27 @@
     [data-theme="light"] .demo-url-bar { background: #fff; border-color: rgba(124,58,237,.2); }
     [data-theme="light"] .demo-url-input { color: #0f172a; }
     [data-theme="light"] .phone-shell {
-      background: #07091a;
-      border-color: rgba(124,58,237,.18);
-      box-shadow: 0 0 0 6px rgba(124,58,237,.05), 0 32px 80px rgba(0,0,0,.35), 0 0 60px rgba(124,58,237,.06), inset 0 1px 0 rgba(255,255,255,.08);
+      background: #f8f9fb;
+      border-color: rgba(0,0,0,.14);
+      box-shadow: 0 0 0 7px rgba(0,0,0,.05), 0 28px 70px rgba(0,0,0,.16), inset 0 1px 0 rgba(255,255,255,.9);
     }
-    [data-theme="light"] .plan { background: #fff; border-color: rgba(0,0,0,.09); }
-    [data-theme="light"] .plan-name { color: #0f172a; }
-    [data-theme="light"] .plan-headline { color: #475569; }
-    [data-theme="light"] .plan-amt { color: #0f172a; }
-    [data-theme="light"] .plan-aud { color: #64748b; }
-    [data-theme="light"] .plan-list li { color: #475569; }
-    [data-theme="light"] .plan-section-label { color: #94a3b8; }
-    [data-theme="light"] .plan-divider { background: rgba(0,0,0,.07); }
-    [data-theme="light"] .pricing-trial-banner { background: rgba(124,58,237,.07); border-color: rgba(124,58,237,.2); }
+    [data-theme="light"] .phone-shell::before,
+    [data-theme="light"] .phone-shell::after { background: rgba(0,0,0,.15); }
+    [data-theme="light"] .phone-island { background: #0a0a0a; box-shadow: 0 0 0 1px rgba(0,0,0,.15); }
+    [data-theme="light"] .phone-statusbar { color: rgba(0,0,0,.45); }
+    [data-theme="light"] .phone-contact-name { color: #0f172a; }
+    [data-theme="light"] .phone-contact-label { color: #64748b; }
+    [data-theme="light"] .phone-status { color: var(--violet); }
+    [data-theme="light"] .phone-transcript { background: transparent; }
+    [data-theme="light"] .phone-transcript-empty { color: #94a3b8; }
+    [data-theme="light"] .phone-timer { color: #64748b; }
+    [data-theme="light"] .log-bubble.ellie-bub { background: rgba(124,58,237,.08); border-color: rgba(124,58,237,.18); color: #1e293b; }
+    [data-theme="light"] .log-bubble.caller-bub { background: #fff; border-color: rgba(0,0,0,.1); color: #475569; }
+    [data-theme="light"] .phone-btn-label { color: rgba(0,0,0,.35); }
+    [data-theme="light"] .pfl-text { color: rgba(0,0,0,.45); }
+    [data-theme="light"] .trial-input { background: #fff; border-color: rgba(0,0,0,.1); color: #0f172a; }
+    [data-theme="light"] .trial-input::placeholder { color: #94a3b8; }
+    [data-theme="light"] .trial-select option { background: #fff; color: #0f172a; }
     [data-theme="light"] .faq-item { border-color: rgba(0,0,0,.08); }
     [data-theme="light"] .faq-q { color: #0f172a; }
     [data-theme="light"] .faq-a p { color: #475569; }
@@ -153,18 +175,12 @@
     [data-theme="light"] .book-h2 { color: #0f172a; }
     [data-theme="light"] .book-chip { color: #475569; background: rgba(0,0,0,.04); border-color: rgba(0,0,0,.1); }
     /* Reviews section */
+    [data-theme="light"] .grev-logo-text { color: #0f172a; }
     [data-theme="light"] .grev-headline { color: #0f172a; }
     [data-theme="light"] .grev-name { color: #0f172a; }
     /* Comparison table */
     [data-theme="light"] .compare-table th.ct-ellie { color: var(--violet); }
     [data-theme="light"] .compare-table td.ct-ellie { color: #0f172a; }
-    /* Pricing section */
-    [data-theme="light"] .pricing-hd h2 { color: #0f172a; }
-    /* Pricing */
-    [data-theme="light"] .pricing-note { color: #94a3b8; }
-    [data-theme="light"] .pricing-trial-banner strong { color: #0f172a; }
-    [data-theme="light"] .plan-list li.exc { color: #94a3b8; }
-    [data-theme="light"] .plan-section-label { color: #94a3b8 !important; }
     /* CTA section */
     [data-theme="light"] .cta-header h2 { color: #0f172a; }
     [data-theme="light"] .cta-img-caption { color: #64748b; }
@@ -182,10 +198,42 @@
     [data-theme="light"] .int-cat:hover { border-color: rgba(124,58,237,.25); background: rgba(124,58,237,.04); }
     [data-theme="light"] .int-cat-icon--violet { background: rgba(124,58,237,.1); color: #7c3aed; }
     [data-theme="light"] .int-cat-icon--rose   { background: rgba(219,39,119,.1); color: #db2777; }
-    /* Dashboard — product screenshot stays dark, section is light */
+    /* Dashboard — light version */
     [data-theme="light"] .dashboard-sec { background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%); }
     [data-theme="light"] .dashboard-hd h2 { color: #0f172a; }
-    [data-theme="light"] .dash-mock { background: #07091a; border-color: rgba(124,58,237,.18); box-shadow: 0 0 0 1px rgba(124,58,237,.08), 0 40px 100px rgba(0,0,0,.35), 0 0 60px rgba(124,58,237,.06); }
+    [data-theme="light"] .dash-bullet-title { color: #0f172a; }
+    [data-theme="light"] .dash-mock { background: #fff; border-color: rgba(0,0,0,.1); box-shadow: 0 8px 40px rgba(0,0,0,.1), 0 1px 0 rgba(0,0,0,.06); }
+    [data-theme="light"] .dash-chrome { background: #f8fafc; border-bottom-color: rgba(0,0,0,.08); }
+    [data-theme="light"] .dash-chrome-url { color: #64748b; background: #fff; border-color: rgba(0,0,0,.1); }
+    [data-theme="light"] .dash-stats { border-bottom-color: rgba(0,0,0,.08); }
+    [data-theme="light"] .dash-stat { border-right-color: rgba(0,0,0,.06); }
+    [data-theme="light"] .dash-stat-val { color: #0f172a; }
+    [data-theme="light"] .dash-stat-label { color: #475569; }
+    [data-theme="light"] .dash-tabs { background: #f8fafc; border-bottom-color: rgba(0,0,0,.08); }
+    [data-theme="light"] .dash-tab { color: #64748b; }
+    [data-theme="light"] .dash-tab.active { color: #7c3aed; border-bottom-color: #7c3aed; }
+    [data-theme="light"] .dash-tab:hover:not(.active) { color: #475569; }
+    [data-theme="light"] .dash-panel-hdr { border-bottom-color: rgba(0,0,0,.07); }
+    [data-theme="light"] .dash-panel-title { color: #475569; }
+    [data-theme="light"] .dash-panel-tag { color: #64748b; }
+    [data-theme="light"] .call-row:hover { background: rgba(0,0,0,.03); }
+    [data-theme="light"] .call-name { color: #0f172a; }
+    [data-theme="light"] .call-meta { color: #64748b; }
+    [data-theme="light"] .call-dur  { color: #475569; }
+    [data-theme="light"] .appt-row { background: #f8fafc; border-color: rgba(0,0,0,.08); }
+    [data-theme="light"] .appt-cal-num { color: #0f172a; }
+    [data-theme="light"] .appt-client { color: #0f172a; }
+    [data-theme="light"] .appt-service { color: #64748b; }
+    [data-theme="light"] .analytics-chart { border-bottom-color: rgba(0,0,0,.08); }
+    [data-theme="light"] .bar-val-lbl { color: #64748b; }
+    [data-theme="light"] .bar-day-lbl { color: #64748b; }
+    [data-theme="light"] .analytics-kpis { border-top-color: rgba(0,0,0,.07); }
+    [data-theme="light"] .a-kpi-lbl { color: #64748b; }
+    [data-theme="light"] .a-leg-item { color: #64748b; }
+    [data-theme="light"] .rec-row { background: #f8fafc; border-color: rgba(0,0,0,.08); }
+    [data-theme="light"] .rec-bar { background: rgba(124,58,237,.2); }
+    [data-theme="light"] .rec-dl { background: #f1f5f9; border-color: rgba(0,0,0,.1); color: #64748b; }
+    [data-theme="light"] .rec-dl:hover { color: #0f172a; background: #e2e8f0; }
     /* CTA section */
     [data-theme="light"] .cta-card { background: #fff; border-color: rgba(0,0,0,.08); box-shadow: 0 8px 40px rgba(0,0,0,.08); }
 
@@ -312,6 +360,7 @@
       transition: color .2s, background .2s;
     }
     .nav-links a:hover { color: var(--text); background: rgba(255,255,255,.05); }
+    .nav-ctas { display: flex; align-items: center; gap: 8px; }
     .nav-book {
       color: var(--text) !important; font-family: 'Inter', sans-serif;
       font-weight: 600 !important; font-size: .82rem !important;
@@ -453,8 +502,6 @@
     .hero-checks { display: flex; gap: 14px; flex-wrap: nowrap; }
     .hero-check { display: flex; align-items: center; gap: 6px; font-size: .78rem; color: var(--muted); white-space: nowrap; }
     .hero-check svg { color: var(--green); flex-shrink: 0; }
-    .hero-book-btn { min-width: 240px; justify-content: center; }
-
     /* ── HERO URL BAR ── */
     .hero-url-wrap { margin-bottom: 1.6rem; }
     .hero-url-label {
@@ -1143,43 +1190,44 @@
     /* Phone shell */
     .phone-wrap { display: flex; flex-direction: column; align-items: center; gap: 0; }
     .phone-shell {
-      width: 310px;
+      width: 300px;
+      height: 640px;
       background: #090b13;
-      border-radius: 42px;
-      border: 1.5px solid rgba(255,255,255,.1);
+      border-radius: 44px;
+      border: 2px solid rgba(255,255,255,.12);
       box-shadow:
-        0 0 0 6px rgba(255,255,255,.03),
-        0 32px 80px rgba(0,0,0,.7),
+        0 0 0 7px rgba(255,255,255,.04),
+        0 28px 70px rgba(0,0,0,.7),
         inset 0 1px 0 rgba(255,255,255,.08);
       overflow: hidden;
       position: relative;
     }
     .phone-shell::before {
       content: '';
-      position: absolute; left: -3px; top: 100px;
-      width: 3px; height: 56px;
-      background: rgba(255,255,255,.08); border-radius: 2px 0 0 2px;
+      position: absolute; left: -4px; top: 80px;
+      width: 4px; height: 40px;
+      background: rgba(255,255,255,.1); border-radius: 2px 0 0 2px;
     }
     .phone-shell::after {
       content: '';
-      position: absolute; right: -3px; top: 128px;
-      width: 3px; height: 36px;
-      background: rgba(255,255,255,.08); border-radius: 0 2px 2px 0;
+      position: absolute; right: -4px; top: 102px;
+      width: 4px; height: 28px;
+      background: rgba(255,255,255,.1); border-radius: 0 2px 2px 0;
     }
     .phone-statusbar {
       display: flex; align-items: center; justify-content: space-between;
       padding: 14px 20px 0;
-      font-size: .6rem; font-weight: 600; color: rgba(255,255,255,.5); letter-spacing: .04em;
+      font-size: .58rem; font-weight: 600; color: rgba(255,255,255,.5); letter-spacing: .04em;
     }
     .phone-statusbar-right { display: flex; align-items: center; gap: 5px; }
     .phone-island {
-      width: 88px; height: 26px;
+      width: 70px; height: 10px;
       background: #000; border-radius: 100px;
-      margin: 8px auto 0;
+      margin: 2px auto 0;
     }
     .phone-screen {
-      padding: 18px 18px 22px;
-      display: flex; flex-direction: column; align-items: center; gap: 14px;
+      padding: 8px 14px 16px;
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
     }
 
     /* Phone avatar */
@@ -1187,8 +1235,8 @@
       display: flex; flex-direction: column; align-items: center; gap: 9px; text-align: center;
     }
     .phone-avatar {
-      width: 140px; height: 178px;
-      border-radius: 28px;
+      width: 100px; height: 116px;
+      border-radius: 18px;
       border: 2px solid rgba(167,139,250,.28);
       overflow: hidden;
       display: flex; align-items: center; justify-content: center;
@@ -1297,7 +1345,7 @@
 
     .phone-transcript {
       width:100%;background:rgba(255,255,255,.03);border:1px solid var(--border);
-      border-radius:14px;height:188px;overflow-y:auto;padding:12px;
+      border-radius:14px;height:140px;overflow-y:auto;padding:10px;
       display:flex;flex-direction:column;gap:8px;
       scrollbar-width:thin;scrollbar-color:rgba(167,139,250,.3) transparent;
     }
@@ -1448,88 +1496,207 @@
     .live-privacy { display:flex;align-items:center;gap:6px;font-size:.7rem;color:rgba(255,255,255,.3); }
     .live-privacy svg { flex-shrink:0; }
 
-    /* ── PRICING ── */
-    /* ── PRICING ── */
+    /* ── PRICING / FREE TRIAL ── */
     .pricing { background: var(--bg); }
-    .pricing-hd { text-align: center; max-width: 520px; margin: 0 auto 3rem; }
-    .pricing-hd h2 { font-size: clamp(1.75rem, 3vw, 2.4rem); color: #fff; margin-bottom: .75rem; }
-    .pricing-hd p  { font-size: .9rem; color: var(--muted); line-height: 1.72; }
-    .plans { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; align-items: stretch; }
-    .plan {
-      background: var(--bg2); border: 1px solid rgba(255,255,255,.08);
-      border-radius: 20px; padding: 28px 24px 24px;
-      position: relative; display: flex; flex-direction: column; height: 100%;
-      transition: transform .25s, box-shadow .25s, border-color .25s;
+    .trial-wrap {
+      max-width: 520px; margin: 0 auto; text-align: center;
+      display: flex; flex-direction: column; align-items: center; gap: 0;
     }
-    .plan:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(0,0,0,.35); }
-    .plan-feat {
-      border-color: rgba(167,139,250,.4);
-      background: linear-gradient(160deg, rgba(167,139,250,.06) 0%, var(--bg2) 50%);
-      box-shadow: 0 0 0 1px rgba(167,139,250,.18), 0 12px 40px rgba(167,139,250,.1);
-    }
-    .plan-feat:hover { box-shadow: 0 0 0 1px rgba(167,139,250,.35), 0 20px 56px rgba(167,139,250,.18); }
-    .plan-badge {
-      position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
-      background: linear-gradient(135deg, var(--violet), var(--rose));
-      color: #fff; font-family: 'Inter', sans-serif;
-      font-size: .6rem; font-weight: 800; letter-spacing: .12em;
-      text-transform: uppercase; padding: 4px 14px; border-radius: 100px;
-      white-space: nowrap; box-shadow: 0 4px 14px rgba(167,139,250,.3);
-    }
-    .plan-name {
+    .trial-hook {
       font-family: 'Inter', sans-serif;
-      font-size: .7rem; font-weight: 700; letter-spacing: .12em;
-      text-transform: uppercase; color: var(--muted); margin-bottom: .5rem;
+      font-size: clamp(2rem, 4.5vw, 3rem);
+      font-weight: 800; letter-spacing: -.04em;
+      line-height: 1.1; margin-bottom: 1rem; color: var(--text);
     }
-    .plan-headline {
-      font-family: 'Inter', sans-serif;
-      font-size: .97rem; font-weight: 600; color: #fff;
-      line-height: 1.35; margin-bottom: 1.1rem;
+    .trial-sub {
+      font-size: .95rem; color: var(--muted); line-height: 1.7;
+      max-width: 400px; margin-bottom: 2.2rem;
     }
-    .plan-price { display: flex; align-items: baseline; gap: 2px; margin-bottom: .25rem; }
-    .plan-currency { font-size: 1.2rem; font-weight: 700; color: #fff; align-self: flex-start; margin-top: 6px; }
-    .plan-amt { font-family: 'Inter', sans-serif; font-size: 3rem; font-weight: 700; letter-spacing: -.05em; color: #fff; line-height: 1; }
-    .plan-per { font-size: .78rem; color: var(--muted); margin-left: 2px; }
-    .plan-aud  { font-size: .68rem; color: var(--muted); margin-bottom: 1.4rem; }
-    .plan-divider { height: 1px; background: rgba(255,255,255,.06); margin: 1.1rem 0; }
-    .plan-section-label {
-      font-size: .6rem; font-weight: 700; letter-spacing: .12em;
-      text-transform: uppercase; color: var(--muted); margin-bottom: .55rem; opacity: .6;
+    .trial-form { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 0; }
+    .trial-fields {
+      width: 100%; display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px;
     }
-    .plan-list { list-style: none; display: flex; flex-direction: column; gap: 8px; margin-bottom: 1rem; }
-    .plan-list li { display: flex; align-items: flex-start; gap: 8px; font-size: .8rem; line-height: 1.45; }
-    .plan-list li.inc  { color: var(--text); }
-    .plan-list li.exc  { color: rgba(148,163,184,.38); }
-    .plan-list li.inc svg { color: var(--violet); flex-shrink: 0; margin-top: 1px; }
-    .plan-list li.exc .exc-x { flex-shrink: 0; width: 13px; height: 13px; margin-top: 1px; opacity: .45; }
-    .plan-spacer { flex: 1; }
-    .plan-cta {
-      display: block; text-align: center; padding: 11px 16px;
-      border-radius: 9px; font-family: 'Inter', sans-serif;
-      font-weight: 700; font-size: .85rem; letter-spacing: -.01em;
-      text-decoration: none; transition: all .2s; margin-top: 1.2rem;
+    .trial-input {
+      width: 100%; padding: 13px 16px;
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 10px; color: var(--text);
+      font-family: 'Inter', sans-serif; font-size: .92rem;
+      outline: none; transition: border-color .2s, box-shadow .2s;
+      box-sizing: border-box; appearance: none;
     }
-    .plan-cta-primary {
-      background: linear-gradient(135deg, var(--violet), var(--rose));
-      color: #fff; box-shadow: 0 0 18px rgba(167,139,250,.3);
-    }
-    .plan-cta-primary:hover { box-shadow: 0 0 32px rgba(167,139,250,.5); transform: translateY(-1px); }
-    .plan-cta-ghost {
-      background: transparent; border: 1px solid rgba(255,255,255,.12); color: var(--text);
-    }
-    .plan-cta-ghost:hover { border-color: var(--violet); color: var(--violet); background: rgba(167,139,250,.04); }
-    .pricing-note { text-align:center;font-size:.76rem;color:rgba(255,255,255,.28);margin-top:1.8rem;letter-spacing:.03em; }
-    .pricing-trial-banner {
+    .trial-input::placeholder { color: var(--muted); }
+    .trial-input:focus { border-color: var(--violet); box-shadow: 0 0 0 3px var(--violet-b); }
+    .trial-select { cursor: pointer; }
+    .trial-select option { background: var(--bg2); color: var(--text); }
+    .trial-cta {
+      width: 100%; padding: 15px 24px;
       display: flex; align-items: center; justify-content: center; gap: 8px;
-      background: rgba(167,139,250,.08); border: 1px solid rgba(167,139,250,.22);
-      border-radius: 100px; padding: 10px 22px; margin: 0 auto 2rem;
-      font-size: .82rem; color: rgba(255,255,255,.75); max-width: fit-content;
-      color: var(--violet);
+      background: linear-gradient(135deg, var(--violet), var(--rose));
+      color: #fff; border: none; border-radius: 10px; cursor: pointer;
+      font-family: 'Inter', sans-serif; font-size: 1rem; font-weight: 700;
+      letter-spacing: -.01em; transition: box-shadow .2s, transform .15s;
+      box-shadow: 0 0 24px rgba(167,139,250,.3);
+      margin-bottom: 14px;
     }
-    .pricing-trial-banner strong { color: #fff; }
-    .pricing-trial-banner svg { flex-shrink: 0; }
-    .pricing-tabs { display: none; }
-    .pricing-swipe-hint { display: none; }
+    .trial-cta {
+      background-size: 200% auto !important;
+      background-image: linear-gradient(110deg, var(--violet) 0%, var(--rose) 40%, #fff5 50%, var(--rose) 60%, var(--violet) 100%) !important;
+      animation: navShimmer 6s linear infinite;
+    }
+    .trial-cta:hover { box-shadow: 0 0 40px rgba(167,139,250,.5); transform: translateY(-1px); animation: none; }
+    .trial-fine {
+      font-size: .88rem; color: var(--muted); letter-spacing: .01em; margin: 0;
+    }
+    /* ── Card flip ── */
+    .trial-flip-wrap { max-width: 520px; margin: 0 auto; perspective: 1200px; }
+    .trial-flip-inner {
+      display: grid; width: 100%;
+      transform-style: preserve-3d;
+      transition: transform .7s cubic-bezier(.4,0,.2,1);
+    }
+    .trial-flip-inner.flipped { transform: rotateY(180deg); }
+    .trial-flip-front,
+    .trial-flip-back {
+      grid-area: 1 / 1;
+      width: 100%;
+      backface-visibility: hidden; -webkit-backface-visibility: hidden;
+    }
+    .trial-flip-back {
+      transform: rotateY(180deg);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    .trial-success-icon {
+      width: 80px; height: 80px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--violet), var(--rose));
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 1.6rem; color: #fff;
+      box-shadow: 0 0 40px rgba(167,139,250,.4);
+    }
+    .trial-success-h {
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(1.5rem, 3.5vw, 2rem);
+      font-weight: 800; letter-spacing: -.03em;
+      line-height: 1.2; margin-bottom: 1rem; color: var(--text);
+    }
+    .trial-resubmit {
+      margin-top: 1.8rem; display: inline-flex; align-items: center; gap: 8px;
+      background: transparent; border: 1px solid var(--border);
+      color: var(--muted); border-radius: 100px; padding: 10px 20px;
+      font-family: 'Inter', sans-serif; font-size: .85rem; font-weight: 600;
+      cursor: pointer; transition: border-color .2s, color .2s;
+    }
+    .trial-resubmit:hover { border-color: var(--violet); color: var(--violet); }
+    @keyframes shimmerGrad {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .trial-price-line span {
+      background: linear-gradient(90deg, #a78bfa, #ec4899, #f97316, #a78bfa);
+      background-size: 300% 300%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmerGrad 3s ease infinite;
+    }
+
+    /* ── VOICE COMPARISON ── */
+    .vcmp-sec { background: var(--bg2); position: relative; overflow: hidden; padding: 52px 0; }
+    .vcmp-sec::before { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg,transparent,var(--border),transparent); }
+    .vcmp-hd { text-align: center; margin-bottom: 1.6rem; }
+    .vcmp-sub { font-size: .95rem; color: var(--muted); max-width: 480px; margin: .6rem auto 0; line-height: 1.6; }
+    .vcmp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: stretch; }
+    .vcmp-panel {
+      border-radius: 20px; padding: 20px 20px 16px;
+      display: flex; flex-direction: column; gap: 14px;
+      border: 1px solid var(--border);
+    }
+    .vcmp-old {
+      background: #0a0a0a; border-color: rgba(255,255,255,.07);
+      filter: saturate(0);
+    }
+    .vcmp-new {
+      background: linear-gradient(160deg, rgba(124,58,237,.12), var(--bg2) 60%);
+      border-color: rgba(124,58,237,.25);
+      box-shadow: 0 0 0 1px rgba(124,58,237,.1), 0 12px 48px rgba(124,58,237,.1);
+    }
+    .vcmp-panel-label {
+      display: flex; align-items: center; gap: 8px;
+      font-family: 'Inter', sans-serif; font-size: .72rem; font-weight: 700;
+      letter-spacing: .1em; text-transform: uppercase;
+    }
+    .vcmp-old .vcmp-panel-label { color: rgba(255,255,255,.45); }
+    .vcmp-new .vcmp-panel-label { color: var(--violet); }
+    .vcmp-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .vcmp-dot-old { background: rgba(255,255,255,.3); }
+    .vcmp-dot-new { background: var(--violet); box-shadow: 0 0 8px rgba(124,58,237,.6); }
+    .vcmp-media-wrap {
+      position: relative; border-radius: 14px; overflow: hidden;
+      height: 300px; flex-shrink: 0;
+    }
+    .vcmp-img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      filter: grayscale(1) contrast(1.05);
+    }
+    .vcmp-video {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      border-radius: 16px;
+    }
+    .vcmp-img-overlay {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 16px; display: flex; align-items: center; gap: 12px;
+      background: linear-gradient(to top, rgba(0,0,0,.75) 0%, transparent 100%);
+    }
+    .vcmp-overlay-ellie {
+      background: linear-gradient(to top, rgba(15,5,30,.85) 0%, transparent 100%);
+    }
+    .vcmp-play-btn {
+      width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;
+      background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.15);
+      color: rgba(255,255,255,.8); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: transform .15s, background .2s;
+    }
+    .vcmp-play-btn:hover { transform: scale(1.08); background: rgba(255,255,255,.18); }
+    .vcmp-play-btn-ellie {
+      background: linear-gradient(135deg, var(--violet), var(--rose));
+      border-color: transparent; color: #fff;
+      box-shadow: 0 0 16px rgba(124,58,237,.4);
+    }
+    .vcmp-play-btn-ellie:hover { box-shadow: 0 0 28px rgba(124,58,237,.6); }
+    .vcmp-waveform {
+      display: flex; align-items: center; gap: 3px; flex: 1; height: 28px;
+    }
+    .vcmp-waveform span {
+      flex: 1; background: rgba(255,255,255,.2); border-radius: 2px;
+      animation: vcmpWave .9s ease-in-out infinite;
+    }
+    .vcmp-waveform-ellie span { background: rgba(124,58,237,.5); }
+    .vcmp-waveform span:nth-child(1)  { height: 30%; animation-delay: 0s; }
+    .vcmp-waveform span:nth-child(2)  { height: 60%; animation-delay: .08s; }
+    .vcmp-waveform span:nth-child(3)  { height: 90%; animation-delay: .16s; }
+    .vcmp-waveform span:nth-child(4)  { height: 50%; animation-delay: .24s; }
+    .vcmp-waveform span:nth-child(5)  { height: 75%; animation-delay: .32s; }
+    .vcmp-waveform span:nth-child(6)  { height: 40%; animation-delay: .40s; }
+    .vcmp-waveform span:nth-child(7)  { height: 85%; animation-delay: .48s; }
+    .vcmp-waveform span:nth-child(8)  { height: 55%; animation-delay: .56s; }
+    .vcmp-waveform span:nth-child(9)  { height: 70%; animation-delay: .64s; }
+    .vcmp-waveform span:nth-child(10) { height: 35%; animation-delay: .72s; }
+    .vcmp-waveform span:nth-child(11) { height: 80%; animation-delay: .80s; }
+    .vcmp-waveform span:nth-child(12) { height: 45%; animation-delay: .88s; }
+    .vcmp-waveform span:nth-child(13) { height: 65%; animation-delay: .96s; }
+    .vcmp-waveform span:nth-child(14) { height: 50%; animation-delay: 1.04s; }
+    .vcmp-waveform span:nth-child(15) { height: 30%; animation-delay: 1.12s; }
+    @keyframes vcmpWave {
+      0%,100% { transform: scaleY(1); opacity: .5; }
+      50%      { transform: scaleY(1.5); opacity: 1; }
+    }
+    .vcmp-player-label { font-size: .72rem; color: var(--muted); white-space: nowrap; }
+    [data-theme="light"] .vcmp-old { background: #1e1e1e; }
+    [data-theme="light"] .vcmp-bubble-customer { background: #fff; }
+    @media (max-width: 640px) {
+      .vcmp-grid { grid-template-columns: 1fr; }
+    }
 
     /* ── TESTIMONIALS ── */
     /* ── GOOGLE REVIEWS ── */
@@ -2136,14 +2303,15 @@
       .demo-copy h2 { font-size: 1.6rem; }
       .phone-wrap { scroll-margin-top: 72px; }
       .live-in  { grid-template-columns:1fr; }
-      .plans { grid-template-columns:repeat(2,1fr); gap:12px; }
-      .plan { padding:24px 18px 20px; border-radius:18px; }
-      .plan-amt { font-size:2.6rem; }
-      .plan-list li { font-size:.78rem; }
+
       .proof-bridge-grid { grid-template-columns:1fr !important; }
       .cta-form { grid-template-columns:1fr; }
       .cta-card { padding:36px 24px; }
-      nav .nav-links, nav .nav-cta, nav .nav-book { display:none; }
+      nav .nav-links { display:none; }
+      .nav-ctas { display: flex; gap: 6px; }
+      .nav-book { font-size: .72rem !important; padding: 6px 10px !important; }
+      .nav-cta  { font-size: .72rem !important; padding: 6px 10px !important; }
+      .nav-cta svg { display: none; }
       .nav-hamburger { display:flex; }
       .book-layout { grid-template-columns: 1fr; gap: 36px; }
       .book-testimonial { display: none; }
@@ -2263,41 +2431,6 @@
       /* ── Other sections ── */
       .hero-rev-card-wrap { min-height:185px; }
       .feat-grid { grid-template-columns:1fr; }
-      /* ── Pricing tabs ── */
-      .pricing-tabs {
-        display: flex; gap: 5px; margin-bottom: 24px;
-        background: rgba(255,255,255,.05);
-        border: 1px solid rgba(255,255,255,.09);
-        border-radius: 14px; padding: 5px;
-      }
-      .pricing-tab {
-        flex: 1; padding: 10px 4px; border-radius: 10px;
-        border: none; background: transparent;
-        font-family: 'Inter',sans-serif; font-size: .73rem; font-weight: 700;
-        color: rgba(148,163,184,.65); cursor: pointer; text-align: center;
-        white-space: nowrap; transition: all .2s; line-height: 1.3;
-      }
-      .pricing-tab.active {
-        background: linear-gradient(135deg, var(--violet), var(--rose));
-        color: #fff;
-        box-shadow: 0 2px 16px rgba(167,139,250,.4);
-        border-radius: 10px;
-      }
-      .plans { display: block; }
-      .plan { display: none; }
-      .plan.plan-active {
-        display: flex;
-        margin-top: 12px;
-        padding: 36px 22px 26px;
-        border-radius: 22px;
-      }
-      .plan.plan-active.plan-feat {
-        padding-top: 42px;
-      }
-      .plan.plan-active .plan-amt { font-size: 3.4rem; }
-      .plan.plan-active .plan-list li { font-size: .85rem; }
-      .plan.plan-active .plan-cta { padding: 14px 16px; font-size: .9rem; }
-      .pricing-hd { margin-bottom: 2rem; }
       .problem { padding-top: 48px; padding-bottom: 52px; }
       .problem { padding-top: 52px; padding-bottom: 56px; }
       .prob-hd { margin-bottom: 1.4rem; }
@@ -2328,7 +2461,7 @@
       .demo-generate-btn { font-size: .88rem; padding: 13px 18px; }
       .phone-wrap { scroll-margin-top: 68px; }
       .phone-shell { width: 100%; max-width: 300px; }
-      .phone-avatar { width: 120px; height: 152px; border-radius: 22px; }
+      .phone-avatar { width: 92px; height: 108px; border-radius: 16px; }
       .book-h2 { font-size: 1.6rem; }
       .book-trust-chips { gap: 6px; }
       .book-chip { font-size: .7rem; padding: 5px 10px; }
@@ -2578,18 +2711,21 @@
 <nav id="main-nav">
   <div class="nav-in">
     <a href="index.html" class="nav-logo" aria-label="Ellie AI Receptionist — home">
-      <img src="assets/ellie/logo.png" alt="Ellie AI Receptionist by anupama.dev">
+      <img src="assets/ellie/logo.png" class="logo-dark" alt="Ellie AI Receptionist by anupama.dev">
+      <img src="assets/ellie/dark-logo.png" class="logo-light" alt="Ellie AI Receptionist by anupama.dev">
     </a>
     <ul class="nav-links">
-      <li><a href="#demo">Live Demo</a></li>
       <li><a href="#how-it-works">How It Works</a></li>
-      <li><a href="#pricing">Pricing</a></li>
-      <li><a href="blog.html">Blog</a></li>
-      <li><a href="#book" class="nav-book">Book Free 10-Min Call</a></li>
-      <li><a href="#demo" class="nav-cta">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;margin-right:5px;margin-top:-1px"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.39 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.9a16 16 0 0 0 6.09 6.09l.97-1.06a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>Try Live Demo
-      </a></li>
+      <li><a href="#demo">Live Demo</a></li>
+      <li><a href="#testimonials">Reviews</a></li>
+      <li><a href="#faq">FAQ</a></li>
     </ul>
+    <div class="nav-ctas">
+      <a href="#demo" class="nav-book">Try Live Demo</a>
+      <a href="#book" class="nav-cta">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;margin-right:5px;margin-top:-1px"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.39 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.9a16 16 0 0 0 6.09 6.09l.97-1.06a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>Request a callback
+      </a>
+    </div>
     <button class="theme-toggle" id="theme-toggle" aria-label="Toggle light/dark mode">
       <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
       <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
@@ -2599,15 +2735,13 @@
     </button>
   </div>
   <div class="nav-mobile" id="mobile-menu" role="navigation">
-    <a href="#demo">Live Demo</a>
     <a href="#how-it-works">How It Works</a>
-    <a href="#pricing">Pricing</a>
+    <a href="#demo">Live Demo</a>
+    <a href="#testimonials">Reviews</a>
     <a href="#faq">FAQ</a>
-    <a href="blog.html">Blog</a>
     <div class="nav-mobile-divider"></div>
-    <a href="#try-live">📞 Try Free Call</a>
-    <a href="#book" style="color:var(--violet);font-weight:600;">Book Free 10-Min Call →</a>
-    <a href="index.html" style="opacity:.5;font-size:.8rem;">← anupama.dev portfolio</a>
+    <a href="#demo">Try Live Demo</a>
+    <a href="#book" style="color:var(--violet);font-weight:600;">Request a callback →</a>
   </div>
 </nav>
 
@@ -2673,8 +2807,8 @@
 
       <div class="hero-actions">
         <a href="#book" class="btn-ghost hero-book-btn">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-          Book Your Free 30-Min Call
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.39 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.9a16 16 0 0 0 6.09 6.09l.97-1.06a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          Request a Free Callback
         </a>
       </div>
       <div class="hero-checks">
@@ -2880,6 +3014,63 @@
       </div>
     </div>
 
+  </div>
+</section>
+
+<!-- ── VOICE COMPARISON ── -->
+<section class="vcmp-sec">
+  <div class="container">
+    <div class="vcmp-hd reveal">
+      <div class="sec-tag" style="justify-content:center;">Hear the Difference</div>
+      <h2 class="sec-h2">Your callers don't want <span class="h2-grad">to press buttons.</span></h2>
+      <p class="vcmp-sub">Listen to what your customers hear today — then hear what they'll get with Ellie instead.</p>
+    </div>
+
+    <div class="vcmp-grid reveal">
+
+      <!-- LEFT: Old IVR -->
+      <div class="vcmp-panel vcmp-old">
+        <div class="vcmp-panel-label">
+          <span class="vcmp-dot vcmp-dot-old"></span>
+          The old way
+        </div>
+        <div class="vcmp-media-wrap">
+          <img src="assets/ellie/ivr-sample.png" alt="Frustrated customer on hold" class="vcmp-img">
+          <div class="vcmp-img-overlay">
+            <button class="vcmp-play-btn" id="vcmp-play-old" aria-label="Play IVR example">
+              <svg class="vcmp-icon-play" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              <svg class="vcmp-icon-pause" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="display:none"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+            </button>
+            <div class="vcmp-waveform" id="vcmp-waveform-old">
+              <span></span><span></span><span></span><span></span><span></span>
+              <span></span><span></span><span></span><span></span><span></span>
+              <span></span><span></span><span></span><span></span><span></span>
+            </div>
+            <span class="vcmp-player-label">Listen to IVR call</span>
+            <audio id="vcmp-audio-old" src="assets/ellie/ivr-sample.mp3" preload="none"></audio>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: Ellie -->
+      <div class="vcmp-panel vcmp-new">
+        <div class="vcmp-panel-label">
+          <span class="vcmp-dot vcmp-dot-new"></span>
+          With Ellie
+        </div>
+        <div class="vcmp-media-wrap">
+          <video id="vcmp-video-new" src="assets/ellie/ellie-sample.mp4" preload="metadata" playsinline loop class="vcmp-video"></video>
+          <div class="vcmp-img-overlay vcmp-overlay-ellie" id="vcmp-overlay-new">
+            <button class="vcmp-play-btn vcmp-play-btn-ellie" id="vcmp-play-new" aria-label="Play Ellie demo">
+              <svg class="vcmp-icon-play" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              <svg class="vcmp-icon-pause" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="display:none"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+            </button>
+            <span class="vcmp-player-label">Watch Ellie in action</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
   </div>
 </section>
 
@@ -4119,219 +4310,58 @@
 </section>
 
 
-<!-- ── PRICING ── -->
-<section id="pricing" class="pricing">
-  <div class="container">
-    <div class="pricing-hd reveal">
-      <div class="sec-tag" style="justify-content:center;">Packages</div>
-      <h2 class="sec-h2">A plan built for<br><span class="h2-grad">where you are now.</span></h2>
-      <p>No setup fees. No lock-in contracts. Scale up as you grow.</p>
-    </div>
-    <div class="pricing-trial-banner">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-      Every plan includes a <strong>7-day free trial</strong> — we set everything up for you on a free 10-min call
-    </div>
-
-    <div class="pricing-tabs">
-      <button class="pricing-tab" data-plan="0">Starter</button>
-      <button class="pricing-tab" data-plan="1">Core ⭐</button>
-      <button class="pricing-tab" data-plan="2">Pro</button>
-      <button class="pricing-tab" data-plan="3">Enterprise</button>
-    </div>
-    <div class="plans">
-
-      <!-- PLAN 1: Starter -->
-      <div class="plan reveal">
-        <div class="plan-name">Starter</div>
-        <div class="plan-headline">Never miss a customer call again</div>
-        <div class="plan-price">
-          <span class="plan-currency">$</span>
-          <span class="plan-amt">199</span>
-        </div>
-        <div class="plan-aud">AUD / month · 7-day free trial</div>
-        <div class="plan-divider"></div>
-        <div class="plan-section-label">Included</div>
-        <ul class="plan-list">
-          <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Up to 150 calls per month</li>
-          <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>24/7 AI call answering</li>
-          <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Appointment request capture</li>
-          <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>SMS &amp; email confirmation to customer</li>
-          <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>After-hours &amp; business hours handling</li>
-          <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Google Sheets call log</li>
-          <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>1 business number · email support</li>
-        </ul>
-        <div class="plan-divider"></div>
-        <div class="plan-section-label">Not included</div>
-        <ul class="plan-list">
-          <li class="exc"><svg class="exc-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Calendar integration</li>
-          <li class="exc"><svg class="exc-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Call transfer</li>
-          <li class="exc"><svg class="exc-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Analytics dashboard</li>
-        </ul>
-        <div class="plan-spacer"></div>
-        <a href="#book" class="plan-cta plan-cta-ghost">Book a Free 10-min Call</a>
-      </div>
-
-      <!-- PLAN 2: Core — RECOMMENDED -->
-      <div class="plan plan-feat reveal">
-        <div class="plan-badge">⭐ Most Popular</div>
-        <div class="plan-name">Core</div>
-        <div class="plan-headline">Capture every enquiry and book it automatically</div>
-        <div class="plan-price">
-          <span class="plan-currency">$</span>
-          <span class="plan-amt">299</span>
-        </div>
-        <div class="plan-aud">AUD / month · 7-day free trial</div>
-        <div class="plan-divider"></div>
-        <div class="plan-section-label">Included</div>
-        <ul class="plan-list">
-          <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Up to 300 calls per month</li>
-          <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Everything in Starter</li>
-          <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Confirmed appointment booking</li>
-          <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Google Calendar / TeamUp integration</li>
-          <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>SMS reminders &amp; follow-ups</li>
-          <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Call history dashboard</li>
-          <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Priority email support</li>
-        </ul>
-        <div class="plan-divider"></div>
-        <div class="plan-section-label">Not included</div>
-        <ul class="plan-list">
-          <li class="exc"><svg class="exc-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Call transfer</li>
-          <li class="exc"><svg class="exc-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Advanced analytics</li>
-          <li class="exc"><svg class="exc-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>CRM integration</li>
-        </ul>
-        <div class="plan-spacer"></div>
-        <a href="#book" class="plan-cta plan-cta-primary">Book a Free 10-min Call</a>
-      </div>
-
-      <!-- PLAN 3: Professional -->
-      <div class="plan reveal">
-        <div class="plan-name">Professional</div>
-        <div class="plan-headline">Full automation with smart call handling</div>
-        <div class="plan-price">
-          <span class="plan-currency">$</span>
-          <span class="plan-amt">399</span>
-        </div>
-        <div class="plan-aud">AUD / month · 7-day free trial</div>
-        <div class="plan-divider"></div>
-        <div class="plan-section-label">Included</div>
-        <ul class="plan-list">
-          <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Up to 600 calls per month</li>
-          <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Everything in Core</li>
-          <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Smart call transfer to business owner</li>
-          <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Automated reminders &amp; reschedule handling</li>
-          <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Advanced analytics dashboard</li>
-          <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Zapier &amp; Google Sheets automation</li>
-          <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Custom AI greeting &amp; personality</li>
-        </ul>
-        <div class="plan-divider"></div>
-        <div class="plan-section-label">Not included</div>
-        <ul class="plan-list">
-          <li class="exc"><svg class="exc-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>CRM integrations</li>
-          <li class="exc"><svg class="exc-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Multi-agent routing</li>
-          <li class="exc"><svg class="exc-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Dedicated account manager</li>
-        </ul>
-        <div class="plan-spacer"></div>
-        <a href="#book" class="plan-cta plan-cta-ghost">Book a Free 10-min Call</a>
-      </div>
-
-      <!-- PLAN 4: Enterprise -->
-      <div class="plan reveal">
-        <div class="plan-name">Enterprise</div>
-        <div class="plan-headline">Unlimited calls, full team &amp; CRM automation</div>
-        <div class="plan-price">
-          <span class="plan-currency">$</span>
-          <span class="plan-amt">499</span>
-        </div>
-        <div class="plan-aud">AUD / month · 7-day free trial</div>
-        <div class="plan-divider"></div>
-        <div class="plan-section-label">Included</div>
-        <ul class="plan-list">
-          <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Unlimited calls</li>
-          <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Everything in Professional</li>
-          <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>CRM integrations (HubSpot, Salesforce)</li>
-          <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Multi-agent call routing</li>
-          <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Custom AI voice &amp; persona</li>
-          <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Dedicated account manager</li>
-          <li class="inc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Monthly performance review</li>
-        </ul>
-        <div class="plan-divider"></div>
-        <div class="plan-section-label" style="opacity:.35">All features included</div>
-        <div class="plan-spacer"></div>
-        <a href="#book" class="plan-cta plan-cta-ghost">Book a Free 10-min Call</a>
-      </div>
-
-    </div>
-    <p class="pricing-note">All prices in AUD &nbsp;·&nbsp; Full setup included on your free 10-min call &nbsp;·&nbsp; No lock-in contract &nbsp;·&nbsp; Cancel anytime</p>
-    <p style="text-align:center;margin-top:.45rem;font-size:.72rem;color:var(--muted)">Extra usage after the monthly allowance: $1.50 per additional answered call.</p>
-  </div>
-</section>
-
-<!-- ── BOOK SECTION ── -->
+<!-- ── BOOK / FREE TRIAL ── -->
 <section id="book" class="cta-sec">
   <div class="container">
-    <div class="cta-card reveal">
-      <div class="book-layout">
+    <div class="trial-flip-wrap reveal">
+      <div class="trial-flip-inner" id="trial-flip-inner">
 
-        <!-- Left: copy + trust -->
-        <div class="book-copy">
-          <div class="sec-tag" style="justify-content:flex-start;">Free 30-Min Setup Call</div>
-          <h2 class="book-h2">Ready to stop <span class="h2-grad">missing customers?</span></h2>
-          <p class="book-sub">Pick a time that works — we'll set Ellie up live on the call. Most businesses are live within 24 hours.</p>
+        <!-- FRONT: form -->
+        <div class="trial-flip-front cta-card" style="text-align:center;">
+          <div class="sec-tag" style="justify-content:center;">7-Day Free Trial</div>
+          <h2 class="book-h2">Try Ellie <span class="h2-grad">free for 7 days.</span></h2>
+          <p class="book-sub" style="margin-bottom:1.8rem;">We'll build your Ellie within 24 hours. Leave your details and we'll call you back to get started.</p>
 
-          <ul class="book-bullets">
-            <li>
-              <span class="book-bullet-icon">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-              </span>
-              <span>We configure Ellie for your services, hours &amp; pricing</span>
-            </li>
-            <li>
-              <span class="book-bullet-icon">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-              </span>
-              <span>Your phone number forwards to Ellie — nothing else changes</span>
-            </li>
-            <li>
-              <span class="book-bullet-icon">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-              </span>
-              <span>Test Ellie live before you commit to anything</span>
-            </li>
-          </ul>
-
-          <div class="book-trust-chips">
-            <span class="book-chip">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-              No credit card
-            </span>
-            <span class="book-chip">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-              Setup in 24 hrs
-            </span>
-            <span class="book-chip">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
-              No lock-in
-            </span>
-          </div>
-
-          <div class="book-testimonial">
-            <div class="cta-img-panel">
-              <img src="assets/ellie/couple-happy.png" alt="Small business owners thrilled by their Ellie results">
-              <div class="cta-img-panel-overlay">
-                <span class="cta-img-caption">"Paid for the whole month in one day." — Real Ellie customers</span>
-              </div>
+          <form class="trial-form" id="trial-form" name="free-trial" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+            <input type="hidden" name="form-name" value="free-trial">
+            <p style="display:none"><label>Don't fill this out: <input name="bot-field"></label></p>
+            <div class="trial-fields">
+              <input type="text" name="name" class="trial-input" placeholder="Your name" required>
+              <input type="tel" name="phone" class="trial-input" placeholder="Phone number" required>
+              <input type="text" name="business_url" class="trial-input" placeholder="Website or Facebook / Instagram URL">
+              <select name="business_type" class="trial-input trial-select" required>
+                <option value="" disabled selected>Business type</option>
+                <option>Hair &amp; Beauty</option>
+                <option>Medical &amp; Health</option>
+                <option>Trades &amp; Home Services</option>
+                <option>Automotive</option>
+                <option>Real Estate</option>
+                <option>Legal &amp; Professional</option>
+                <option>Hospitality &amp; Food</option>
+                <option>Fitness &amp; Wellness</option>
+                <option>Other</option>
+              </select>
             </div>
-          </div>
+            <button type="submit" class="trial-cta" id="trial-submit">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="flex-shrink:0"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.39 2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.81a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 16z"/></svg>
+              Get a free callback
+            </button>
+            <p class="trial-price-line" style="font-family:'Inter',sans-serif;font-size:1.05rem;font-weight:700;color:var(--text);margin:10px 0 4px;">Packages starting from just <span>$199/month</span></p>
+            <p class="trial-fine">Cancel anytime &nbsp;&middot;&nbsp; No credit card</p>
+          </form>
         </div>
 
-        <!-- Right: Calendly -->
-        <div class="book-cal">
-          <div class="book-cal-label">Pick a time that suits you</div>
-          <div class="book-cal-inner">
-            <div class="calendly-inline-widget"
-              data-url="https://calendly.com/anupamadilshan83/ellie-ai-free-30-min-setup-call?hide_gdpr_banner=1&background_color=0f0f13&text_color=ffffff&primary_color=a78bfa"
-              style="min-width:280px;height:680px;"></div>
+        <!-- BACK: success -->
+        <div class="trial-flip-back cta-card" style="text-align:center;">
+          <div class="trial-success-icon">
+            <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.39 2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.81a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 16z"/></svg>
           </div>
+          <h2 class="trial-success-h">One of our team members will get back to you <span class="h2-grad">within 1 day.</span></h2>
+          <p class="book-sub">We'll call you back to get your Ellie set up — usually much sooner than 24 hours.</p>
+          <button class="trial-resubmit" id="trial-resubmit" aria-label="Submit another request">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.5"/></svg>
+            Submit another request
+          </button>
         </div>
 
       </div>
@@ -4349,45 +4379,45 @@
     <div class="faq-list">
       <div class="faq-item reveal">
         <button class="faq-q" aria-expanded="false">
-          Will my customers know it's AI?
+          What happens after I request a callback?
           <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
         </button>
-        <div class="faq-a"><p>Ellie sounds natural, warm, and professional — most callers don't ask. When they do, Ellie answers honestly. Customers consistently rate Ellie interactions 4.9/5. You can also choose to disclose Ellie is AI upfront — either way, every caller gets a great experience.</p></div>
+        <div class="faq-a"><p>We call you back — usually within a few hours. On that call we learn about your business, your services, and how you like to handle enquiries. From there we build your Ellie and have her live within 24 hours. No forms to fill, no tech setup on your end.</p></div>
       </div>
       <div class="faq-item reveal">
         <button class="faq-q" aria-expanded="false">
-          Is it hard to set up?
+          Is the 7-day trial really free?
           <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
         </button>
-        <div class="faq-a"><p>Not at all. We configure everything for you. Just tell us your services, hours, and pricing — and we have Ellie live within 24 hours. You don't touch any code or settings.</p></div>
+        <div class="faq-a"><p>100% free. No credit card, no hidden fees. We set Ellie up, she answers your calls for 7 days, and you decide if she's worth keeping. If you don't see value — no charge, no hard feelings.</p></div>
       </div>
       <div class="faq-item reveal">
         <button class="faq-q" aria-expanded="false">
-          Can I customise what Ellie says?
+          Will my customers know they're talking to AI?
           <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
         </button>
-        <div class="faq-a"><p>Yes — fully. Your greeting, services list, prices, FAQs, and response style. Ellie represents <em>your</em> business. If you want to update something later, just let us know and we'll update it same day.</p></div>
+        <div class="faq-a"><p>Most don't ask — Ellie sounds warm, natural, and professional. When customers do ask, Ellie is honest about it. Either way, every caller gets a great experience and your business never misses an enquiry.</p></div>
       </div>
       <div class="faq-item reveal">
         <button class="faq-q" aria-expanded="false">
-          What if I want to answer calls myself?
+          How much does it cost after the trial?
           <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
         </button>
-        <div class="faq-a"><p>Easy. Set your business hours and calls ring you first. Ellie only kicks in when you miss it or when calls come in after hours. You stay in control — Ellie's there as the safety net.</p></div>
+        <div class="faq-a"><p>Packages start from just $199/month. We'll recommend the right plan based on your call volume during the free trial. No lock-in — cancel anytime, month to month.</p></div>
       </div>
       <div class="faq-item reveal">
         <button class="faq-q" aria-expanded="false">
-          What calendar systems do you support?
+          Can Ellie book appointments for my customers?
           <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
         </button>
-        <div class="faq-a"><p>We support Google Calendar, Calendly, iCal, and more. SMS confirmations are handled automatically. We set up the integration for you — no technical knowledge needed.</p></div>
+        <div class="faq-a"><p>Yes. Ellie can collect booking details, check your calendar availability, confirm appointments, and send SMS reminders — all without you lifting a finger. We integrate with Google Calendar, Calendly, and more.</p></div>
       </div>
       <div class="faq-item reveal">
         <button class="faq-q" aria-expanded="false">
-          Is there a lock-in contract?
+          What if I still want to answer some calls myself?
           <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
         </button>
-        <div class="faq-a"><p>None. Month-to-month. Cancel anytime, no questions asked, no fees. We want to earn your business every month — not lock you in.</p></div>
+        <div class="faq-a"><p>No problem. Calls ring you first during business hours — Ellie only steps in when you miss it or after hours. You stay in full control. Ellie is your safety net, not a replacement.</p></div>
       </div>
     </div>
   </div>
@@ -4407,26 +4437,26 @@
       <ul>
         <li><a href="#demo">Live Demo</a></li>
         <li><a href="#how-it-works">How It Works</a></li>
-        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#book">Pricing</a></li>
         <li><a href="#faq">FAQ</a></li>
       </ul>
     </div>
     <div class="foot-col">
       <h4>Company</h4>
       <ul>
-        <li><a href="index.html#about">About Anupama</a></li>
-        <li><a href="index.html#work">Portfolio</a></li>
-        <li><a href="index.html#contact">Contact</a></li>
-        <li><a href="blog.html">Blog</a></li>
+        <li><a href="https://anupama.dev/#about" target="_blank" rel="noopener">About Anupama</a></li>
+        <li><a href="https://anupama.dev/#work" target="_blank" rel="noopener">Portfolio</a></li>
+        <li><a href="https://anupama.dev/#contact" target="_blank" rel="noopener">Contact</a></li>
       </ul>
     </div>
   </div>
   <div class="foot-copy">
-    <span>© 2025 anupama.dev. All rights reserved.</span>
+    <span>© 2026 anupama.dev. All rights reserved.</span>
     <span>Adelaide, South Australia 🇦🇺</span>
   </div>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 <script src="vapi-sdk.js"></script>
 <script src="ellie.js"></script>
 <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
