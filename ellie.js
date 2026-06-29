@@ -58,38 +58,42 @@
   );
   document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
 
-  // ── Hero avatar intro audio ───────────────────────────────
-  const heroPlayBtn       = document.getElementById('hero-av-play');
-  const heroBubblePlayBtn = document.getElementById('hero-av-play-bubble');
-  const heroAudio         = document.getElementById('hero-av-audio');
-  const heroAvTalk        = document.querySelector('.hero-av-img-talk');
-  const heroAvSound       = document.querySelector('.hero-av-sound');
+  // ── Hero avatar video: tap to play talking clip, then back to loop ──
+  const heroPlayBtn  = document.getElementById('hero-av-play');
+  const heroVideo    = document.getElementById('hero-av-video');
+  const heroAvSound  = document.querySelector('.hero-av-sound');
 
-  function toggleHeroAudio() {
-    if (!heroAudio) return;
-    if (heroAudio.paused) {
-      heroAudio.play();
-      if (heroPlayBtn)       heroPlayBtn.classList.add('playing');
-      if (heroBubblePlayBtn) heroBubblePlayBtn.classList.add('playing');
-      if (heroAvTalk)        heroAvTalk.style.opacity  = '0.85';
-      if (heroAvSound)       heroAvSound.classList.add('active');
-    } else {
-      heroAudio.pause();
-      if (heroPlayBtn)       heroPlayBtn.classList.remove('playing');
-      if (heroBubblePlayBtn) heroBubblePlayBtn.classList.remove('playing');
-      if (heroAvTalk)        heroAvTalk.style.opacity  = '0';
-      if (heroAvSound)       heroAvSound.classList.remove('active');
-    }
+  const HERO_LOOP_SRC = 'assets/ellie/ellie-loop.mp4';
+  const HERO_PLAY_SRC = 'assets/ellie/ellie-loop-play.mp4';
+
+  function playHeroTalkClip() {
+    if (!heroVideo) return;
+    heroVideo.loop   = false;
+    heroVideo.muted  = false;
+    heroVideo.src    = HERO_PLAY_SRC;
+    heroVideo.currentTime = 0;
+    heroVideo.play().catch(() => {});
+    if (heroPlayBtn) heroPlayBtn.classList.add('playing');
+    if (heroAvSound) heroAvSound.classList.add('active');
   }
 
-  if (heroAudio) {
-    if (heroPlayBtn)       heroPlayBtn.addEventListener('click', toggleHeroAudio);
-    if (heroBubblePlayBtn) heroBubblePlayBtn.addEventListener('click', toggleHeroAudio);
-    heroAudio.addEventListener('ended', () => {
-      if (heroPlayBtn)       heroPlayBtn.classList.remove('playing');
-      if (heroBubblePlayBtn) heroBubblePlayBtn.classList.remove('playing');
-      if (heroAvTalk)        heroAvTalk.style.opacity  = '0';
-      if (heroAvSound)       heroAvSound.classList.remove('active');
+  function backToHeroLoop() {
+    if (!heroVideo) return;
+    heroVideo.loop  = true;
+    heroVideo.muted = true;
+    heroVideo.src   = HERO_LOOP_SRC;
+    heroVideo.play().catch(() => {});
+    if (heroPlayBtn) heroPlayBtn.classList.remove('playing');
+    if (heroAvSound) heroAvSound.classList.remove('active');
+  }
+
+  if (heroVideo) {
+    if (heroPlayBtn) heroPlayBtn.addEventListener('click', () => {
+      if (heroVideo.src.includes('ellie-loop-play')) backToHeroLoop();
+      else playHeroTalkClip();
+    });
+    heroVideo.addEventListener('ended', () => {
+      if (heroVideo.src.includes('ellie-loop-play')) backToHeroLoop();
     });
   }
 
@@ -605,148 +609,6 @@ Keep responses under 45 words unless the caller asks for more detail. Never make
 
   if (callBtn) callBtn.addEventListener('click', startDemo);
   if (endBtn)  endBtn.addEventListener('click',  resetDemo);
-
-  // ── Hero Google Review Carousel ────────────────────────────
-  const HERO_REVIEWS = [
-    { initials:'MC', color:'a', name:'Mia C.', biz:'Glamour & Co. Hair Studio, Norwood SA', time:'2 days ago',
-      text:'We were missing 8–10 calls a day. Now Ellie books them all. Revenue up 35% in the first month. Absolute game changer.' },
-    { initials:'DH', color:'b', name:'Daniel H.', biz:'D&H Auto Mechanics, Prospect SA', time:'5 days ago',
-      text:"Can't answer when I'm under a car. Ellie answers every single time. Three new regulars in week one from calls I'd normally miss." },
-    { initials:'KT', color:'c', name:'Karen T.', biz:'Spotless Cleaning Co., Glenelg SA', time:'1 week ago',
-      text:'Set it up Sunday afternoon. By Monday morning Ellie had booked 3 new cleaning jobs. Paid for the whole month in one day.' },
-    { initials:'RP', color:'d', name:'Ryan P.', biz:'Prestige Plumbing & Gas, Unley SA', time:'3 days ago',
-      text:"Ellie handles all our after-hours emergency call intake. Customers get an immediate response instead of voicemail. Haven't lost a single urgent job." },
-    { initials:'SN', color:'e', name:'Sophie N.', biz:'North Adelaide Dental Clinic, SA', time:'6 days ago',
-      text:'Our front desk was overwhelmed. Ellie handles the overflow perfectly. Patients love getting an instant answer. Setup took under an hour.' },
-    { initials:'JW', color:'f', name:'Jake W.', biz:'Wattle Park Electrical, Burnside SA', time:'4 days ago',
-      text:"Customers don't even realise it's AI. Picked up 4 jobs this week alone that came through after 5pm. Game changer for sole traders." },
-    { initials:'LB', color:'a', name:'Lisa B.', biz:'Belair Beauty & Spa, Belair SA', time:'1 week ago',
-      text:'I run a one-woman spa and used to dread missing calls during treatments. Ellie books clients seamlessly. Bookings up 40%.' },
-    { initials:'TM', color:'d', name:'Tom M.', biz:'Modbury Landscaping & Turf, SA', time:'2 weeks ago',
-      text:'Landscaping is seasonal and calls flood in during spring. Ellie handled 60+ enquiries in one week without missing a beat. Unreal.' },
-    { initials:'AK', color:'e', name:'Anika K.', biz:'Kurralta Park Physio, SA', time:'3 days ago',
-      text:'We were losing patients to competitors simply because phones went to voicemail at lunch. Ellie fixed that overnight.' },
-  ];
-
-  (function initHeroCarousel() {
-    const wrap    = document.getElementById('heroRevWrap');
-    const dotsEl  = document.getElementById('heroRevDots');
-    const countEl = document.getElementById('heroRevCount');
-    const progEl  = document.getElementById('heroRevProgress');
-    if (!wrap) return;
-
-    let current = 0, timer = null, progTimer = null;
-
-    function buildCard(r, idx) {
-      const div = document.createElement('div');
-      div.className = 'hero-rev-card';
-      div.dataset.idx = idx;
-      div.innerHTML = `
-        <div class="hero-rev-top">
-          <div class="hero-rev-av hero-rev-av--${r.color}">${r.initials}</div>
-          <div>
-            <div class="hero-rev-name">${r.name}</div>
-            <div class="hero-rev-biz">${r.biz}</div>
-          </div>
-          <div class="hero-rev-time">${r.time}</div>
-        </div>
-        <div class="hero-rev-stars">★★★★★</div>
-        <p class="hero-rev-text">${r.text}</p>`;
-      return div;
-    }
-
-    // Build all cards
-    HERO_REVIEWS.forEach((r, i) => wrap.appendChild(buildCard(r, i)));
-
-    // Build dots
-    HERO_REVIEWS.forEach((_, i) => {
-      const d = document.createElement('button');
-      d.className = 'hero-rev-dot' + (i === 0 ? ' active' : '');
-      d.setAttribute('aria-label', 'Review ' + (i + 1));
-      d.addEventListener('click', () => goTo(i));
-      dotsEl.appendChild(d);
-    });
-
-    function resetProgress() {
-      if (progEl) { progEl.style.animation = 'none'; void progEl.offsetWidth; progEl.style.animation = 'revProgress 5s linear forwards'; }
-    }
-
-    function goTo(idx) {
-      const cards   = wrap.querySelectorAll('.hero-rev-card');
-      const dots    = dotsEl.querySelectorAll('.hero-rev-dot');
-      const next    = (idx + HERO_REVIEWS.length) % HERO_REVIEWS.length;
-      const forward = next > current || (current === HERO_REVIEWS.length - 1 && next === 0);
-
-      // Slide out current
-      const cur = wrap.querySelector('.hero-rev-card.active');
-      if (cur) {
-        cur.classList.remove('active');
-        if (!forward) cur.classList.add('to-right');
-        cur.classList.add('leaving');
-        setTimeout(() => { cur.classList.remove('leaving', 'to-right'); }, 340);
-      }
-
-      // Slide in next
-      current = next;
-      if (!forward) cards[current].classList.add('from-left');
-      cards[current].classList.add('active');
-      setTimeout(() => cards[current].classList.remove('from-left'), 450);
-
-      dots.forEach((d, i) => d.classList.toggle('active', i === current));
-      if (countEl) countEl.textContent = (current + 1) + ' / ' + HERO_REVIEWS.length;
-      resetProgress();
-    }
-
-    function autoAdvance() { goTo(current + 1); }
-
-    function startAuto() { clearInterval(timer); timer = setInterval(autoAdvance, 5000); }
-
-    goTo(0);
-    startAuto();
-    wrap.addEventListener('mouseenter', () => { clearInterval(timer); if (progEl) progEl.style.animationPlayState = 'paused'; });
-    wrap.addEventListener('mouseleave', () => { startAuto(); if (progEl) progEl.style.animationPlayState = 'running'; });
-  })();
-
-  // ── Hero headline rotator ─────────────────────────────────
-  (function initHeadlineRotator() {
-    const h1    = document.getElementById('heroH1');
-    const line1 = document.getElementById('heroLine1');
-    const line2 = document.getElementById('heroLine2');
-    if (!h1 || !line1 || !line2) return;
-
-    const HEADLINES = [
-      { l1: 'Every missed call',       l2: 'is money walking out.'          },
-      { l1: 'Most human-like',         l2: 'AI receptionist.'               },
-      { l1: 'Never miss',              l2: 'another booking.'               },
-      { l1: 'Your callers deserve',    l2: 'better than voicemail.'         },
-      { l1: '24/7 availability,',      l2: 'zero missed calls.'             },
-      { l1: 'Your business answers',   l2: 'every single call.'             },
-    ];
-
-    const mobileStartIndex = HEADLINES.findIndex(h => h.l1 === '24/7 availability,');
-    let idx = window.matchMedia('(max-width: 600px)').matches && mobileStartIndex >= 0
-      ? mobileStartIndex
-      : 0;
-
-    line1.textContent = HEADLINES[idx].l1;
-    line2.textContent = HEADLINES[idx].l2;
-
-    setInterval(() => {
-      idx = (idx + 1) % HEADLINES.length;
-      // Exit: line1 slides up, line2 follows 70ms later
-      h1.classList.remove('hl-in');
-      h1.classList.add('hl-out');
-      // After exit completes (~400ms), swap text and enter
-      setTimeout(() => {
-        line1.textContent = HEADLINES[idx].l1;
-        line2.textContent = HEADLINES[idx].l2;
-        h1.classList.remove('hl-out');
-        h1.classList.add('hl-in');
-        // Clean up so next cycle starts fresh
-        setTimeout(() => h1.classList.remove('hl-in'), 680);
-      }, 400);
-    }, 4000);
-  })();
 
   // ── Hero URL bar → visible demo ───────────────────────────
   const heroBizUrl   = document.getElementById('hero-biz-url');

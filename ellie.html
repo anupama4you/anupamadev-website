@@ -79,30 +79,18 @@
     [data-theme="light"] .hero-sub { color: #475569; }
     [data-theme="light"] .hero-sub strong { color: #0f172a; }
     [data-theme="light"] .hero-check { color: #475569; }
-    [data-theme="light"] .hero-pill { background: rgba(124,58,237,.08); border-color: rgba(124,58,237,.2); color: var(--violet); }
     [data-theme="light"] .hero-url-bar { background: #fff; border-color: rgba(124,58,237,.25); box-shadow: 0 2px 12px rgba(0,0,0,.06); }
     [data-theme="light"] .hero-url-input { color: #0f172a; }
     [data-theme="light"] .hero-url-input::placeholder { color: #94a3b8; }
     /* Hero floating cards */
-    [data-theme="light"] .hero-av-wrap { background: rgba(255,255,255,.82); border-color: rgba(0,0,0,.1); box-shadow: 0 8px 32px rgba(0,0,0,.12); }
-    [data-theme="light"] .hero-av-name { color: #0f172a; }
-    [data-theme="light"] .hero-rev-panel { background: rgba(255,255,255,.82); border-color: rgba(0,0,0,.1); box-shadow: 0 16px 56px rgba(0,0,0,.12); }
-    [data-theme="light"] .hero-rev-logo-text { color: #0f172a; }
-    [data-theme="light"] .hero-rev-name { color: #0f172a; }
-    [data-theme="light"] .hero-rev-card { background: rgba(0,0,0,.03); border-color: rgba(0,0,0,.07); }
-    [data-theme="light"] .hero-rev-dot { background: rgba(0,0,0,.15); }
+    [data-theme="light"] .hero-av-name { color: #fff; }
     [data-theme="light"] .btn-ghost { color: #1e293b; border-color: rgba(0,0,0,.28); background: rgba(0,0,0,.02); }
     [data-theme="light"] .btn-ghost:hover { border-color: var(--violet); color: var(--violet); background: rgba(124,58,237,.05); }
-    [data-theme="light"] .hero-av-bubble { background: #fff; border-color: rgba(0,0,0,.1); box-shadow: 0 4px 24px rgba(0,0,0,.1); }
-    [data-theme="light"] .hero-av-bubble::before { border-bottom-color: #fff; }
-    [data-theme="light"] .hero-av-bubble p { color: #1e293b; }
-    [data-theme="light"] .hero-av-core { border-color: rgba(124,58,237,.4); box-shadow: 0 0 0 10px rgba(124,58,237,.07), 0 0 32px rgba(124,58,237,.18); }
     [data-theme="light"] .hero-trust-badge { background: rgba(255,255,255,.9); border-color: rgba(0,0,0,.1); box-shadow: 0 2px 12px rgba(0,0,0,.08); }
     [data-theme="light"] .hero-trust-google-label { color: #1e293b; }
     [data-theme="light"] .hero-trust-sep { background: rgba(0,0,0,.12); }
     [data-theme="light"] .hero-trust-stars b { color: #1e293b; }
     [data-theme="light"] .hero-trust-count { color: #64748b; }
-    [data-theme="light"] .hero-av-wrap { background: transparent !important; border: none !important; box-shadow: none !important; backdrop-filter: none !important; }
     [data-theme="light"] .trust-strip { background: #fff; border-color: rgba(0,0,0,.07); }
     [data-theme="light"] .ts-val-grad { background: linear-gradient(135deg,var(--violet),var(--rose)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
     [data-theme="light"] .ts-label { color: #64748b; }
@@ -308,14 +296,6 @@
       68%         { opacity: 0; }
       100%        { opacity: 0; }
     }
-    /* Subtle alive motion — combines breathing, gentle sway and micro head-tilt */
-    @keyframes avatarAlive {
-      0%   { transform: scale(1)     translateY(0px)   rotate(0deg); }
-      22%  { transform: scale(1.004) translateY(-.7px) rotate(.22deg); }
-      48%  { transform: scale(1.007) translateY(-1.4px) rotate(0deg); }
-      74%  { transform: scale(1.004) translateY(-.6px) rotate(-.18deg); }
-      100% { transform: scale(1)     translateY(0px)   rotate(0deg); }
-    }
     /* Idle mouth microexpression */
     @keyframes avatarIdleMouth {
       0%, 46%, 100%  { opacity: 0; }
@@ -456,26 +436,49 @@
     }
 
     /* Hero copy */
-    .hero-pill {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: var(--violet-d); border: 1px solid var(--violet-b);
-      color: var(--violet); font-size: .7rem; font-weight: 700;
-      letter-spacing: .12em; text-transform: uppercase;
-      padding: 5px 14px; border-radius: 100px; margin-bottom: 1.4rem;
+    .hero-trust-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 1.4rem; }
+    .hero-trust-badge {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.13);
+      border-radius: 14px; padding: 9px 14px;
+      box-shadow: 0 2px 16px rgba(0,0,0,.18);
+      text-decoration: none; cursor: pointer;
+      transition: transform .15s, border-color .15s;
     }
-    .hero-trust-badge { display: none; }
-    .hero-pill-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--violet); animation: blink 2.2s infinite; }
+    .hero-trust-badge:hover { transform: translateY(-1px); border-color: rgba(255,255,255,.25); }
+    .hero-trust-google { display: flex; align-items: center; gap: 6px; }
+    .hero-trust-google-label { font-size: .78rem; font-weight: 600; color: rgba(255,255,255,.88); letter-spacing: -.01em; }
+    .hero-trust-sep { width: 1px; height: 24px; background: rgba(255,255,255,.15); flex-shrink: 0; }
+    .hero-trust-right { display: flex; flex-direction: column; gap: 1px; }
+    .hero-trust-stars { font-size: .72rem; color: #fbbf24; line-height: 1.2; }
+    .hero-trust-stars b { color: rgba(255,255,255,.9); font-weight: 700; margin-left: 2px; }
+    .hero-trust-count { font-size: .62rem; color: rgba(255,255,255,.48); line-height: 1.2; }
+    .hero-callback-pill {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.13);
+      color: var(--violet); font-size: .78rem; font-weight: 700;
+      padding: 9px 14px; border-radius: 14px; white-space: nowrap;
+      text-decoration: none;
+      box-shadow: 0 2px 16px rgba(0,0,0,.18);
+      animation: calloutVibrate 2.8s ease-in-out infinite;
+    }
+    .hero-callback-pill:hover { animation: none; transform: translateY(-1px); border-color: rgba(255,255,255,.25); }
+    @keyframes calloutVibrate {
+      0%, 82%, 100% { transform: translate(0,0) rotate(0deg); }
+      84% { transform: translate(-2px,1px) rotate(-3deg); }
+      86% { transform: translate(2px,-1px) rotate(3deg); }
+      88% { transform: translate(-2px,1px) rotate(-2deg); }
+      90% { transform: translate(2px,-1px) rotate(2deg); }
+      92% { transform: translate(-1px,0) rotate(-1deg); }
+      94% { transform: translate(0,0) rotate(0deg); }
+    }
+    .hero-actions { display: none; }
     .hero-h1 { font-size: clamp(2.2rem, 4.2vw, 3.6rem); color: #fff; margin-bottom: 1.2rem; }
-    @keyframes hlLineExit  { from{opacity:1;transform:translateY(0);filter:blur(0)}   to{opacity:0;transform:translateY(-22px);filter:blur(10px)} }
-    @keyframes hlLineEnter { from{opacity:0;transform:translateY(22px);filter:blur(10px)} to{opacity:1;transform:translateY(0);filter:blur(0)} }
     .hero-h1-line1 { display: block; }
-    .hero-h1.hl-out .hero-h1-line1 { animation: hlLineExit  .3s ease forwards; }
-    .hero-h1.hl-out .hero-h1-grad  { animation: hlLineExit  .3s .07s ease forwards; }
-    .hero-h1.hl-in  .hero-h1-line1 { animation: hlLineEnter .52s cubic-bezier(.22,.68,0,1.2) forwards; }
-    .hero-h1.hl-in  .hero-h1-grad  { animation: hlLineEnter .52s .1s cubic-bezier(.22,.68,0,1.2) forwards; }
     @keyframes gradShimmer { 0%{background-position:-200% center} 100%{background-position:200% center} }
     @keyframes heroFadeUp { from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:translateY(0)} }
-    @keyframes avatarRingPulse { 0%{transform:scale(1);opacity:.7} 100%{transform:scale(1.75);opacity:0} }
     @keyframes soundWave { 0%,100%{transform:scaleY(.3)} 50%{transform:scaleY(1)} }
     .hero-h1-grad {
       background: linear-gradient(130deg, var(--violet) 0%, var(--rose) 50%, #c084fc 100%);
@@ -496,7 +499,6 @@
       font-size: .8rem; font-weight: 600; color: var(--violet);
       margin-bottom: 2rem;
     }
-    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 1.5rem; }
     .btn-primary {
       background: linear-gradient(135deg, var(--violet), var(--rose));
       color: #fff; font-family: 'Inter', sans-serif;
@@ -570,49 +572,29 @@
     .hero-right { display: flex; flex-direction: column; gap: 0; }
 
     /* ── HERO ENTRANCE ANIMATIONS ── */
-    .hero-pill      { animation: heroFadeUp .6s  .00s ease both; }
+    .hero-trust-row { animation: heroFadeUp .6s  .00s ease both; }
     .hero-h1        { animation: heroFadeUp .7s  .08s ease both; }
     .hero-sub       { animation: heroFadeUp .7s  .18s ease both; }
     .hero-setup-promise { animation: heroFadeUp .7s  .24s ease both; }
     .hero-url-wrap  { animation: heroFadeUp .7s  .32s ease both; }
-    .hero-actions   { animation: heroFadeUp .7s  .36s ease both; }
     .hero-checks    { animation: heroFadeUp .7s  .42s ease both; }
     .hero-av-wrap   { animation: heroFadeUp .75s .22s ease both; }
-    .hero-rev-panel { animation: heroFadeUp .8s  .34s ease both; }
 
-    /* ── HERO ANIMATED AVATAR ── */
-    .hero-av-wrap {
-      display: flex; align-items: center; gap: 16px;
-      background: rgba(8,10,20,.65); border: 1px solid rgba(167,139,250,.18);
-      border-radius: 18px; padding: 16px 20px; margin-bottom: 12px;
-      backdrop-filter: blur(16px);
+    /* ── HERO VIDEO CARD ── */
+    .hero-av-wrap { margin-bottom: 12px; }
+    .hero-av-video-frame {
+      position: relative; width: 100%; aspect-ratio: 1 / 1;
+      border-radius: 24px; overflow: hidden;
+      border: 1px solid rgba(167,139,250,.18);
       box-shadow: 0 8px 40px rgba(0,0,0,.35), 0 0 0 1px rgba(167,139,250,.05) inset;
     }
-    .hero-av-rings {
-      position: relative; width: 100px; height: 100px; flex-shrink: 0;
-      animation: avatarAlive 5.2s ease-in-out infinite;
-      transform-origin: center center;
+    .hero-av-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+    .hero-av-video-overlay {
+      position: absolute; left: 0; right: 0; bottom: 0; z-index: 1;
+      display: flex; align-items: flex-end; justify-content: space-between; gap: 14px;
+      padding: 20px 20px 18px;
+      background: linear-gradient(to top, rgba(5,5,12,.92) 0%, rgba(5,5,12,.45) 55%, transparent 100%);
     }
-    .hero-av-ring {
-      position: absolute; inset: 0; border-radius: 50%;
-      border: 1.5px solid rgba(167,139,250,.55);
-      animation: avatarRingPulse 2.8s ease-out infinite;
-    }
-    .hero-av-ring--2 { animation-delay: .93s; }
-    .hero-av-ring--3 { animation-delay: 1.86s; }
-    .hero-av-core {
-      position: absolute; inset: 6px; border-radius: 50%;
-      overflow: hidden; z-index: 1;
-      box-shadow: 0 0 22px rgba(167,139,250,.55);
-      border: 2px solid rgba(167,139,250,.32);
-    }
-    .hero-av-core img {
-      position: absolute; inset: 0;
-      width: 100%; height: 100%; object-fit: cover; object-position: center top;
-    }
-    .hero-av-img-base   { opacity: 1; z-index: 0; }
-    .hero-av-img-blink  { opacity: 0; z-index: 1; animation: naturalBlink 7.2s infinite; }
-    .hero-av-img-talk   { display: none; }
     .hero-av-info { flex: 1; min-width: 0; }
     .hero-av-live {
       display: inline-flex; align-items: center; gap: 5px;
@@ -620,22 +602,22 @@
       letter-spacing: .08em; text-transform: uppercase; margin-bottom: 4px;
     }
     .hero-av-live-dot { width: 6px; height: 6px; border-radius: 50%; background: #10b981; animation: blink 1.4s ease-in-out infinite; }
-    .hero-av-name { font-size: .92rem; font-weight: 700; color: #fff; margin-bottom: 2px; }
-    .hero-av-tagline { font-size: .72rem; color: var(--muted); line-height: 1.4; }
+    .hero-av-name { font-size: 1.05rem; font-weight: 700; color: #fff; margin-bottom: 2px; }
+    .hero-av-tagline { font-size: .76rem; color: rgba(255,255,255,.75); line-height: 1.4; }
+    .hero-av-controls { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
     .hero-av-play-btn {
-      flex-shrink: 0; width: 30px; height: 30px; border-radius: 50%;
+      flex-shrink: 0; width: 38px; height: 38px; border-radius: 50%;
       background: linear-gradient(135deg, var(--violet), #6d28d9);
       border: none; cursor: pointer; display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 0 12px rgba(167,139,250,.4);
+      box-shadow: 0 0 14px rgba(167,139,250,.45);
       transition: transform .18s, box-shadow .18s;
     }
-    .hero-av-play-btn:hover { transform: scale(1.1); box-shadow: 0 0 20px rgba(167,139,250,.6); }
+    .hero-av-play-btn:hover { transform: scale(1.1); box-shadow: 0 0 22px rgba(167,139,250,.65); }
     .hero-av-play-btn:active { transform: scale(.95); }
     .hero-av-play-btn svg { color: #fff; display: block; }
     .hero-av-play-btn .icon-pause { display: none; }
     .hero-av-play-btn.playing .icon-play  { display: none; }
     .hero-av-play-btn.playing .icon-pause { display: block; }
-    .hero-av-bubble { display: none; }
     .hero-av-sound { display: flex; align-items: center; gap: 3px; height: 26px; flex-shrink: 0; }
     .hero-av-bar {
       width: 3px; border-radius: 3px; transform-origin: bottom;
@@ -644,102 +626,7 @@
       animation-delay: var(--d, 0s);
     }
 
-    /* ── HERO REVIEW PANEL ── */
-    @keyframes revSlideInRight  { from { opacity:0; transform: translateX(60px);  } to { opacity:1; transform: translateX(0); } }
-    @keyframes revSlideInLeft   { from { opacity:0; transform: translateX(-60px); } to { opacity:1; transform: translateX(0); } }
-    @keyframes revSlideOutLeft  { from { opacity:1; transform: translateX(0);     } to { opacity:0; transform: translateX(-60px); } }
-    @keyframes revSlideOutRight { from { opacity:1; transform: translateX(0);     } to { opacity:0; transform: translateX(60px);  } }
-    @keyframes shimmerRev  { 0%,100%{opacity:.4} 50%{opacity:1} }
-    @keyframes dotPulse    { 0%,100%{transform:scale(1);opacity:.45} 50%{transform:scale(1.35);opacity:1} }
-
-    .hero-rev-panel {
-      position: relative; z-index: 1;
-      background: rgba(8,10,20,.7);
-      border: 1px solid rgba(167,139,250,.15);
-      border-radius: 22px;
-      padding: 24px 24px 20px;
-      backdrop-filter: blur(18px);
-      box-shadow: 0 24px 80px rgba(0,0,0,.5), 0 0 0 1px rgba(167,139,250,.06) inset;
-      overflow: hidden;
-    }
-    .hero-rev-panel::before {
-      content:''; position:absolute; top:0; left:0; right:0; height:1px;
-      background: linear-gradient(90deg,transparent,rgba(167,139,250,.5),rgba(244,114,182,.3),transparent);
-    }
-    .hero-rev-glow {
-      position: absolute; width: 300px; height: 300px; border-radius: 50%;
-      background: radial-gradient(circle, rgba(167,139,250,.08) 0%, transparent 70%);
-      top: -80px; right: -60px; pointer-events: none;
-      animation: orb-drift 8s ease-in-out infinite;
-    }
-    .hero-rev-header {
-      display: flex; align-items: center; justify-content: space-between;
-      margin-bottom: 18px;
-    }
-    .hero-rev-logo { display: flex; align-items: center; gap: 8px; }
-    .hero-rev-logo-icon { width: 22px; height: 22px; }
-    .hero-rev-logo-text { font-size: .82rem; font-weight: 700; color: #fff; }
-    .hero-rev-score {
-      display: flex; align-items: center; gap: 6px;
-      background: rgba(251,191,36,.08); border: 1px solid rgba(251,191,36,.18);
-      border-radius: 100px; padding: 4px 11px;
-    }
-    .hero-rev-score-stars { color: #f59e0b; font-size: .78rem; letter-spacing: 1px; }
-    .hero-rev-score-val { font-size: .78rem; font-weight: 700; color: #fbbf24; }
-    .hero-rev-score-cnt { font-size: .7rem; color: var(--muted); }
-
-    .hero-rev-card-wrap { position: relative; min-height: 168px; }
-    .hero-rev-card {
-      position: absolute; inset: 0;
-      background: rgba(255,255,255,.03);
-      border: 1px solid rgba(255,255,255,.07);
-      border-radius: 14px; padding: 16px 18px;
-      opacity: 0; pointer-events: none;
-    }
-    .hero-rev-card.active           { opacity:1; pointer-events:auto; animation: revSlideInRight  .42s cubic-bezier(.25,.46,.45,.94) forwards; }
-    .hero-rev-card.active.from-left { animation: revSlideInLeft   .42s cubic-bezier(.25,.46,.45,.94) forwards; }
-    .hero-rev-card.leaving          { animation: revSlideOutLeft  .32s ease-in forwards; }
-    .hero-rev-card.leaving.to-right { animation: revSlideOutRight .32s ease-in forwards;
-    }
-    .hero-rev-top { display: flex; align-items: center; gap: 11px; margin-bottom: 10px; }
-    .hero-rev-av {
-      width: 38px; height: 38px; border-radius: 50%; flex-shrink: 0;
-      display: flex; align-items: center; justify-content: center;
-      font-weight: 700; font-size: .8rem; color: #fff; letter-spacing: .5px;
-    }
-    .hero-rev-av--a { background: linear-gradient(135deg,#6366f1,#8b5cf6); }
-    .hero-rev-av--b { background: linear-gradient(135deg,#0ea5e9,#6366f1); }
-    .hero-rev-av--c { background: linear-gradient(135deg,#ec4899,#f43f5e); }
-    .hero-rev-av--d { background: linear-gradient(135deg,#10b981,#0ea5e9); }
-    .hero-rev-av--e { background: linear-gradient(135deg,#f59e0b,#ef4444); }
-    .hero-rev-av--f { background: linear-gradient(135deg,#8b5cf6,#ec4899); }
-    .hero-rev-name { font-size: .85rem; font-weight: 600; color: #fff; }
-    .hero-rev-biz  { font-size: .72rem; color: var(--muted); margin-top: 1px; }
-    .hero-rev-time { font-size: .68rem; color: rgba(124,143,168,.6); margin-left: auto; flex-shrink: 0; }
-    .hero-rev-stars { color: #f59e0b; font-size: .82rem; letter-spacing: 1px; margin-bottom: 8px; }
-    .hero-rev-text {
-      font-size: .8rem; color: var(--muted); line-height: 1.65;
-      display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
-    }
-    .hero-rev-text::before { content:'\201C'; font-size:1.3rem; color:var(--violet); line-height:0; vertical-align:-.35em; margin-right:2px; }
-
-    .hero-rev-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 14px; }
-    .hero-rev-dots { display: flex; gap: 6px; }
-    .hero-rev-dot {
-      width: 6px; height: 6px; border-radius: 50%;
-      background: rgba(255,255,255,.2); cursor: pointer;
-      transition: background .3s, transform .3s;
-    }
-    .hero-rev-dot.active { background: var(--violet); transform: scale(1.4); }
-    .hero-rev-count { font-size: .7rem; color: var(--muted); }
-    .hero-rev-progress {
-      position: absolute; bottom: 0; left: 0; height: 2px;
-      background: linear-gradient(90deg, var(--violet), var(--rose));
-      border-radius: 0 0 22px 22px;
-      animation: revProgress 5s linear forwards;
-      transform-origin: left;
-    }
-    @keyframes revProgress { from { width: 0%; } to { width: 100%; } }
+    @keyframes dotPulse { 0%,100%{transform:scale(1);opacity:.45} 50%{transform:scale(1.35);opacity:1} }
 
     /* ── HERO URL INLINE BADGE ── */
     .hero-url-domain-badge {
@@ -2308,7 +2195,6 @@
     /* ── MEDIA QUERIES ── */
     @media (max-width: 900px) {
       .hero-in { grid-template-columns:1fr;gap:32px;padding-top:24px; }
-      .hero-rev-panel { margin-top:0; }
       .hero-url-btn { font-size:.75rem; padding:8px 14px; }
       .steps { grid-template-columns: repeat(2,1fr); gap: 12px; }
       .how-tagline { margin-top: 2.4rem; }
@@ -2336,24 +2222,10 @@
       .hero { min-height: 100dvh; padding-top: 0; align-items: stretch; }
       .hero-in { flex: 1; padding: 80px 20px 24px; gap: 0; display: flex; flex-direction: column; }
 
-      /* ── Order: pill → headline → sub → avatar+bubble → url → buttons ── */
+      /* ── Order: trust badge → headline → sub → avatar+bubble → url → buttons ── */
       .hero-copy { display: contents; }
-      .hero-pill  { display: none; }
-      .hero-trust-badge {
-        display: inline-flex; align-items: center; gap: 10px;
-        order: 1; margin: 0 auto .7rem;
-        background: rgba(255,255,255,.07);
-        border: 1px solid rgba(255,255,255,.13);
-        border-radius: 14px; padding: 9px 14px;
-        box-shadow: 0 2px 16px rgba(0,0,0,.18);
-      }
-      .hero-trust-google { display: flex; align-items: center; gap: 6px; }
-      .hero-trust-google-label { font-size: .78rem; font-weight: 600; color: rgba(255,255,255,.88); letter-spacing: -.01em; }
-      .hero-trust-sep { width: 1px; height: 24px; background: rgba(255,255,255,.15); flex-shrink: 0; }
-      .hero-trust-right { display: flex; flex-direction: column; gap: 1px; }
-      .hero-trust-stars { font-size: .72rem; color: #fbbf24; line-height: 1.2; }
-      .hero-trust-stars b { color: rgba(255,255,255,.9); font-weight: 700; margin-left: 2px; }
-      .hero-trust-count { font-size: .62rem; color: rgba(255,255,255,.48); line-height: 1.2; }
+      .hero-trust-row { order: 1; justify-content: center; margin: 0 auto .7rem; }
+      .hero-callback-pill { display: none; }
       .hero-h1    {
         order: 2; text-align: center;
         font-size: 1.85rem; line-height: 1.1;
@@ -2364,62 +2236,25 @@
       .hero-right { order: 4; width: 100%; flex: 1; display: flex; flex-direction: column; justify-content: center; margin-bottom: 0; }
       .hero-url-wrap  { order: 5; width: 100%; margin-bottom: 0; }
       .hero-actions   { display: flex; order: 6; flex-direction: column; width: 100%; margin-top: 10px; }
+      .hero-book-btn {
+        width: 100%; justify-content: center; display: flex; align-items: center; gap: 8px;
+        padding: 13px 24px; font-size: .9rem; border-radius: 13px; border-color: rgba(255,255,255,.15);
+        animation: calloutVibrate 2.8s ease-in-out infinite;
+      }
+      .hero-book-btn:hover { animation: none; }
       .hero-checks    { display: none; }
       .hero-setup-promise { justify-content: center; }
 
       /* ── Avatar — large clean circle, no busy rings ── */
-      .hero-rev-panel { display: none; }
       .hero-av-wrap {
-        flex-direction: column; align-items: center; text-align: center;
-        background: transparent; border: none; box-shadow: none;
-        backdrop-filter: none; padding: 0; gap: 20px; margin-bottom: 0;
+        display: flex; flex-direction: column; align-items: center; text-align: center;
+        gap: 16px; margin-bottom: 0;
       }
-      .hero-av-rings { width: 148px; height: 148px; margin-bottom: 0; position: relative; z-index: 2; }
-      .hero-av-ring { display: none; }
-      .hero-av-core {
-        inset: 0;
-        border: 3px solid rgba(167,139,250,.45);
-        box-shadow: 0 0 0 10px rgba(167,139,250,.09), 0 0 36px rgba(167,139,250,.3);
+      .hero-av-video-frame {
+        width: 100%; max-width: 320px;
       }
+      .hero-av-video-overlay { justify-content: flex-end; }
       .hero-av-info { display: none; }
-      .hero-av-play-btn { display: none; }
-      .hero-av-sound { display: none; }
-
-      /* ── Speech bubble card ── */
-      .hero-av-bubble {
-        display: flex; align-items: center; gap: 14px;
-        width: 100%;
-        background: rgba(255,255,255,.06);
-        border: 1px solid rgba(255,255,255,.12);
-        border-radius: 22px; padding: 18px 18px;
-        position: relative; z-index: 1;
-        box-shadow: 0 4px 28px rgba(0,0,0,.22);
-        margin-bottom: 0;
-      }
-      .hero-av-bubble::before {
-        content: '';
-        position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
-        width: 0; height: 0;
-        border-left: 10px solid transparent;
-        border-right: 10px solid transparent;
-        border-bottom: 10px solid rgba(255,255,255,.06);
-      }
-      .hero-av-bubble p {
-        flex: 1; margin: 0;
-        font-size: .85rem; color: rgba(255,255,255,.9); line-height: 1.6; text-align: left;
-      }
-      .hero-av-bubble-play {
-        flex-shrink: 0; width: 42px; height: 42px; border-radius: 50%;
-        background: linear-gradient(135deg, var(--violet), #6d28d9);
-        border: none; color: #fff; cursor: pointer;
-        display: flex; align-items: center; justify-content: center;
-        box-shadow: 0 0 16px rgba(167,139,250,.45);
-        transition: transform .18s, box-shadow .18s;
-      }
-      .hero-av-bubble-play:hover { transform: scale(1.08); box-shadow: 0 0 24px rgba(167,139,250,.65); }
-      .hero-av-bubble-play .bubble-icon-pause { display: none; }
-      .hero-av-bubble-play.playing .bubble-icon-play  { display: none; }
-      .hero-av-bubble-play.playing .bubble-icon-pause { display: block; }
 
       /* ── URL section — card with separate input + button ── */
       .hero-url-wrap {
@@ -2441,10 +2276,7 @@
         padding: 16px 24px; font-size: 1rem; border-radius: 13px;
         box-shadow: 0 0 28px rgba(167,139,250,.48), 0 4px 16px rgba(0,0,0,.2);
       }
-      .hero-book-btn { width: 100%; justify-content: center; display: flex; align-items: center; gap: 8px; padding: 13px 24px; font-size: .9rem; border-radius: 13px; border-color: rgba(255,255,255,.15); }
-
       /* ── Other sections ── */
-      .hero-rev-card-wrap { min-height:185px; }
       .feat-grid { grid-template-columns:1fr; }
       .problem { padding-top: 48px; padding-bottom: 52px; }
       .problem { padding-top: 52px; padding-bottom: 56px; }
@@ -2769,30 +2601,31 @@
 
   <div class="hero-in">
     <div class="hero-copy">
-      <div class="hero-pill">
-        <span class="hero-pill-dot"></span>
-        ★★★★★ Trusted by 200+ SA businesses
-      </div>
-      <!-- Mobile-only Google trust badge -->
-      <div class="hero-trust-badge">
-        <div class="hero-trust-google">
-          <svg viewBox="0 0 48 48" width="20" height="20" aria-label="Google">
-            <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.33 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
-            <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
-            <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
-            <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.67 14.62 48 24 48z"/>
-          </svg>
-          <span class="hero-trust-google-label">Google</span>
-        </div>
-        <div class="hero-trust-sep"></div>
-        <div class="hero-trust-right">
-          <div class="hero-trust-stars">★★★★★ <b>5.0</b></div>
-          <div class="hero-trust-count">200+ SA businesses</div>
-        </div>
+      <div class="hero-trust-row">
+        <a href="#testimonials" class="hero-trust-badge">
+          <div class="hero-trust-google">
+            <svg viewBox="0 0 48 48" width="20" height="20" aria-label="Google">
+              <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.33 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+              <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+              <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+              <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.67 14.62 48 24 48z"/>
+            </svg>
+            <span class="hero-trust-google-label">Google</span>
+          </div>
+          <div class="hero-trust-sep"></div>
+          <div class="hero-trust-right">
+            <div class="hero-trust-stars">★★★★★ <b>5.0</b></div>
+            <div class="hero-trust-count">200+ SA businesses</div>
+          </div>
+        </a>
+        <a href="#book" class="hero-callback-pill">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.39 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.9a16 16 0 0 0 6.09 6.09l.97-1.06a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          Request a callback
+        </a>
       </div>
       <h1 class="hero-h1" id="heroH1">
-        <span class="hero-h1-line1" id="heroLine1">Every missed call</span>
-        <span class="hero-h1-grad" id="heroLine2">is money walking out.</span>
+        <span class="hero-h1-line1" id="heroLine1">Most human-like</span>
+        <span class="hero-h1-grad" id="heroLine2">AI receptionist.</span>
       </h1>
       <p class="hero-sub">
         <strong>Ellie</strong> answers every call, books appointments and sends SMS confirmations — 24/7, never sick, never off.
@@ -2826,6 +2659,7 @@
           Request a Free Callback
         </a>
       </div>
+
       <div class="hero-checks">
         <div class="hero-check">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
@@ -2845,82 +2679,38 @@
     <!-- ── HERO RIGHT COLUMN ── -->
     <div class="hero-right">
 
-      <!-- Animated Avatar Card -->
+      <!-- Animated Video Card -->
       <div class="hero-av-wrap">
-        <div class="hero-av-rings">
-          <div class="hero-av-ring hero-av-ring--1"></div>
-          <div class="hero-av-ring hero-av-ring--2"></div>
-          <div class="hero-av-ring hero-av-ring--3"></div>
-          <div class="hero-av-core">
-            <img src="assets/emma/mouth_closed.png" class="hero-av-img-base"  alt="">
-            <img src="assets/emma/eyes_closed.png" class="hero-av-img-blink" alt="">
+        <div class="hero-av-video-frame">
+          <video class="hero-av-video" id="hero-av-video" src="assets/ellie/ellie-loop.mp4" autoplay muted loop playsinline></video>
+          <div class="hero-av-video-overlay">
+            <div class="hero-av-info">
+              <div class="hero-av-live">
+                <span class="hero-av-live-dot"></span>
+                Live · AI Receptionist
+              </div>
+              <div class="hero-av-name">Ellie</div>
+              <div class="hero-av-tagline">Most human-like AI receptionist in the world</div>
+            </div>
+            <div class="hero-av-controls">
+              <div class="hero-av-sound">
+                <div class="hero-av-bar" style="--d:0s;height:8px"></div>
+                <div class="hero-av-bar" style="--d:.2s;height:16px"></div>
+                <div class="hero-av-bar" style="--d:.4s;height:22px"></div>
+                <div class="hero-av-bar" style="--d:.6s;height:16px"></div>
+                <div class="hero-av-bar" style="--d:.4s;height:22px"></div>
+                <div class="hero-av-bar" style="--d:.2s;height:16px"></div>
+                <div class="hero-av-bar" style="--d:0s;height:8px"></div>
+              </div>
+              <button class="hero-av-play-btn" id="hero-av-play" aria-label="Play Ellie intro">
+                <svg class="icon-play"  width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                <svg class="icon-pause" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+              </button>
+            </div>
           </div>
         </div>
-        <div class="hero-av-info">
-          <div class="hero-av-live">
-            <span class="hero-av-live-dot"></span>
-            Live · AI Receptionist
-          </div>
-          <div class="hero-av-name">Ellie</div>
-          <div class="hero-av-tagline">Most human-like AI receptionist in the world</div>
-        </div>
-        <button class="hero-av-play-btn" id="hero-av-play" aria-label="Play Ellie intro">
-          <svg class="icon-play"  width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-          <svg class="icon-pause" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
-        </button>
-        <audio id="hero-av-audio" preload="auto"
-          src="assets/ellie/intro.mp3">
-        </audio>
-        <!-- Speech bubble — mobile only -->
-        <div class="hero-av-bubble">
-          <p>Hi, I'm Ellie — your AI receptionist. I answer every call, book appointments and send confirmations 24/7.</p>
-          <button class="hero-av-bubble-play" id="hero-av-play-bubble" aria-label="Play Ellie intro">
-            <svg class="bubble-icon-play" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-            <svg class="bubble-icon-pause" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
-          </button>
-        </div>
-        <div class="hero-av-sound">
-          <div class="hero-av-bar" style="--d:0s;height:8px"></div>
-          <div class="hero-av-bar" style="--d:.2s;height:16px"></div>
-          <div class="hero-av-bar" style="--d:.4s;height:22px"></div>
-          <div class="hero-av-bar" style="--d:.6s;height:16px"></div>
-          <div class="hero-av-bar" style="--d:.4s;height:22px"></div>
-          <div class="hero-av-bar" style="--d:.2s;height:16px"></div>
-          <div class="hero-av-bar" style="--d:0s;height:8px"></div>
-        </div>
       </div>
 
-      <!-- Google Reviews Carousel -->
-      <div class="hero-rev-panel" id="heroRevPanel">
-      <div class="hero-rev-glow"></div>
-
-      <div class="hero-rev-header">
-        <div class="hero-rev-logo">
-          <svg class="hero-rev-logo-icon" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-            <path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.2l6.7-6.7C35.5 2.1 30.1 0 24 0 14.6 0 6.6 5.6 2.7 13.7l7.8 6C12.3 13.3 17.7 9.5 24 9.5z"/>
-            <path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8C43.6 37.3 46.5 31.4 46.5 24.5z"/>
-            <path fill="#FBBC05" d="M10.5 28.6A14.6 14.6 0 0 1 9.5 24c0-1.6.3-3.1.8-4.6l-7.8-6A23.9 23.9 0 0 0 0 24c0 3.8.9 7.4 2.5 10.6l8-6z"/>
-            <path fill="#34A853" d="M24 48c6.1 0 11.2-2 14.9-5.4l-7.5-5.8c-2 1.4-4.6 2.2-7.4 2.2-6.3 0-11.7-3.8-13.5-9.2l-8 6.2C6.6 42.4 14.6 48 24 48z"/>
-          </svg>
-          <span class="hero-rev-logo-text">Google Reviews</span>
-        </div>
-        <div class="hero-rev-score">
-          <span class="hero-rev-score-stars">★★★★★</span>
-          <span class="hero-rev-score-val">5.0</span>
-          <span class="hero-rev-score-cnt">· 100+ reviews</span>
-        </div>
-      </div>
-
-      <div class="hero-rev-card-wrap" id="heroRevWrap">
-        <!-- Cards injected by JS -->
-      </div>
-
-      <div class="hero-rev-footer">
-        <div class="hero-rev-dots" id="heroRevDots"></div>
-        <span class="hero-rev-count" id="heroRevCount">1 / 9</span>
-      </div>
-      <div class="hero-rev-progress" id="heroRevProgress"></div>
-    </div><!-- /hero-rev-panel -->
     </div><!-- /hero-right -->
   </div><!-- /hero-in -->
 </section>
