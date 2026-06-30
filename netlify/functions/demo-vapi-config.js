@@ -8,12 +8,12 @@ async function fetchJina(url) {
     const headers = {
       Accept: 'application/json',
       'X-Remove-Selector': 'nav,footer,header,.cookie,.popup,.overlay,.banner',
-      'X-Timeout': '4',
+      'X-Timeout': '3',
     };
     if (process.env.JINA_API_KEY) headers['Authorization'] = `Bearer ${process.env.JINA_API_KEY}`;
     const res = await fetch(`https://r.jina.ai/${url}`, {
       headers,
-      signal: AbortSignal.timeout(5000),
+      signal: AbortSignal.timeout(4000),
     });
     if (!res.ok) return '';
     const j = await res.json();
@@ -29,7 +29,7 @@ async function fetchDirect(url) {
         'User-Agent': 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)',
         'Accept': 'text/html',
       },
-      signal: AbortSignal.timeout(5000),
+      signal: AbortSignal.timeout(4000),
     });
     if (!res.ok) return '';
     const html = await res.text();
@@ -55,10 +55,10 @@ async function extractWithClaude(siteUrl, content, apiKey) {
       'anthropic-version': '2023-06-01',
       'content-type':      'application/json',
     },
-    signal: AbortSignal.timeout(7000),
+    signal: AbortSignal.timeout(5000),
     body: JSON.stringify({
       model:      'claude-haiku-4-5-20251001',
-      max_tokens: 600,
+      max_tokens: 400,
       messages: [{
         role: 'user',
         content: `Extract business information from this website content for an AI phone receptionist. Return ONLY valid JSON, no markdown, no explanation.
