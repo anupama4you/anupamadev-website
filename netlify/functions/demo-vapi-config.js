@@ -3,19 +3,17 @@
 // ─────────────────────────────────────────────────────────────
 
 /** Fetch via Jina reader (renders JS, strips nav/ads). Returns '' on failure. */
-async function fetchJina(url, timeoutMs = 6000) {
+async function fetchJina(url) {
   try {
     const headers = {
       Accept: 'application/json',
       'X-Remove-Selector': 'nav,footer,header,.cookie,.popup,.overlay,.banner',
-      'X-Timeout': '5',
+      'X-Timeout': '4',
     };
-    if (process.env.JINA_API_KEY) {
-      headers['Authorization'] = `Bearer ${process.env.JINA_API_KEY}`;
-    }
+    if (process.env.JINA_API_KEY) headers['Authorization'] = `Bearer ${process.env.JINA_API_KEY}`;
     const res = await fetch(`https://r.jina.ai/${url}`, {
       headers,
-      signal: AbortSignal.timeout(timeoutMs),
+      signal: AbortSignal.timeout(5000),
     });
     if (!res.ok) return '';
     const j = await res.json();
@@ -23,15 +21,15 @@ async function fetchJina(url, timeoutMs = 6000) {
   } catch { return ''; }
 }
 
-/** Directly fetch page HTML and strip tags — reliable fallback when Jina fails. */
-async function fetchDirect(url, timeoutMs = 6000) {
+/** Directly fetch page HTML and strip tags. Returns '' on failure. */
+async function fetchDirect(url) {
   try {
     const res = await fetch(url, {
       headers: {
         'User-Agent': 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)',
         'Accept': 'text/html',
       },
-      signal: AbortSignal.timeout(timeoutMs),
+      signal: AbortSignal.timeout(5000),
     });
     if (!res.ok) return '';
     const html = await res.text();
@@ -48,7 +46,7 @@ async function fetchDirect(url, timeoutMs = 6000) {
   } catch { return ''; }
 }
 
-/** Use Claude Haiku to extract structured business info from crawled content. */
+/** Use Claude Haiku to extract structured business info. */
 async function extractWithClaude(siteUrl, content, apiKey) {
   const res = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
@@ -57,10 +55,10 @@ async function extractWithClaude(siteUrl, content, apiKey) {
       'anthropic-version': '2023-06-01',
       'content-type':      'application/json',
     },
-    signal: AbortSignal.timeout(12000),
+    signal: AbortSignal.timeout(7000),
     body: JSON.stringify({
       model:      'claude-haiku-4-5-20251001',
-      max_tokens: 700,
+      max_tokens: 600,
       messages: [{
         role: 'user',
         content: `Extract business information from this website content for an AI phone receptionist. Return ONLY valid JSON, no markdown, no explanation.
@@ -68,7 +66,7 @@ async function extractWithClaude(siteUrl, content, apiKey) {
 Website: ${siteUrl}
 
 Content:
-${content.slice(0, 4500)}
+${content.slice(0, 4000)}
 
 Return this exact JSON (use empty string if unknown):
 {
@@ -94,17 +92,16 @@ Return this exact JSON (use empty string if unknown):
 }
 
 // ─────────────────────────────────────────────────────────────
-//  Main crawler — homepage only, Jina with direct-fetch fallback
+//  Main crawler — fires Jina + direct fetch in parallel,
+//  uses whichever returns content first
 // ─────────────────────────────────────────────────────────────
 
 async function crawlSite(siteUrl, anthropicKey) {
-  // Try Jina first (renders JS, cleaner output)
-  let content = await fetchJina(siteUrl);
-
-  // Fall back to direct HTML fetch if Jina failed or returned nothing
-  if (!content) {
-    content = await fetchDirect(siteUrl);
-  }
+  // Race Jina against direct HTML fetch — fastest non-empty result wins
+  const content = await Promise.any([
+    fetchJina(siteUrl).then(r => r || Promise.reject()),
+    fetchDirect(siteUrl).then(r => r || Promise.reject()),
+  ]).catch(() => '');
 
   if (!content) {
     return { name: '', description: '', phone: '', email: '', location: '', hours: '', businessType: '', services: '', bookingInfo: '' };
