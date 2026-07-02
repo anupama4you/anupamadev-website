@@ -15,10 +15,12 @@
       "Bash(curl -s \"https://raw.githubusercontent.com/red1-for-hek/portfolio-website/main/package.json\")",
       "Bash(npm install *)",
       "Bash(cp -r \"c:\\\\Users\\\\dilshana\\\\Documents\\\\projects\\\\anupama-dev\\\\node_modules\\\\three\\\\examples\\\\jsm\\\\libs\\\\draco\" \"c:\\\\Users\\\\dilshana\\\\Documents\\\\projects\\\\anupama-dev\\\\assets\\\\draco\" && echo \"draco copied\")",
-      "Bash(node -e ' *)"
+      "Bash(node -e ' *)",
+      "Read(//c/Users/dilshana/Documents/projects/ellie-dev/**)"
     ],
     "additionalDirectories": [
-      "\\tmp"
+      "\\tmp",
+      "c:\\Users\\dilshana\\Documents\\projects\\ellie-dev"
     ]
   }
 }
